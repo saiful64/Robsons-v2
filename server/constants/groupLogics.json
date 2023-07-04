@@ -1,0 +1,88 @@
+ {
+    "groupLogics": [{
+      "id": "group 1",
+      "conditions": {
+          "obs_index": "primi",
+          "single_twins": "single",
+          "present": "vertex_cephalic",
+          "pog": ">36",
+          "Labour": "spontaneous"
+      }
+    },{
+      "id": "group 2",
+      "conditions": {
+          "obs_index": "primi",
+          "single_twins": "single",
+          "present": "vertex_cephalic",
+          "pog": ">36",
+          "Labour": "induced"
+      }
+    },{
+      "id": "group 3",
+      "conditions": {
+          "obs_index": "multi",
+          "previous_cesarean": "0",
+          "single_twins": "single",
+          "present": "vertex_cephalic",
+          "pog": ">36",
+          "Labour": "spontaneous"
+      }
+    },{
+      "id": "group 4",
+      "conditions": {
+          "obs_index": "multi",
+          "previous_cesarean": "0",
+          "single_twins": "single",
+          "present": "vertex_cephalic",
+          "pog": ">36",
+          "Labour": "pre_labour"
+      }
+    },{
+      "id": "group 5",
+      "conditions": {
+          "obs_index": "multi",
+          "previous_cesarean": ">0",
+          "single_twins": "single",
+          "present": "vertex_cephalic",
+          "pog": ">36"
+      }
+    },{
+      "id": "group 6",
+      "conditions": {
+          "obs_index": "multi",
+          "previous_cesarean": ">0",
+          "single_twins": "single",
+          "present": "breech",
+          "pog": ">36"
+      }
+    },{
+      "id": "group 7",
+      "conditions": {
+          "obs_index": "multi",
+          "previous_cesarean": ">0",
+          "present": "breech"
+      }
+    },{
+      "id": "group 8",
+      "conditions": {
+          "obs_index": "multi",
+          "previous_cesarean": ">0"
+      }
+    },{
+      "id": "group 9",
+      "conditions": {
+          "single_twins": "single",
+          "previous_cesarean": ">0",
+          "present": "others"
+      }
+    },{
+      "id": "group 10",
+      "conditions": {
+          "single_twins": "single",
+          "previous_cesarean": ">0",
+          "pog": "<36",
+          "present": "vertex_cephalic"
+      }
+    }]
+ }
+  

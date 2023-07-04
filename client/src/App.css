@@ -1,0 +1,21 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.table-auto {
+  border-collapse: collapse;
+}
+
+.table-auto thead th {
+  border-bottom: 1px solid #d2d6dc;
+}
+
+.table-auto tbody tr:nth-of-type(even) {
+  background-color: #f7fafc;
+}
+
+.table-auto tbody td {
+  border-bottom: 1px solid #d2d6dc;
+}
