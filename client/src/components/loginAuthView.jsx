@@ -5,7 +5,7 @@ import { useAuth } from "./auth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function LoginAuthView() {
+function LoginAuthView(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const auth = useAuth();
@@ -33,8 +33,9 @@ function LoginAuthView() {
           navigate("/home-view");
         } else if (response.data === "junior_dr") {
           auth.login("junior_dr");
-          navigate("/home-view");
+          navigate("jr-home-view");
         } else {
+          console.log(props.authed);
           alert("Invalid Credentials");
         }
       })
