@@ -15,6 +15,9 @@ function HomeView() {
   const generateSheetPage = () => {
     navigate("/generate-excel-sheet");
   };
+  const generateSheetPagespecific = () => {
+    navigate("/generate-excel-sheet-one"); 
+  };
   const generateStatus = () => {
     navigate("/generate-status");
   };
@@ -38,6 +41,12 @@ function HomeView() {
                 onClick={() => generateSheetPage()}
               >
                 GENERATE EXCEL SHEET REPORT
+              </button>
+              <button
+                className="bg-zinc-400 hover:bg-gray-600 hover:text-zinc-200 text-white font-medium hover:font-bold hover:shadow-xl py-2 px-4 rounded m-2 mb-6"
+                onClick={() => generateSheetPagespecific()}
+              >
+                GENERATE EXCEL SHEET REPORT FOR SPECIFIC
               </button>
               <button
                 className="bg-zinc-500 hover:bg-gray-600 text-white font-medium hover:font-bold hover:shadow-xl py-2 px-4 rounded m-2 mb-6"
