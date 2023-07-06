@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "./auth";
 
 function HomeView() {
+
 	const navigate = useNavigate();
 	const auth = useAuth();
 	const logout = () => {
@@ -59,6 +60,7 @@ function HomeView() {
 			</div>
 		</>
 	);
+
 }
 
 export default HomeView;
