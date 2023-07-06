@@ -56,6 +56,7 @@ function HomeView() {
 						</button>
 					</div>
 				</div>
+
 			</div>
 		</>
 	);

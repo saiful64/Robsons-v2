@@ -45,6 +45,11 @@ function LoginAuthView(props) {
 			});
 	};
 
+  const footerData = [
+		{ key: "mainText", displayText: "@ 2023 JIPMER, O & G  Dept." },
+		{ key: "subText", displayText: "Made with ♥ by MCA students" },
+	];
+
 
   return (
     <div className="flex flex-col justify-center items-center h-screen overflow-hidden">
@@ -94,7 +99,8 @@ function LoginAuthView(props) {
           </div>
         </form>
       </div>
+
     </div>
   );
-
+  }
 export default LoginAuthView;
