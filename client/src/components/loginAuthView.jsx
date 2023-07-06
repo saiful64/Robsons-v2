@@ -6,50 +6,49 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function LoginAuthView(props) {
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
-	const auth = useAuth();
-	const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const auth = useAuth();
+  const navigate = useNavigate();
 
-	const handleUsernameChange = (event) => {
-		setUsername(event.target.value);
-	};
+  const handleUsernameChange = (event) => {
+    setUsername(event.target.value);
+  };
 
-	const handlePasswordChange = (event) => {
-		setPassword(event.target.value);
-	};
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
 
-	const handleSubmit = (event) => {
-		event.preventDefault();
-		let body = {
-			username: username,
-			password: password,
-		};
-		axios
-			.post("http://localhost:3050/auth-login", body)
-			.then((response) => {
-				if (response.data === "student") {
-					auth.login("student");
-					navigate("/home-view");
-				} else if (response.data === "doctor") {
-					auth.login("doctor");
-					navigate("/home-view");
-				} else {
-					alert("Invalid Credentials");
-				}
-			})
-			.catch((error) => {
-				if (error) {
-					toast.error("Invalid Credentials");
-				}
-			});
-	};
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    let body = {
+      username: username,
+      password: password,
+    };
+    axios
+      .post("http://localhost:3050/auth-login", body)
+      .then((response) => {
+        if (response.data === "student") {
+          auth.login("student");
+          navigate("/home-view");
+        } else if (response.data === "doctor") {
+          auth.login("doctor");
+          navigate("/home-view");
+        } else {
+          alert("Invalid Credentials");
+        }
+      })
+      .catch((error) => {
+        if (error) {
+          toast.error("Invalid Credentials");
+        }
+      });
+  };
 
   const footerData = [
-		{ key: "mainText", displayText: "@ 2023 JIPMER, O & G  Dept." },
-		{ key: "subText", displayText: "Made with ♥ by MCA students" },
-	];
-
+    { key: "mainText", displayText: "@ 2023 JIPMER, O & G  Dept." },
+    { key: "subText", displayText: "Made with 🧡 by MCA students" },
+  ];
 
   return (
     <div className="flex flex-col justify-center items-center h-screen overflow-hidden">
@@ -99,8 +98,14 @@ function LoginAuthView(props) {
           </div>
         </form>
       </div>
-
+      <div className="flex flex-col bottom-[4%] absolute inset-x-0 mt-10 animate-pulse items-center justify-center">
+        {footerData.map((item) => (
+          <p key={item.key} className="text-md">
+            {item.displayText}
+          </p>
+        ))}
+      </div>
     </div>
   );
-  }
+}
 export default LoginAuthView;
