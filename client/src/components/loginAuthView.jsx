@@ -40,7 +40,9 @@ function LoginAuthView(props) {
 			})
 			.catch((error) => {
 				if (error) {
-					toast.error("Invalid Credentials");
+					toast.error("Invalid Credentials", {
+						autoClose: 1000,
+					});
 				}
 			});
 	};

@@ -16,7 +16,10 @@ function ObsIndexForm() {
 	const [timeOfBirth, setTimeOfBirth] = useState("");
 	const [isStatus, setIsStatus] = useState(false);
 	const [formId, setFormId] = useState("");
+	const [spontaneousPrevious, setspontaneousPrevious] = useState(false);
 	const auth = useAuth();
+
+	const [selectedRadioButton, setSelectedRadioButton] = useState(null);
 
 	useEffect(() => {
 		axios
@@ -41,13 +44,18 @@ function ObsIndexForm() {
 			previousFormIndexStack.length > 0
 		) {
 			const prevFormIndex = previousFormIndexStack.pop();
-			// console.log(prevFormIndex, previousFormIndexStack)
+			console.log(prevFormIndex, previousFormIndexStack);
 			if (prevFormIndex !== undefined) {
 				setFormIndex(prevFormIndex);
 				return;
 			}
 		}
-		setFormIndex(formIndex - 1);
+		if (spontaneousPrevious === true) {
+			setspontaneousPrevious(false);
+			setFormIndex(6);
+		} else {
+			setFormIndex(formIndex - 1);
+		}
 	};
 
 	// function to handle navigation to the next form
@@ -68,7 +76,12 @@ function ObsIndexForm() {
 				}
 			}
 		}
-		setFormIndex(formIndex + 1);
+		if (formIndex === 6 && selectedRadioButton === "Spontaneous") {
+			setFormIndex(9);
+			setspontaneousPrevious(true);
+		} else {
+			setFormIndex(formIndex + 1);
+		}
 	};
 
 	const updateThisOption = (title, option) => {
@@ -143,7 +156,10 @@ function ObsIndexForm() {
 				<div className='flex form-content  bg-white mb-4 flex-col justify-between pr-20 pl-2'>
 					{formData[formIndex]?.options.map((option, index) => (
 						<div key={index}>
-							<label key={index} className='inline-flex hover:cursor-pointer hover:text-2xl items-center'>
+							<label
+								key={index}
+								className='inline-flex hover:cursor-pointer hover:text-2xl items-center'
+							>
 								<input
 									type='radio'
 									className='form-radio hover:cursor-pointer'
@@ -153,12 +169,14 @@ function ObsIndexForm() {
 										option.displayText ===
 										selectedOptions[formData[formIndex]?.title]
 									}
-									onChange={() =>
+									onChange={(event) => {
+										setSelectedRadioButton(event.target.value);
+
 										updateThisOption(
 											formData[formIndex]?.title,
 											option.displayText
-										)
-									}
+										);
+									}}
 								/>
 								<span className='ml-2'>{option.displayText}</span>
 							</label>
