@@ -29,9 +29,9 @@ function App() {
 				<div className='relative'>
 					<Router>
 						<Routes>
-							<Route exact path='/' element={<HomePage />} />
-							<Route exact path='/register' element={<Register />} />
-							<Route exact path='/login' element={<LoginAuthView />} />
+							{/* <Route exact path='/' element={<HomePage />} />
+							<Route exact path='/register' element={<Register />} /> */}
+							<Route exact path='/' element={<LoginAuthView />} />
 							<Route
 								exact
 								path='/home-view'
