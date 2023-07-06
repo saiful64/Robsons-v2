@@ -21,8 +21,8 @@ function HomeView() {
 	return (
 		<>
 			<div className='flex flex-col items-center justify-center h-screen'>
-				<div className='bg-white p-7 rounded-lg  shadow-xl ring-1 ring-gray-900/5 w-full sm:w-96'>
-					<h1 className=' hover:cursor-auto   text-3xl font-bold mb-8 justify-center text:items-center ml-4'>
+				<div className='bg-white p-7 rounded-lg  shadow-xl ring-1 ring-gray-900/5  sm:w-96'>
+					<h1 className='text-3xl font-bold mb-8 text-center'>
 						{auth.user === "student" ? "Welcome Student" : "Welcome Doctor"}
 					</h1>
 					<div className='flex flex-col justify-center'>

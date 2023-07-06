@@ -30,8 +30,8 @@ function ObsIndexForm() {
 	}, []);
 
 	const footerData = [
-		{ key: "mainText", displayText: "JIPMER" },
-		{ key: "subText", displayText: "Obestetrics and Gynaecology Department" },
+		{ key: "mainText", displayText: "@ 2023 JIPMER, O & G  Dept." },
+		{ key: "subText", displayText: "Made with ♥ by MCA students" },
 	];
 
 	// function to handle navigation to the previous form
@@ -252,14 +252,14 @@ function ObsIndexForm() {
 					{formData[formIndex]?.isSubmit && (
 						<button
 							onClick={submitForms}
-							className=' text-white hover:text-gray-800 bg-gray-700  rounded-br-lg font-bold py-2 px-4  ml-auto'
+							className=' text-white hover:bg-gray-300 hover:text-gray-800 bg-gray-700  rounded-br-lg font-bold py-2 px-4  ml-auto'
 						>
 							Submit
 						</button>
 					)}
 				</div>
 			</div>
-			<div className='flex flex-col mt-10 items-center justify-center'>
+			<div className='flex flex-col bottom-[4%] absolute inset-x-0 mt-10 items-center justify-center'>
 				{footerData.map((item) => (
 					<p key={item.key} className='text-md'>
 						{item.displayText}
