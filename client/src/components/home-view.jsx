@@ -7,7 +7,7 @@ function HomeView() {
 	const auth = useAuth();
 	const logout = () => {
 		auth.logout();
-		navigate("/");
+		navigate("/login");
 	};
 	const goToFormPage = () => {
 		navigate("/forms");
