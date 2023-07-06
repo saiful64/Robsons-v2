@@ -8,7 +8,7 @@ function ProtectedRoute({ children }) {
 			{auth.user ? (
 				children
 			) : (
-				<Navigate to='/login' state={{ from: location }} />
+				<Navigate to='/' state={{ from: location }} />
 			)}
 		</>
 	);

@@ -37,7 +37,6 @@ function LoginAuthView(props) {
 				} else {
 					alert("Invalid Credentials");
 				}
-<<<<<<< HEAD
 			})
 			.catch((error) => {
 				if (error) {
@@ -47,28 +46,12 @@ function LoginAuthView(props) {
 				}
 			});
 	};
-=======
-      })
-      .catch((error) => {
-        if (error) {
-          toast.error("Invalid Credentials");
-        }
-      });
-  };
->>>>>>> parent of 53a0c03 (touchup)
 
-<<<<<<< HEAD
-  return (
-    <div className="flex justify-center items-center h-screen overflow-hidden">
-      <ToastContainer />
-      <div className="bg-white p-6 rounded-xl shadow-xl   w-full sm:w-96">
-=======
 
   return (
     <div className="flex flex-col justify-center items-center h-screen overflow-hidden">
       <ToastContainer />
       <div className="bg-white p-6 rounded-lg shadow-lg">
->>>>>>> 9416bd09e0dc8758630596e73f6aab3881abab7a
         <h1 className="text-center hover:cursor-pointer  font-bold text-3xl mb-6">
           Login
         </h1>
@@ -115,9 +98,5 @@ function LoginAuthView(props) {
       </div>
     </div>
   );
-<<<<<<< HEAD
-}
-=======
->>>>>>> 9416bd09e0dc8758630596e73f6aab3881abab7a
-
+  }
 export default LoginAuthView;
