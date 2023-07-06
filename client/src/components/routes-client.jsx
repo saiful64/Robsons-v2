@@ -8,7 +8,7 @@ import {
 import LoginAuthView from "../components/loginAuthView";
 import Register from "../components/Register";
 import ConsultantHomeView from "./home-view";
-// import JrHomeView from './JrHomeView';
+import JrHomeView from './JrHomeView';
 import ObsIndexForm from "../components/form1";
 
 const RoutesModules = () => {
@@ -16,9 +16,9 @@ const RoutesModules = () => {
 		<Router>
 			<Routes>
 				<Route exact path='/register' component={Register} />
-				<Route exact path='/login' component={LoginAuthView} />
+				<Route exact path='/login' component={LoginAuthView} userType='value1' />
 				<Route exact path='/home-view' component={ConsultantHomeView} />
-				{/* <Route exact path="/jr-home-view" component={JrHomeView} /> */}
+				<Route exact path='/jr-home-view' component={JrHomeView} />
 				<Route exact path='/forms' component={ObsIndexForm} />
 			</Routes>
 		</Router>
