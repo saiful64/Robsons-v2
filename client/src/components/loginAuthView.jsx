@@ -98,7 +98,7 @@ function LoginAuthView(props) {
           </div>
         </form>
       </div>
-      <div className="flex flex-col bottom-[4%] absolute inset-x-0 mt-10 animate-pulse items-center justify-center">
+      <div className="flex flex-col bottom-[4%] font-light absolute inset-x-0 mt-10 animate-pulse items-center justify-center">
         {footerData.map((item) => (
           <p key={item.key} className="text-md">
             {item.displayText}
