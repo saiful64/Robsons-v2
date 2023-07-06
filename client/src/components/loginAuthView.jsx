@@ -46,9 +46,9 @@ function LoginAuthView() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen overflow-hidden">
+    <div className="flex flex-col justify-center items-center h-screen overflow-hidden">
       <ToastContainer />
-      <div className="bg-white p-6 rounded-xl shadow-xl   w-full sm:w-96">
+      <div className="bg-white p-6 rounded-lg shadow-lg">
         <h1 className="text-center hover:cursor-pointer  font-bold text-3xl mb-6">
           Login
         </h1>

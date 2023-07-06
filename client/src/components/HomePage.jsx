@@ -18,7 +18,7 @@ function HomePage() {
 						className='px-4 py-2 font-bold bg-gray-900 text-white rounded-md shadow-md'
 						onClick={handleRegisterClick}
 					>
-						Register
+						Login
 					</button>
 					<button
 						className='px-7 py-2 ml-5 font-bold bg-gray-900 text-white rounded-md shadow-md'
