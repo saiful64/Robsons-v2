@@ -6,44 +6,45 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function LoginAuthView(props) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const auth = useAuth();
-  const navigate = useNavigate();
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
+	const auth = useAuth();
+	const navigate = useNavigate();
 
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
+	const handleUsernameChange = (event) => {
+		setUsername(event.target.value);
+	};
 
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
+	const handlePasswordChange = (event) => {
+		setPassword(event.target.value);
+	};
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    let body = {
-      username: username,
-      password: password,
-    };
-    axios
-      .post("http://localhost:3050/auth-login", body)
-      .then((response) => {
-        if (response.data === "student") {
-          auth.login("student");
-          navigate("/home-view");
-        } else if (response.data === "doctor") {
+	const handleSubmit = (event) => {
+		event.preventDefault();
+		let body = {
+			username: username,
+			password: password,
+		};
+		axios
+			.post("http://localhost:3050/auth-login", body)
+			.then((response) => {
+				if (response.data === "student") {
+					auth.login("student");
+					navigate("/home-view");
+				} else if (response.data === "doctor") {
 					auth.login("doctor");
 					navigate("/home-view");
 				} else {
 					alert("Invalid Credentials");
 				}
-      })
-      .catch((error) => {
-        if (error) {
-          toast.error("Invalid Credentials");
-        }
-      });
-  };
+			})
+			.catch((error) => {
+				if (error) {
+					toast.error("Invalid Credentials");
+				}
+			});
+	};
+
 
   return (
     <div className="flex flex-col justify-center items-center h-screen overflow-hidden">
@@ -95,6 +96,5 @@ function LoginAuthView(props) {
       </div>
     </div>
   );
-}
 
 export default LoginAuthView;
