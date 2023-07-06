@@ -28,16 +28,15 @@ function LoginAuthView(props) {
     axios
       .post("http://localhost:3050/auth-login", body)
       .then((response) => {
-        if (response.data === "consultant") {
-          auth.login("consultant");
+        if (response.data === "student") {
+          auth.login("student");
           navigate("/home-view");
-        } else if (response.data === "junior_dr") {
-          auth.login("junior_dr");
-          navigate("jr-home-view");
-        } else {
-          console.log(props.authed);
-          alert("Invalid Credentials");
-        }
+        } else if (response.data === "doctor") {
+					auth.login("doctor");
+					navigate("/home-view");
+				} else {
+					alert("Invalid Credentials");
+				}
       })
       .catch((error) => {
         if (error) {
