@@ -19,6 +19,10 @@ function HomeView() {
 	const generateStatus = () => {
 		navigate("/generate-status");
 	};
+  const footerData = [
+		{ key: "mainText", displayText: "@ 2023 JIPMER, O & G  Dept." },
+		{ key: "subText", displayText: "Made with 🧡 by MCA students" },
+	];
 	return (
 		<>
 			<div className='flex flex-col items-center justify-center h-screen'>
@@ -57,6 +61,13 @@ function HomeView() {
 						</button>
 					</div>
 				</div>
+        <div className="flex flex-col bottom-[4%] font-light absolute inset-x-0 mt-10 animate-pulse items-center justify-center">
+        {footerData.map((item) => (
+          <p key={item.key} className="text-md">
+            {item.displayText}
+          </p>
+        ))}
+      </div>
 			</div>
 		</>
 	);
