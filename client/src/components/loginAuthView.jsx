@@ -32,18 +32,20 @@ function LoginAuthView(props) {
           auth.login("student");
           navigate("/home-view");
         } else if (response.data === "doctor") {
-          auth.login("doctor");
-          navigate("/home-view");
-        } else {
-          alert("Invalid Credentials");
-        }
-      })
-      .catch((error) => {
-        if (error) {
-          toast.error("Invalid Credentials");
-        }
-      });
-  };
+					auth.login("doctor");
+					navigate("/home-view");
+				} else {
+					alert("Invalid Credentials");
+				}
+			})
+			.catch((error) => {
+				if (error) {
+					toast.error("Invalid Credentials", {
+						autoClose: 1000,
+					});
+				}
+			});
+	};
 
   const footerData = [
     { key: "mainText", displayText: "@ 2023 JIPMER, O & G  Dept." },
@@ -107,5 +109,5 @@ function LoginAuthView(props) {
       </div>
     </div>
   );
-}
+  }
 export default LoginAuthView;

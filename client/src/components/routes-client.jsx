@@ -15,10 +15,10 @@ const RoutesModules = () => {
 	return (
 		<Router>
 			<Routes>
-				<Route exact path='/register' component={Register} />
-				<Route exact path='/login' component={LoginAuthView} userType='value1' />
+				{/* <Route exact path='/register' component={Register} /> */}
+				<Route exact path='/' component={LoginAuthView} userType='value1' />
 				<Route exact path='/home-view' component={ConsultantHomeView} />
-				<Route exact path='/jr-home-view' component={JrHomeView} />
+				{/* <Route exact path='/jr-home-view' component={JrHomeView} /> */}
 				<Route exact path='/forms' component={ObsIndexForm} />
 			</Routes>
 		</Router>

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 function HomePage() {
 	const navigate = useNavigate();
 
-	const handleClick = () => navigate("/login");
+	const handleClick = () => navigate("/");
 
 	return (
 		<div className='flex justify-center items-center h-screen overflow-hidden'>
