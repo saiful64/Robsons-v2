@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import API_BASE_URL from "./config";
 
 function Register() {
 	const [username, setUsername] = useState("");
@@ -29,7 +30,7 @@ function Register() {
 		};
 
 		axios
-			.post("http://localhost:3050/register", body)
+			.post(`${API_BASE_URL}/register`, body)
 			.then((res) => {
 				console.log(res.data);
 				toast.success("Registered Successfully");

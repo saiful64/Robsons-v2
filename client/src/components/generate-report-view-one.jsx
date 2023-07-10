@@ -4,6 +4,7 @@ import axios from "axios";
 import { useAuth } from "./auth";
 import { DateRange } from "react-date-range";
 import moment from "moment";
+import API_BASE_URL from "./config";
 
 function GenerateReportViewOne() {
 	const navigate = useNavigate();
@@ -17,7 +18,7 @@ function GenerateReportViewOne() {
 	]);
 	const generateReportOne = () => {
 		axios({
-			url: "http://localhost:3050/api/generate-report-one",
+			url: `${API_BASE_URL}/api/generate-report-one`,
 			method: "GET",
 			responseType: "blob",
 			params: {

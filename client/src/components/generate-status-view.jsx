@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { DateRange } from "react-date-range";
 import moment from "moment";
 import { useTable, useResizeColumns } from "react-table";
+import API_BASE_URL from "./config";
 
 function GenerateStatus() {
 	const [dateRange, setDateRange] = useState([
@@ -23,7 +24,7 @@ function GenerateStatus() {
 
 	useEffect(() => {
 		axios
-			.get("http://localhost:3050/api/generate-status-init")
+			.get(`${API_BASE_URL}/api/generate-status-init`)
 			.then((response) => {
 				console.log(response.data);
 				setData(response.data.data);

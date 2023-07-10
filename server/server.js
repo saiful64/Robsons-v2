@@ -26,7 +26,7 @@ const totalGroupList = [
 app.use(bodyParser.json());
 app.use(cors());
 var con = mysql.createConnection({
-	host: "localhost",
+	host: "10.10.56.153",
 	user: "root",
 	password: "",
 	database: "robsonclassification",
@@ -642,7 +642,6 @@ app.post("/register", (req, res) => {
 	});
 });
 
-app.listen(3050, () => {
+app.listen(3050, "0.0.0.0", () => {
 	console.log("Server is running");
 });
-

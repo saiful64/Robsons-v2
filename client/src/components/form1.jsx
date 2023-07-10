@@ -6,6 +6,7 @@ import moment from "moment";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Modal from "./Modal";
+import API_BASE_URL from "./config";
 
 function ObsIndexForm() {
 	const [formIndex, setFormIndex] = useState(0); // state to keep track of the current form
@@ -27,7 +28,7 @@ function ObsIndexForm() {
 
 	useEffect(() => {
 		axios
-			.get("http://localhost:3050/api/form-data")
+			.get(`${API_BASE_URL}/api/form-data`)
 			.then((response) => {
 				setFormData(response.data.formData);
 			})
@@ -100,7 +101,7 @@ function ObsIndexForm() {
 		let created_by = auth.user;
 		selectedOptions["created_by"] = created_by;
 		axios
-			.post("http://localhost:3050/submit-form", selectedOptions)
+			.post(`${API_BASE_URL}/submit-form`, selectedOptions)
 			.then((response) => {
 				console.log(response.data);
 				let groupDetails = response.data;
@@ -123,7 +124,7 @@ function ObsIndexForm() {
 	const updateStatus = () => {
 		let indicationForInduction = selectedOptions[formData[formIndex]?.title];
 		axios
-			.post("http://localhost:3050/api/update-status", {
+			.post(`${API_BASE_URL}/api/update-status`, {
 				formId,
 				indicationForInduction,
 			})
