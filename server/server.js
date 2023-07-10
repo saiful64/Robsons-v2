@@ -8,7 +8,11 @@ import _ from "lodash";
 import moment from "moment";
 import excel from "node-excel-export";
 import styles from "./constants/constants.js";
+
 // const constants = require('./constants/constants.cjs');
+
+//ip address of server machine
+const API_BASE_URL = "10.10.56.153";
 
 const app = express();
 const totalGroupList = [
@@ -26,7 +30,7 @@ const totalGroupList = [
 app.use(bodyParser.json());
 app.use(cors());
 var con = mysql.createConnection({
-	host: "10.10.56.153",
+	host: `${API_BASE_URL}`,
 	user: "root",
 	password: "",
 	database: "robsonclassification",
