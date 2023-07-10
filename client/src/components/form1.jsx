@@ -5,6 +5,7 @@ import Datetime from "react-datetime";
 import moment from "moment";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Modal from "./Modal";
 
 function ObsIndexForm() {
 	const [formIndex, setFormIndex] = useState(0); // state to keep track of the current form
@@ -20,6 +21,9 @@ function ObsIndexForm() {
 	const auth = useAuth();
 
 	const [selectedRadioButton, setSelectedRadioButton] = useState(null);
+	const [group, setgroup] = useState("");
+
+	const [isClicked, setIsClicked] = useState(false);
 
 	useEffect(() => {
 		axios
@@ -102,9 +106,11 @@ function ObsIndexForm() {
 				let groupDetails = response.data;
 				if (groupDetails) {
 					setFormId(groupDetails.formId);
+					setgroup(groupDetails.group);
 					toast.success("Form Submitted Successfully");
-					alert(groupDetails.group);
-					goToNextForm();
+					setIsClicked(true);
+					setgroup(groupDetails.group);
+					console.log(groupDetails.group);
 				}
 			})
 			.catch((error) => {
@@ -138,7 +144,12 @@ function ObsIndexForm() {
 	return (
 		<div className='flex flex-col items-center justify-center h-screen'>
 			<ToastContainer />
-			<div className=' bg-white shadow-lg rounded-lg '>
+			{isClicked && <Modal group={group} />}
+			<div
+				className={` bg-white shadow-lg rounded-lg ${
+					isClicked ? "hidden" : ""
+				}`}
+			>
 				<div className=' bg-gray-400 rounded-t-lg pr-20 pl-2 py-1'>
 					<h2 className='text-2xl relative font-bold text-center'>
 						Robsons Classification
@@ -261,6 +272,9 @@ function ObsIndexForm() {
 					)}
 					{formData[formIndex]?.showNext && (
 						<button
+							onKeyDown={(event) => {
+								if (event.key === "ArrowRight") goToNextForm();
+							}}
 							onClick={goToNextForm}
 							className=' text-white hover:text-gray-800  rounded-br-lg font-bold py-2 px-4  ml-auto'
 						>

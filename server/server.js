@@ -645,3 +645,4 @@ app.post("/register", (req, res) => {
 app.listen(3050, () => {
 	console.log("Server is running");
 });
+
