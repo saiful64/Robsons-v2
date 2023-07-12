@@ -12,7 +12,7 @@ import styles from "./constants/constants.js";
 // const constants = require('./constants/constants.cjs');
 
 //ip address of server machine
-const API_BASE_URL = "10.10.56.153";
+const API_BASE_URL = "10.10.56.129";
 
 const app = express();
 const totalGroupList = [
@@ -356,7 +356,7 @@ app.get("/api/generate-report-one", (req, res) => {
 	endDate = moment(endDate).endOf("day").format("YYYY-MM-DD HH:mm:ss");
 	console.log(startDate, endDate);
 	con.query(
-	  `SELECT 
+		`SELECT 
 		obs_index,
 		weeks,
 		pog,
@@ -368,109 +368,108 @@ app.get("/api/generate-report-one", (req, res) => {
 		indeovp,
 		IndeCS
 	  FROM robosonsdata WHERE created_on BETWEEN '${startDate}' AND '${endDate}'`,
-	  (error, robsonsDataList) => {
-		if (error) {
-		  console.error(error);
-		  res.status(500).send("Internal Server Error");
-		  return;
-		}
-  
-		if (_.isEmpty(robsonsDataList)) {
-		  res.status(400).send({ message: "No data Available" });
-		  return;
-		}
-  
-		let santizedRobsonsDataList = [];
-		_.forEach(robsonsDataList, (thisRobsonData) => {
-		  let tmpObject = {
-			obs_index: !_.isEmpty(thisRobsonData.obs_index)
-			  ? thisRobsonData.obs_index
-			  : "",
-			weeks: !_.isEmpty(thisRobsonData.weeks) ? thisRobsonData.weeks : "",
-			pog: !_.isEmpty(thisRobsonData.pog) ? thisRobsonData.pog : "",
-			single_twins: !_.isEmpty(thisRobsonData.single_twins)
-			  ? thisRobsonData.single_twins
-			  : "",
-			previous_cesarean: !_.isEmpty(thisRobsonData.previous_cesarean)
-			  ? thisRobsonData.previous_cesarean
-			  : "",
-			present: !_.isEmpty(thisRobsonData.present)
-			  ? thisRobsonData.present
-			  : "",
-			Labour: !_.isEmpty(thisRobsonData.Labour)
-			  ? thisRobsonData.Labour
-			  : "",
-			delivery: !_.isEmpty(thisRobsonData.delivery)
-			  ? thisRobsonData.delivery
-			  : "",
-			indeovp: !_.isEmpty(thisRobsonData.indeovp)
-			  ? thisRobsonData.indeovp
-			  : "",
-			IndeCS: !_.isEmpty(thisRobsonData.IndeCS)
-			  ? thisRobsonData.IndeCS
-			  : "",
-		  };
-		  santizedRobsonsDataList.push(tmpObject);
-		});
-  
-		let fieldNames = [
-		  "Obs Index",
-		  "Weeks",
-		  "POG",
-		  "Single/Twins",
-		  "Previous Cesarean",
-		  "Present",
-		  "Labour Type",
-		  "Delivery",
-		  "IndeOVP",
-		  "IndeCS",
-		];
-		let fields = [
-		  "obs_index",
-		  "weeks",
-		  "pog",
-		  "single_twins",
-		  "previous_cesarean",
-		  "present",
-		  "Labour",
-		  "delivery",
-		  "indeovp",
-		  "IndeCS",
-		];
-		let groupSpecification = {};
-		_.forEach(fields, function (item, index) {
-		  groupSpecification[item] = {
-			displayName: fieldNames[index],
-			headerStyle: styles.headerDark,
-			cellStyle: styles.cellStyle,
-			width: 120,
-			cellFormat: function (value, row) {
-			  return value === undefined ? "NA" : value;
-			},
-		  };
-		});
-  
-		let projectDetailsHeading = [
-		  [{ value: "Robsons Data Report", style: styles.cellGray }],
-		];
-		let sheets = [];
-		sheets.push({
-		  name: "Robsons Data Report",
-		  heading: projectDetailsHeading,
-		  specification: groupSpecification,
-		  data: santizedRobsonsDataList,
-		});
-		let finalReport = excel.buildExport(sheets);
-		res.setHeader("Content-Type", "application/vnd.openxmlformats");
-		res.setHeader(
-		  "Content-Disposition",
-		  "attachment; filename=robsons_report.xlsx"
-		);
-		return res.end(finalReport, "binary");
-	  }
-	);
-  });
+		(error, robsonsDataList) => {
+			if (error) {
+				console.error(error);
+				res.status(500).send("Internal Server Error");
+				return;
+			}
 
+			if (_.isEmpty(robsonsDataList)) {
+				res.status(400).send({ message: "No data Available" });
+				return;
+			}
+
+			let santizedRobsonsDataList = [];
+			_.forEach(robsonsDataList, (thisRobsonData) => {
+				let tmpObject = {
+					obs_index: !_.isEmpty(thisRobsonData.obs_index)
+						? thisRobsonData.obs_index
+						: "",
+					weeks: !_.isEmpty(thisRobsonData.weeks) ? thisRobsonData.weeks : "",
+					pog: !_.isEmpty(thisRobsonData.pog) ? thisRobsonData.pog : "",
+					single_twins: !_.isEmpty(thisRobsonData.single_twins)
+						? thisRobsonData.single_twins
+						: "",
+					previous_cesarean: !_.isEmpty(thisRobsonData.previous_cesarean)
+						? thisRobsonData.previous_cesarean
+						: "",
+					present: !_.isEmpty(thisRobsonData.present)
+						? thisRobsonData.present
+						: "",
+					Labour: !_.isEmpty(thisRobsonData.Labour)
+						? thisRobsonData.Labour
+						: "",
+					delivery: !_.isEmpty(thisRobsonData.delivery)
+						? thisRobsonData.delivery
+						: "",
+					indeovp: !_.isEmpty(thisRobsonData.indeovp)
+						? thisRobsonData.indeovp
+						: "",
+					IndeCS: !_.isEmpty(thisRobsonData.IndeCS)
+						? thisRobsonData.IndeCS
+						: "",
+				};
+				santizedRobsonsDataList.push(tmpObject);
+			});
+
+			let fieldNames = [
+				"Obs Index",
+				"Weeks",
+				"POG",
+				"Single/Twins",
+				"Previous Cesarean",
+				"Present",
+				"Labour Type",
+				"Delivery",
+				"IndeOVP",
+				"IndeCS",
+			];
+			let fields = [
+				"obs_index",
+				"weeks",
+				"pog",
+				"single_twins",
+				"previous_cesarean",
+				"present",
+				"Labour",
+				"delivery",
+				"indeovp",
+				"IndeCS",
+			];
+			let groupSpecification = {};
+			_.forEach(fields, function (item, index) {
+				groupSpecification[item] = {
+					displayName: fieldNames[index],
+					headerStyle: styles.headerDark,
+					cellStyle: styles.cellStyle,
+					width: 120,
+					cellFormat: function (value, row) {
+						return value === undefined ? "NA" : value;
+					},
+				};
+			});
+
+			let projectDetailsHeading = [
+				[{ value: "Robsons Data Report", style: styles.cellGray }],
+			];
+			let sheets = [];
+			sheets.push({
+				name: "Robsons Data Report",
+				heading: projectDetailsHeading,
+				specification: groupSpecification,
+				data: santizedRobsonsDataList,
+			});
+			let finalReport = excel.buildExport(sheets);
+			res.setHeader("Content-Type", "application/vnd.openxmlformats");
+			res.setHeader(
+				"Content-Disposition",
+				"attachment; filename=robsons_report.xlsx"
+			);
+			return res.end(finalReport, "binary");
+		}
+	);
+});
 
 // function to calculate Relative Group Size For Each Group
 const calculateRelativeGroupSize = (groupsList, count_total) => {
@@ -622,6 +621,10 @@ app.get("/api/generate-status-init", async (req, res) => {
 	}
 });
 
+/**
+ * TODO:  Create a different database idea
+ */
+
 // Assuming you are using Express.js
 
 app.post("/register", (req, res) => {
@@ -646,6 +649,6 @@ app.post("/register", (req, res) => {
 	});
 });
 
-app.listen(3050, "0.0.0.0", () => {
+app.listen(3050, () => {
 	console.log("Server is running");
 });
