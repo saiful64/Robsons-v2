@@ -6,6 +6,7 @@ import moment from "moment";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Modal from "./Modal";
+import { useNavigate } from "react-router-dom";
 import API_BASE_URL from "./config";
 
 function ObsIndexForm() {
@@ -25,6 +26,7 @@ function ObsIndexForm() {
 	const [group, setgroup] = useState("");
 
 	const [isClicked, setIsClicked] = useState(false);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		axios
@@ -88,6 +90,10 @@ function ObsIndexForm() {
 			setFormIndex(formIndex + 1);
 		}
 	};
+
+	const goHome = () =>{
+		navigate("/home-view");
+	}
 
 	const updateThisOption = (title, option) => {
 		setSelectedOptions((prevState) => ({
@@ -263,6 +269,14 @@ function ObsIndexForm() {
 				</div>
 				{/* navigation buttons */}
 				<div className='mt-6 flex rounded-b-lg bg-gray-400'>
+					{formIndex == 0 && (
+						<button
+							onClick={goHome}
+							className=' text-white  hover:text-gray-800  rounded-bl-lg font-bold py-2 px-4  mr-auto'
+						>
+							Home
+						</button>
+					)}
 					{formData[formIndex]?.showPrevious && (
 						<button
 							onClick={goToPreviousForm}
