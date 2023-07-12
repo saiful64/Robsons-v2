@@ -2,12 +2,12 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./auth";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { DateRange } from "react-date-range";
 import moment from "moment";
 import { useTable, useResizeColumns } from "react-table";
 import API_BASE_URL from "./config";
+
 
 function GenerateStatus() {
 	const [dateRange, setDateRange] = useState([
@@ -21,7 +21,6 @@ function GenerateStatus() {
 	const [columns, setColumns] = useState([]);
 	const [data, setData] = useState([]);
 	const [showCalendar, setShowCalendar] = useState(true);
-
 	useEffect(() => {
 		axios
 			.get(`${API_BASE_URL}/api/generate-status-init`)
