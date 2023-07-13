@@ -56,7 +56,7 @@ function GenerateReportViewOne() {
 		<>
 			<div className='flex flex-col items-center justify-center h-screen'>
 				{
-					<div className='bg-white p-6 rounded-lg shadow-md w-full sm:w-96'>
+					<div className='bg-white p-6 rounded-lg shadow-md  sm:w-96'>
 						<h1 className='text-3xl font-bold mb-4'>Welcome {auth.user}</h1>
 						<div className='flex flex-col justify-center'>
 							<div className='flex flex-col justify-center'>

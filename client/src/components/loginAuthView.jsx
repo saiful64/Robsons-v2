@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./auth";
+import { VscEye, VscEyeClosed} from 'react-icons/vsc'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import API_BASE_URL from "./config"
@@ -9,6 +10,11 @@ import API_BASE_URL from "./config"
 function LoginAuthView(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  function togglePasswordVisibility() {
+    setIsPasswordVisible((prevState) => !prevState);
+  }
   const auth = useAuth();
   const navigate = useNavigate();
 
@@ -76,7 +82,7 @@ function LoginAuthView(props) {
               onChange={handleUsernameChange}
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <label
               className="block font-bold text-gray-700 mb-2"
               htmlFor="password"
@@ -85,11 +91,15 @@ function LoginAuthView(props) {
             </label>
             <input
               className="border border-gray-400 p-2 w-full rounded-md"
-              type="password"
+              type={isPasswordVisible ? "text" : "password"}
               id="password"
               value={password}
               onChange={handlePasswordChange}
+              
             />
+            <div className="absolute hover:cursor-pointer right-4 top-11" onClick={togglePasswordVisibility}>
+              {isPasswordVisible ? <VscEye /> : <VscEyeClosed />}
+            </div>
           </div>
           <div className="flex justify-center">
             <button
