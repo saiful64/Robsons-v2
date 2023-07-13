@@ -4,6 +4,8 @@ import axios from "axios";
 import { useAuth } from "./auth";
 import { DateRange } from "react-date-range";
 import moment from "moment";
+import { ToastContainer, toast } from "react-toastify";
+import API_BASE_URL from "./config";
 
 function GenerateReportView() {
 	const navigate = useNavigate();
@@ -17,7 +19,7 @@ function GenerateReportView() {
 	]);
 	const generateReport = () => {
 		axios({
-			url: "http://localhost:3050/api/generate-report",
+			url: `${API_BASE_URL}/api/generate-report`,
 			method: "GET",
 			responseType: "blob",
 			params: {
@@ -26,6 +28,10 @@ function GenerateReportView() {
 			},
 		})
 			.then((response) => {
+				if (response.data.size === 0) {
+					toast.warning("No data found");
+					return;
+				}
 				const url = window.URL.createObjectURL(new Blob([response.data]));
 				const link = document.createElement("a");
 				const randomNumber = Math.floor(Math.random() * 10000);

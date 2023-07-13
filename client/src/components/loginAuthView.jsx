@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "./auth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import API_BASE_URL from "./config"
 
 function LoginAuthView(props) {
   const [username, setUsername] = useState("");
@@ -31,12 +32,12 @@ function LoginAuthView(props) {
       password: password,
     };
     axios
-      .post("http://localhost:3050/auth-login", body)
-      .then((response) => {
-        if (response.data === "student") {
-          auth.login("student");
-          navigate("/home-view");
-        } else if (response.data === "doctor") {
+			.post(`${API_BASE_URL}/auth-login`, body)
+			.then((response) => {
+				if (response.data === "student") {
+					auth.login("student");
+					navigate("/home-view");
+				} else if (response.data === "doctor") {
 					auth.login("doctor");
 					navigate("/home-view");
 				} else {

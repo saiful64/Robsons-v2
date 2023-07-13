@@ -4,6 +4,7 @@ import axios from "axios";
 import { useAuth } from "./auth";
 import { DateRange } from "react-date-range";
 import moment from "moment";
+import API_BASE_URL from "./config";
 
 function GenerateReportViewOne() {
 	const navigate = useNavigate();
@@ -17,7 +18,7 @@ function GenerateReportViewOne() {
 	]);
 	const generateReportOne = () => {
 		axios({
-			url: "http://localhost:3050/api/generate-report-one",
+			url: `${API_BASE_URL}/api/generate-report-one`,
 			method: "GET",
 			responseType: "blob",
 			params: {
@@ -26,21 +27,27 @@ function GenerateReportViewOne() {
 			},
 		})
 			.then((response) => {
-				const url = window.URL.createObjectURL(new Blob([response.data]));
-				const link = document.createElement("a");
-				const randomNumber = Math.floor(Math.random() * 10000);
-				const fileName = `RobsonsClassificaton_Report_${moment(
-					dateRange[0].startDate
-				).format("YYYY-MM-DD")}_${moment(dateRange[0].endDate).format(
-					"YYYY-MM-DD"
-				)}_${moment(new Date()).format("x")}${randomNumber}.xlsx`;
-				link.href = url;
-				link.setAttribute("download", fileName); // set file name here
-				document.body.appendChild(link);
-				link.click();
+				if (response.data) {
+					const url = window.URL.createObjectURL(new Blob([response.data]));
+					const link = document.createElement("a");
+					const randomNumber = Math.floor(Math.random() * 10000);
+					const fileName = `RobsonsClassificaton_Report_${moment(
+						dateRange[0].startDate
+					).format("YYYY-MM-DD")}_${moment(dateRange[0].endDate).format(
+						"YYYY-MM-DD"
+					)}_${moment(new Date()).format("x")}${randomNumber}.xlsx`;
+					link.href = url;
+					link.setAttribute("download", fileName); // set file name here
+					document.body.appendChild(link);
+					link.click();
+				}
+				else{
+					console.log("No data found");
+				}
 			})
 			.catch((error) => {
 				console.error(error);
+				 console.error(error.response);
 				toast.error("unexpected error occurred");
 			});
 	};

@@ -8,7 +8,11 @@ import _ from "lodash";
 import moment from "moment";
 import excel from "node-excel-export";
 import styles from "./constants/constants.js";
+
 // const constants = require('./constants/constants.cjs');
+
+//ip address of server machine
+const API_BASE_URL = "localhost";
 
 const app = express();
 const totalGroupList = [
@@ -26,7 +30,7 @@ const totalGroupList = [
 app.use(bodyParser.json());
 app.use(cors());
 var con = mysql.createConnection({
-	host: "localhost",
+	host: `${API_BASE_URL}`,
 	user: "root",
 	password: "",
 	database: "robsonclassification",
@@ -89,21 +93,14 @@ app.post("/submit-form", (req, res) => {
 	let group = highestMatchedGroup.groupId;
 	const sql = `
     INSERT INTO robosonsdata ( obs_index, weeks, pog, single_twins, previous_cesarean, present, Labour, delivery, indeovp, IndeCS, Stage, BabyDetails, date_of_birth, time_of_birth, weight, apgar, outcome, indication, final_outcome, ripening, group_name, created_by, created_on
-    ) VALUES ( "${data.obs_index}", "${data.weeks}", "${data.pog}", "${
-		data.single_twins
-	}", "${actualPreviousCesarean}", "${data.present}", ${
-		data.Labour ? `"${data.Labour}"` : "null"
-	}, ${data.delivery ? `"${data.delivery}"` : "null"}, "${data.indeovp}", "${
-		data.IndeCS
-	}", "${data.Stage}", "${data.BabyDetails}", ${
-		data.date_of_birth ? `"${data.date_of_birth}"` : "null"
-	}, ${data.time_of_birth ? `"${data.time_of_birth}"` : "null"}, "${
-		data.weight
-	}", "${data.apgar}", "${data.outcome}", "${data.indication}", "${
-		data.final_outcome
-	}", ${data.ripening ? `"${data.ripening}"` : "null"}, "${group}", "${
-		data.created_by
-	}", NOW()
+    ) VALUES ( "${data.obs_index}", "${data.weeks}", "${data.pog}", "${data.single_twins
+		}", "${actualPreviousCesarean}", "${data.present}", ${data.Labour ? `"${data.Labour}"` : "null"
+		}, ${data.delivery ? `"${data.delivery}"` : "null"}, "${data.indeovp}", "${data.IndeCS
+		}", "${data.Stage}", "${data.BabyDetails}", ${data.date_of_birth ? `"${data.date_of_birth}"` : "null"
+		}, ${data.time_of_birth ? `"${data.time_of_birth}"` : "null"}, "${data.weight
+		}", "${data.apgar}", "${data.outcome}", "${data.indication}", "${data.final_outcome
+		}", ${data.ripening ? `"${data.ripening}"` : "null"}, "${group}", "${data.created_by
+		}", NOW()
     )
   `;
 	con.query(sql, (err, result) => {
@@ -352,7 +349,7 @@ app.get("/api/generate-report-one", (req, res) => {
 	endDate = moment(endDate).endOf("day").format("YYYY-MM-DD HH:mm:ss");
 	console.log(startDate, endDate);
 	con.query(
-	  `SELECT 
+		`SELECT 
 		obs_index,
 		weeks,
 		pog,
@@ -364,115 +361,118 @@ app.get("/api/generate-report-one", (req, res) => {
 		indeovp,
 		IndeCS
 	  FROM robosonsdata WHERE created_on BETWEEN '${startDate}' AND '${endDate}'`,
-	  (error, robsonsDataList) => {
-		if (error) {
-		  console.error(error);
-		  res.status(500).send("Internal Server Error");
-		  return;
-		}
-  
-		if (_.isEmpty(robsonsDataList)) {
-		  res.status(400).send({ message: "No data Available" });
-		  return;
-		}
-  
-		let santizedRobsonsDataList = [];
-		_.forEach(robsonsDataList, (thisRobsonData) => {
-		  let tmpObject = {
-			obs_index: !_.isEmpty(thisRobsonData.obs_index)
-			  ? thisRobsonData.obs_index
-			  : "",
-			weeks: !_.isEmpty(thisRobsonData.weeks) ? thisRobsonData.weeks : "",
-			pog: !_.isEmpty(thisRobsonData.pog) ? thisRobsonData.pog : "",
-			single_twins: !_.isEmpty(thisRobsonData.single_twins)
-			  ? thisRobsonData.single_twins
-			  : "",
-			previous_cesarean: !_.isEmpty(thisRobsonData.previous_cesarean)
-			  ? thisRobsonData.previous_cesarean
-			  : "",
-			present: !_.isEmpty(thisRobsonData.present)
-			  ? thisRobsonData.present
-			  : "",
-			Labour: !_.isEmpty(thisRobsonData.Labour)
-			  ? thisRobsonData.Labour
-			  : "",
-			delivery: !_.isEmpty(thisRobsonData.delivery)
-			  ? thisRobsonData.delivery
-			  : "",
-			indeovp: !_.isEmpty(thisRobsonData.indeovp)
-			  ? thisRobsonData.indeovp
-			  : "",
-			IndeCS: !_.isEmpty(thisRobsonData.IndeCS)
-			  ? thisRobsonData.IndeCS
-			  : "",
-		  };
-		  santizedRobsonsDataList.push(tmpObject);
-		});
-  
-		let fieldNames = [
-		  "Obs Index",
-		  "Weeks",
-		  "POG",
-		  "Single/Twins",
-		  "Previous Cesarean",
-		  "Present",
-		  "Labour Type",
-		  "Delivery",
-		  "IndeOVP",
-		  "IndeCS",
-		];
-		let fields = [
-		  "obs_index",
-		  "weeks",
-		  "pog",
-		  "single_twins",
-		  "previous_cesarean",
-		  "present",
-		  "Labour",
-		  "delivery",
-		  "indeovp",
-		  "IndeCS",
-		];
-		let groupSpecification = {};
-		_.forEach(fields, function (item, index) {
-		  groupSpecification[item] = {
-			displayName: fieldNames[index],
-			headerStyle: styles.headerDark,
-			cellStyle: styles.cellStyle,
-			width: 120,
-			cellFormat: function (value, row) {
-			  return value === undefined ? "NA" : value;
-			},
-		  };
-		});
-  
-		let projectDetailsHeading = [
-		  [{ value: "Robsons Data Report", style: styles.cellGray }],
-		];
-		let sheets = [];
-		sheets.push({
-		  name: "Robsons Data Report",
-		  heading: projectDetailsHeading,
-		  specification: groupSpecification,
-		  data: santizedRobsonsDataList,
-		});
-		let finalReport = excel.buildExport(sheets);
-		res.setHeader("Content-Type", "application/vnd.openxmlformats");
-		res.setHeader(
-		  "Content-Disposition",
-		  "attachment; filename=robsons_report.xlsx"
-		);
-		return res.end(finalReport, "binary");
-	  }
-	);
-  });
+		(error, robsonsDataList) => {
+			if (error) {
+				console.error(error);
+				res.status(500).send("Internal Server Error");
+				return;
+			}
 
+			if (_.isEmpty(robsonsDataList)) {
+				res.status(400).send({ message: "No data Available" });
+				return;
+			}
+
+			let santizedRobsonsDataList = [];
+			_.forEach(robsonsDataList, (thisRobsonData) => {
+				let tmpObject = {
+					obs_index: !_.isEmpty(thisRobsonData.obs_index)
+						? thisRobsonData.obs_index
+						: "",
+					weeks: !_.isEmpty(thisRobsonData.weeks) ? thisRobsonData.weeks : "",
+					pog: !_.isEmpty(thisRobsonData.pog) ? thisRobsonData.pog : "",
+					single_twins: !_.isEmpty(thisRobsonData.single_twins)
+						? thisRobsonData.single_twins
+						: "",
+					previous_cesarean: !_.isEmpty(thisRobsonData.previous_cesarean)
+						? thisRobsonData.previous_cesarean
+						: "",
+					present: !_.isEmpty(thisRobsonData.present)
+						? thisRobsonData.present
+						: "",
+					Labour: !_.isEmpty(thisRobsonData.Labour)
+						? thisRobsonData.Labour
+						: "",
+					delivery: !_.isEmpty(thisRobsonData.delivery)
+						? thisRobsonData.delivery
+						: "",
+					indeovp: !_.isEmpty(thisRobsonData.indeovp)
+						? thisRobsonData.indeovp
+						: "",
+					IndeCS: !_.isEmpty(thisRobsonData.IndeCS)
+						? thisRobsonData.IndeCS
+						: "",
+				};
+				santizedRobsonsDataList.push(tmpObject);
+			});
+
+			let fieldNames = [
+				"Obs Index",
+				"Weeks",
+				"POG",
+				"Single/Twins",
+				"Previous Cesarean",
+				"Present",
+				"Labour Type",
+				"Delivery",
+				"IndeOVP",
+				"IndeCS",
+			];
+			let fields = [
+				"obs_index",
+				"weeks",
+				"pog",
+				"single_twins",
+				"previous_cesarean",
+				"present",
+				"Labour",
+				"delivery",
+				"indeovp",
+				"IndeCS",
+			];
+			let groupSpecification = {};
+			_.forEach(fields, function (item, index) {
+				groupSpecification[item] = {
+					displayName: fieldNames[index],
+					headerStyle: styles.headerDark,
+					cellStyle: styles.cellStyle,
+					width: 120,
+					cellFormat: function (value, row) {
+						return value === undefined ? "NA" : value;
+					},
+				};
+			});
+
+			let projectDetailsHeading = [
+				[{ value: "Robsons Data Report", style: styles.cellGray }],
+			];
+			let sheets = [];
+			sheets.push({
+				name: "Robsons Data Report",
+				heading: projectDetailsHeading,
+				specification: groupSpecification,
+				data: santizedRobsonsDataList,
+			});
+			let finalReport = excel.buildExport(sheets);
+			res.setHeader("Content-Type", "application/vnd.openxmlformats");
+			res.setHeader(
+				"Content-Disposition",
+				"attachment; filename=robsons_report.xlsx"
+			);
+			return res.end(finalReport, "binary");
+		}
+	);
+});
 
 // function to calculate Relative Group Size For Each Group
 const calculateRelativeGroupSize = (groupsList, count_total) => {
 	let relativeGroupSize = [];
+	//console.log(groupsList);
 	_.forEach(totalGroupList, (thisGroup) => {
+
 		let count = _.filter(groupsList, { group_name: thisGroup }).length;
+		//console.log(groupsList);
+		//console.log(count);
 		let percentage = (count / count_total) * 100;
 		relativeGroupSize.push({
 			group_name: thisGroup,
@@ -480,84 +480,96 @@ const calculateRelativeGroupSize = (groupsList, count_total) => {
 			relativeGroupSize: percentage,
 		});
 	});
+
 	return relativeGroupSize;
 };
 
 // function to calculate CS rate for Each group
-const calculateCSRateForEachGroup = async (
-	groupsList,
-	dateRangeOptions,
-	res,
-	relativeGroupSize
-) => {
+const calculateCSRateForEachGroup = async (groupsList, dateRangeOptions, res, relativeGroupSize) => {
 	try {
-		let csRateForEachGroup = [];
-		let currentCalculation = _.cloneDeep(relativeGroupSize);
-		_.forEach(totalGroupList, async (thisGroup, index) => {
-			let robsonsQuery = `SELECT COUNT(*) as COUNT FROM robosonsdata WHERE date_of_birth >= '${dateRangeOptions.startDate}' AND date_of_birth <= '${dateRangeOptions.endDate}' AND group_name = '${thisGroup}' AND delivery='CS'`;
-			con.query(robsonsQuery, async (error, result, fields) => {
-				if (error) {
-					console.error(error);
-					res.status(500).send({
-						message: "Internal Server Error calculateCSRateForEachGroup",
+		return new Promise((resolve, reject) => {
+			let csRateForEachGroup = [];
+			let currentCalculation = _.cloneDeep(relativeGroupSize);
+			_.forEach(totalGroupList, async (thisGroup, index) => {
+				let robsonsQuery = `SELECT COUNT(*) as COUNT FROM robosonsdata WHERE date_of_birth >= '${dateRangeOptions.startDate}' AND date_of_birth <= '${dateRangeOptions.endDate}' AND group_name = '${thisGroup}' AND delivery='CS'`;
+				con.query(robsonsQuery, async (error, result, fields) => {
+					if (error) {
+						console.error(error);
+						reject({
+							message: "Internal Server Error calculateCSRateForEachGroup",
+							status: 500,
+						});
+						return;
+					}
+					let thisGroupCsCount = await result[0]["COUNT"];
+					let thisGroupCount = currentCalculation[index].count;
+					let CsRate = thisGroupCsCount || thisGroupCount ? (thisGroupCsCount / thisGroupCount) * 100 : 0;
+					let d = (currentCalculation[index].csRate = CsRate);
+					let c = (currentCalculation[index].groupCsCount = thisGroupCsCount);
+					csRateForEachGroup.push({
+						group_name: thisGroup,
+						count: c,
+						csRateForEachGroup: d,
 					});
-					return;
-				}
-				let thisGroupCsCount = await result[0]["COUNT"];
-				let thisGroupCount = currentCalculation[index].count;
-				let CsRate =
-					thisGroupCsCount || thisGroupCount
-						? (thisGroupCsCount / thisGroupCount) * 100
-						: 0;
-				currentCalculation[index].csRate = CsRate;
-				currentCalculation[index].groupCsCount = thisGroupCsCount;
-				csRateForEachGroup.push(currentCalculation[index]);
+
+					if (csRateForEachGroup.length === totalGroupList.length) {
+						resolve(csRateForEachGroup);
+					}
+				});
 			});
 		});
-
-		return csRateForEachGroup;
 	} catch (error) {
 		console.error(error);
-		res
-			.status(500)
-			.send({ message: "Internal Server Error calculateCSRateForEachGroup" });
-		return;
+		throw {
+			message: "Internal Server Error calculateCSRateForEachGroup",
+			status: 500,
+		};
 	}
 };
 
-// function to calculate CS rate for Each group
+// function to calculate Relative CS rate for Each group
 const calculateRelativeCsRate = async (
 	groupsList,
-	dateRangeOptions,
 	res,
 	relativeGroupSize
 ) => {
 	try {
-		let csRateForEachGroup = [];
-		let currentCalculation = _.cloneDeep(relativeGroupSize);
-		_.forEach(totalGroupList, async (thisGroup, index) => {
-			let robsonsQuery = `SELECT COUNT(*) as COUNT FROM robosonsdata WHERE date_of_birth >= '${dateRangeOptions.startDate}' AND date_of_birth <= '${dateRangeOptions.endDate}' AND group_name = '${thisGroup}' AND delivery='CS'`;
-			con.query(robsonsQuery, async (error, result, fields) => {
-				if (error) {
-					console.error(error);
-					res
-						.status(500)
-						.send({ message: "Internal Server Error calculateRelativeCsRate" });
-					return;
-				}
-				let thisGroupCsCount = await result[0]["COUNT"];
-				let thisGroupCount = currentCalculation[index].count;
-				let CsRate =
-					thisGroupCsCount || thisGroupCount
-						? (thisGroupCsCount / thisGroupCount) * 100
-						: 0;
-				currentCalculation[index].csRate = CsRate;
-				currentCalculation[index].groupCsCount = thisGroupCsCount;
-				csRateForEachGroup.push(currentCalculation[index]);
+		return new Promise((resolve, reject) => {
+			let RelativecsRate = [];
+			let currentCalculation = _.cloneDeep(relativeGroupSize);
+			_.forEach(totalGroupList, async (thisGroup, index) => {
+				let robsonsQuery = `SELECT COUNT(*) as COUNT FROM robosonsdata WHERE delivery='CS'`;
+				con.query(robsonsQuery, async (error, result, fields) => {
+					if (error) {
+						console.error(error);
+						res
+							.status(500)
+							.send({ message: "Internal Server Error calculateRelativeCsRate" });
+						return;
+					}
+					let thisGroupCsCount = await result[0]["COUNT"];
+					//console.log(thisGroupCsCount);
+					let thisGroupCount = currentCalculation[index].count;
+					let CsRate =
+						thisGroupCsCount || thisGroupCount
+							? (thisGroupCsCount / thisGroupCount) * 100
+							: 0;
+					let d = (currentCalculation[index].csRate = CsRate);
+					let c = (currentCalculation[index].groupCsCount = thisGroupCsCount);
+					RelativecsRate.push({
+						group_name: thisGroup,
+						count: c,
+						RelativecsRate: d,
+					});
+
+					if (RelativecsRate.length === totalGroupList.length) {
+						resolve(RelativecsRate);
+					}
+				});
 			});
 		});
 
-		return csRateForEachGroup;
+
 	} catch (error) {
 		console.error(error);
 		res
@@ -569,6 +581,7 @@ const calculateRelativeCsRate = async (
 
 app.get("/api/generate-status-init", async (req, res) => {
 	try {
+
 		let statusData = {};
 		let groupsQuery = `SELECT * FROM \`groups\``;
 		con.query(groupsQuery, async (error, result) => {
@@ -586,27 +599,54 @@ app.get("/api/generate-status-init", async (req, res) => {
 				return;
 			}
 			let count_total = groupsList.length;
-			// Calculate relative Group Size
+
 			let relativeGroupSize = await calculateRelativeGroupSize(
 				groupsList,
 				count_total
 			);
-			console.log("284", relativeGroupSize);
-			const sanitizedStatus = relativeGroupSize.map((obj) =>
+			//console.log("284", relativeGroupSize);
+			const relativeGroupSizeData = relativeGroupSize.map((obj) =>
 				_.omit(obj, "count")
 			);
-			console.log(sanitizedStatus);
-			let columns = Object.keys(sanitizedStatus[0]).map((key) => ({
+
+			// CSRateforeach group
+			let dateRangeOptions = { startDate: moment().subtract(7, 'days').format('YY-MM-DD'), endDate: moment().format('YY-MM-DD') };
+
+			let csRateForEachGroup = await calculateCSRateForEachGroup(groupsList, dateRangeOptions, res, relativeGroupSize);
+			// console.log("288",csRateForEachGroup)
+			const csRateData = csRateForEachGroup.map((obj) =>
+				_.omit(obj, "count")
+			);
+
+			// RelativeCSRateforeach group
+			//let dateRangeOptions = { startDate: moment().subtract(7, 'days').format('YY-MM-DD'), endDate: moment().format('YY-MM-DD') };
+
+			let RelativeCsRate = await calculateRelativeCsRate(groupsList, res, csRateForEachGroup);
+			// console.log("288",csRateForEachGroup)
+			const relativeCsRateData = RelativeCsRate.map((obj) =>
+				_.omit(obj, "count")
+			);
+		//	console.log(relativeCsRateData);
+
+			//merge  array
+
+			const mergedData = relativeGroupSizeData.map((relativeGroupSizeItem) => {
+				const csRateItem = csRateData.find((csRateItem) => csRateItem.group_name === relativeGroupSizeItem.group_name);
+				const relativeCsRateItem = relativeCsRateData.find((relativeCsRateItem) => relativeCsRateItem.group_name === relativeGroupSizeItem.group_name);
+				return { ...relativeGroupSizeItem, ...csRateItem, ...relativeCsRateItem };
+			});
+
+			let columns = Object.keys(mergedData[0]).map((key) => ({
 				Header: key,
 				accessor: key,
 			}));
 			statusData["columns"] = columns;
-			statusData["data"] = sanitizedStatus;
+			statusData["data"] = mergedData;
 			// Calculate CS rate for Each group
-			// let dateRangeOptions = { startDate: moment().subtract(7, 'days').format('YYYY-MM-DD'), endDate: moment().format('YYYY-MM-DD') };
-			// let csRateForEachGroup = await calculateCSRateForEachGroup (groupsList, dateRangeOptions, res, relativeGroupSize);
-			// console.log("288",csRateForEachGroup)
+			// let dateRangeOptions = { startDate: moment().subtract(7, 'days').format('2023-05-02'), endDate: moment().format('2023-05-24') };
 
+
+			//console.log(statusData);
 			res.status(200).send(statusData);
 		});
 	} catch (error) {
@@ -617,6 +657,10 @@ app.get("/api/generate-status-init", async (req, res) => {
 		return;
 	}
 });
+
+/**
+ * TODO:  Create a different database idea
+ */
 
 // Assuming you are using Express.js
 

@@ -5,6 +5,9 @@ import Datetime from "react-datetime";
 import moment from "moment";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Modal from "./Modal";
+import { useNavigate } from "react-router-dom";
+import API_BASE_URL from "./config";
 
 function ObsIndexForm() {
 	const [formIndex, setFormIndex] = useState(0); // state to keep track of the current form
@@ -20,10 +23,14 @@ function ObsIndexForm() {
 	const auth = useAuth();
 
 	const [selectedRadioButton, setSelectedRadioButton] = useState(null);
+	const [group, setgroup] = useState("");
+
+	const [isClicked, setIsClicked] = useState(false);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		axios
-			.get("http://localhost:3050/api/form-data")
+			.get(`${API_BASE_URL}/api/form-data`)
 			.then((response) => {
 				setFormData(response.data.formData);
 			})
@@ -84,6 +91,10 @@ function ObsIndexForm() {
 		}
 	};
 
+	const goHome = () =>{
+		navigate("/home-view");
+	}
+
 	const updateThisOption = (title, option) => {
 		setSelectedOptions((prevState) => ({
 			...prevState,
@@ -96,15 +107,17 @@ function ObsIndexForm() {
 		let created_by = auth.user;
 		selectedOptions["created_by"] = created_by;
 		axios
-			.post("http://localhost:3050/submit-form", selectedOptions)
+			.post(`${API_BASE_URL}/submit-form`, selectedOptions)
 			.then((response) => {
 				console.log(response.data);
 				let groupDetails = response.data;
 				if (groupDetails) {
 					setFormId(groupDetails.formId);
+					setgroup(groupDetails.group);
 					toast.success("Form Submitted Successfully");
-					alert(groupDetails.group);
-					goToNextForm();
+					setIsClicked(true);
+					setgroup(groupDetails.group);
+					console.log(groupDetails.group);
 				}
 			})
 			.catch((error) => {
@@ -117,7 +130,7 @@ function ObsIndexForm() {
 	const updateStatus = () => {
 		let indicationForInduction = selectedOptions[formData[formIndex]?.title];
 		axios
-			.post("http://localhost:3050/api/update-status", {
+			.post(`${API_BASE_URL}/api/update-status`, {
 				formId,
 				indicationForInduction,
 			})
@@ -138,7 +151,12 @@ function ObsIndexForm() {
 	return (
 		<div className='flex flex-col items-center justify-center h-screen'>
 			<ToastContainer />
-			<div className=' bg-white shadow-lg rounded-lg '>
+			{isClicked && <Modal group={group} />}
+			<div
+				className={` bg-white shadow-lg rounded-lg ${
+					isClicked ? "hidden" : ""
+				}`}
+			>
 				<div className=' bg-gray-400 rounded-t-lg pr-20 pl-2 py-1'>
 					<h2 className='text-2xl relative font-bold text-center'>
 						Robsons Classification
@@ -251,6 +269,14 @@ function ObsIndexForm() {
 				</div>
 				{/* navigation buttons */}
 				<div className='mt-6 flex rounded-b-lg bg-gray-400'>
+					{formIndex == 0 && (
+						<button
+							onClick={goHome}
+							className=' text-white  hover:text-gray-800  rounded-bl-lg font-bold py-2 px-4  mr-auto'
+						>
+							Home
+						</button>
+					)}
 					{formData[formIndex]?.showPrevious && (
 						<button
 							onClick={goToPreviousForm}
@@ -261,6 +287,9 @@ function ObsIndexForm() {
 					)}
 					{formData[formIndex]?.showNext && (
 						<button
+							onKeyDown={(event) => {
+								if (event.key === "ArrowRight") goToNextForm();
+							}}
 							onClick={goToNextForm}
 							className=' text-white hover:text-gray-800  rounded-br-lg font-bold py-2 px-4  ml-auto'
 						>
