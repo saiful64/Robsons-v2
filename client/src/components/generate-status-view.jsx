@@ -8,7 +8,6 @@ import moment from "moment";
 import { useTable, useResizeColumns } from "react-table";
 import API_BASE_URL from "./config";
 
-
 function GenerateStatus() {
 	const [dateRange, setDateRange] = useState([
 		{
@@ -55,8 +54,14 @@ function GenerateStatus() {
 	return (
 		<>
 			<div className='flex flex-col items-center justify-center h-screen'>
-				<div className='bg-white p-6 rounded-lg shadow-md w-full sm:w-96'>
-					<h1 className='text-3xl font-bold mb-4'>Welcome Consultant</h1>
+				<div
+					className={`bg-white p-6 rounded-lg shadow-md w-full ${
+						showCalendar ? "sm:w-96" : ""
+					}`}
+				>
+					<h1 className='text-3xl font-bold mb-4 text-center'>
+						Data Visualization
+					</h1>
 
 					{showCalendar ? (
 						<div className='flex flex-col justify-center mb-7'>
