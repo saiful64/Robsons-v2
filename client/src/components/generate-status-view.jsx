@@ -55,7 +55,7 @@ function GenerateStatus() {
 	return (
 		<>
 			<div className='flex flex-col items-center justify-center h-screen'>
-				<div className='bg-white p-6 rounded-lg shadow-md w-full sm:w-96'>
+				<div className='bg-white p-6 rounded-lg shadow-md  sm:w-96'>
 					<h1 className='text-3xl font-bold mb-4'>Welcome Consultant</h1>
 					<div className='flex flex-col justify-center mb-7'>
 						<div className='flex flex-col justify-center'>
@@ -69,7 +69,7 @@ function GenerateStatus() {
 								/>
 							)}
 							<button
-								className='bg-green-500 hover:bg-green-700 text-white font-bold p-2 rounded'
+								className='bg-zinc-700 hover:bg-gray-300 hover:text-black text-white font-bold p-2 rounded'
 								onClick={() => setShowCalendar(!showCalendar)}
 							>
 								{showCalendar ? "Close Calendar" : "Open Calendar"}

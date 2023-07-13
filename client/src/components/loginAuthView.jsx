@@ -8,6 +8,11 @@ import "react-toastify/dist/ReactToastify.css";
 function LoginAuthView(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  function togglePasswordVisibility() {
+    setIsPasswordVisible((prevState) => !prevState);
+  }
   const auth = useAuth();
   const navigate = useNavigate();
 
@@ -84,7 +89,7 @@ function LoginAuthView(props) {
             </label>
             <input
               className="border border-gray-400 p-2 w-full rounded-md"
-              type="password"
+              type={isPasswordVisible ? "text" : "password"}
               id="password"
               value={password}
               onChange={handlePasswordChange}
