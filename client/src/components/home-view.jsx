@@ -19,6 +19,9 @@ function HomeView() {
 	const generateStatus = () => {
 		navigate("/generate-status");
 	};
+	const generateSpecific = () => {
+		navigate("/generate-excel-sheet-one");
+	};
   const footerData = [
 		{ key: "mainText", displayText: "@ 2023 JIPMER, O & G  Dept." },
 		{ key: "subText", displayText: "Made with 🧡 by MCA students" },
@@ -50,6 +53,12 @@ function HomeView() {
 									onClick={() => generateStatus()}
 								>
 									GENERATE STATUS
+								</button>
+								<button
+									className='bg-zinc-500 hover:bg-gray-600 text-white font-medium hover:font-bold hover:shadow-xl py-2 px-4 rounded m-2 mb-6'
+									onClick={() => generateSpecific()}
+								>
+									GENERATE SPECIFIC DATA
 								</button>
 							</>
 						)}

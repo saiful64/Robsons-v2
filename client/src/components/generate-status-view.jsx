@@ -22,27 +22,28 @@ function GenerateStatus() {
 	const [data, setData] = useState([]);
 	const [showCalendar, setShowCalendar] = useState(true);
 	useEffect(() => {
-		axios
-			.get(`${API_BASE_URL}/api/generate-status-init`, {
-				params: {
-					startDate: moment(dateRange[0].startDate).format("YYYY-MM-DD"),
-					endDate: moment(dateRange[0].endDate).format("YYYY-MM-DD"),
-				}
-			  })
-			.then((response) => {
-				console.log(response.data);
-				setData(response.data.data);
-				setColumns(response.data.columns);
-			})
-			.catch((error) => {
-				console.error(error);
-			});
+
 	}, []);
 	const navigate = useNavigate();
 	const auth = useAuth();
 
 	const handleClick = () => {
 		setShowCalendar(!showCalendar);
+		axios
+		.get(`${API_BASE_URL}/api/generate-status-init`, {
+			params: {
+				startDate: moment(dateRange[0].startDate).format("YYYY-MM-DD"),
+				endDate: moment(dateRange[0].endDate).format("YYYY-MM-DD"),
+			}
+		  })
+		.then((response) => {
+			console.log(response.data);
+			setData(response.data.data);
+			setColumns(response.data.columns);
+		})
+		.catch((error) => {
+			console.error(error);
+		});
 	};
 
 	// Use useMemo to memoize the table instance to avoid unnecessary re-renders

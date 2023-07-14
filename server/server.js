@@ -626,7 +626,9 @@ const calculateAbsoluteCSRate = async (groupsList, dateRangeOptions, res, count_
 };
 app.get("/api/generate-status-init", async (req, res) => {
 	try {
-
+		const { startDate, endDate } = req.query;
+		//console.log(startDate);
+		//console.log(endDate);
 		let statusData = {};
 		let groupsQuery = `SELECT * FROM \`groups\``;
 		con.query(groupsQuery, async (error, result) => {
@@ -655,8 +657,9 @@ app.get("/api/generate-status-init", async (req, res) => {
 			);
 
 			// CSRateforeach group
-			let dateRangeOptions = { startDate: moment().subtract(7, 'days').format('YY-MM-DD'), endDate: moment().format('YY-MM-DD') };
-
+			//let dateRangeOptions = { startDate: moment().subtract(7, 'days').format('YY-MM-DD'), endDate: moment().format('YY-MM-DD') };
+			let dateRangeOptions = { startDate: moment(startDate).startOf("day").format("YYYY-MM-DD"), endDate: moment(endDate).endOf("day").format("YYYY-MM-DD") };
+			
 			let csRateForEachGroup = await calculateCSRateForEachGroup(groupsList, dateRangeOptions, res, relativeGroupSize);
 			// console.log("288",csRateForEachGroup)
 			const csRateData = csRateForEachGroup.map((obj) =>
