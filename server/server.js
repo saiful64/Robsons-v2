@@ -712,6 +712,54 @@ app.get("/api/generate-status-init", async (req, res) => {
 		return;
 	}
 });
+app.get("/api/barchart", async (req, res) => {
+	try {
+		//let statusData = {};
+		let groupsQuery = `SELECT * FROM \`groups\``;
+		con.query(groupsQuery, async (error, result) => {
+			if (error) {
+				console.error(error);
+				res
+					.status(500)
+					.send({ message: "Internal Server Error generate-status-init" });
+				return;
+			}
+			let groupsList = result;
+			// console.log(groupsList);
+			if (_.isEmpty(groupsList)) {
+				res.status(400).send({ message: "No data Available" });
+				return;
+			}
+			let count_total = groupsList.length;
+
+			let relativeGroupSize = await calculateRelativeGroupSize(
+				groupsList,
+				count_total
+			);
+			//console.log("284", relativeGroupSize);
+			const relativeGroupSizeData = relativeGroupSize.map((obj) =>
+				_.omit(obj, "relativeGroupSize")
+			);
+
+			console.log(relativeGroupSizeData);
+			// // CSRateforeach group
+			// let dateRangeOptions = {
+			// 	startDate: moment().subtract(7, "days").format("YY-MM-DD"),
+			// 	endDate: moment().format("YY-MM-DD"),
+			// };
+
+			
+			
+			res.status(200).send(relativeGroupSizeData);
+		});
+	} catch (error) {
+		console.error(error);
+		res
+			.status(500)
+			.send({ message: "Internal Server Error generate-status-init" });
+		return;
+	}
+});
 
 /**
  * TODO:  Create a different database idea
