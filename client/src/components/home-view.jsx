@@ -22,6 +22,9 @@ function HomeView() {
 	const generateSpecific = () => {
 		navigate("/generate-excel-sheet-one");
 	};
+	const barChart = () => {
+		navigate("/bar-chart")
+	}
   const footerData = [
 		{ key: "mainText", displayText: "@ 2023 JIPMER, O & G  Dept." },
 		{ key: "subText", displayText: "Made with 🧡 by MCA students" },
@@ -59,6 +62,12 @@ function HomeView() {
 									onClick={() => generateSpecific()}
 								>
 									GENERATE SPECIFIC DATA
+								</button>
+								<button
+									className='bg-zinc-500 hover:bg-gray-600 text-white font-medium hover:font-bold hover:shadow-xl py-2 px-4 rounded m-2 mb-6'
+									onClick={() => barChart()}
+								>
+									BAR CHART
 								</button>
 							</>
 						)}

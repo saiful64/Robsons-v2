@@ -11,6 +11,7 @@
   "dependencies": {
     "@syncfusion/ej2-react-calendars": "^21.2.4",
     "axios": "^1.2.1",
+    "chart.js": "^4.3.0",
     "install": "^0.13.0",
     "ipify": "^6.0.0",
     "moment": "^2.29.4",
