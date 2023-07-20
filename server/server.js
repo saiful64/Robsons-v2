@@ -89,17 +89,22 @@ app.post("/submit-form", (req, res) => {
 			}
 		});
 	});
-
+	let pog
+  if(data.weeks <36){
+	 pog = '<36';
+  }else{
+	pog = '>36';
+  }
 	let group = highestMatchedGroup.groupId;
+	
 	const sql = `
-    INSERT INTO robosonsdata ( obs_index, weeks, pog, single_twins, previous_cesarean, present, Labour, delivery, indeovp, IndeCS, Stage, BabyDetails, date_of_birth, time_of_birth, weight, apgar, outcome, indication, final_outcome, ripening, group_name, created_by, created_on
-    ) VALUES ( "${data.obs_index}", "${data.weeks}", "${data.pog}", "${data.single_twins
-		}", "${actualPreviousCesarean}", "${data.present}", ${data.Labour ? `"${data.Labour}"` : "null"
-		}, ${data.delivery ? `"${data.delivery}"` : "null"}, "${data.indeovp}", "${data.IndeCS
-		}", "${data.Stage}", "${data.BabyDetails}", ${data.date_of_birth ? `"${data.date_of_birth}"` : "null"
-		}, ${data.time_of_birth ? `"${data.time_of_birth}"` : "null"}, "${data.weight
-		}", "${data.apgar}", "${data.outcome}", "${data.indication}", "${data.final_outcome
-		}", ${data.ripening ? `"${data.ripening}"` : "null"}, "${group}", "${data.created_by
+    INSERT INTO robosonsdata ( obs_index, weeks,pog,previous_cesarean,fetus_type,presentation_single,presentation_twin,Labour,ripening,induced_augmented,delivery,indication_ovd,indication_caesarean,Stage, BabyDetails,weight, apgar,outcome,indication,final_outcome,indication_for_induction,date_of_birth, time_of_birth, group_name, created_by, created_on
+    ) VALUES ( "${data.obs_index}", "${data.weeks}", "${pog}","${actualPreviousCesarean}","${data.fetus_type}","${data.presentation_single}",
+	"${data.presentation_twin}",${data.labour ? `"${data.labour}"` : "null"},${data.ripening ? `"${data.ripening}"` : "null"},"${data.induced_augmented}",${data.delivery ? `"${data.delivery}"` : "null"},
+	"${data.indication_ovd}","${data.indication_cesarean}",
+		"${data.stage}", "${data.baby_details}", "${data.weight}","${data.apgar}","${data.outcome}", "${data.indication}", "${data.final_outcome
+		}","${data.indication_for_induction}",${data.date_of_birth ? `"${data.date_of_birth}"` : "null"
+		}, ${data.time_of_birth ? `"${data.time_of_birth}"` : "null"},   "${group}", "${data.created_by
 		}", NOW()
     )
   `;
