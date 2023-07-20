@@ -57,12 +57,9 @@ function ObsIndexForm() {
 				return;
 			}
 		}
-		if (spontaneousPrevious === true) {
-			setspontaneousPrevious(false);
-			setFormIndex(6);
-		} else {
+
 			setFormIndex(formIndex - 1);
-		}
+		
 	};
 
 	// function to handle navigation to the next form
@@ -83,12 +80,9 @@ function ObsIndexForm() {
 				}
 			}
 		}
-		if (formIndex === 6 && selectedRadioButton === "Spontaneous") {
-			setFormIndex(9);
-			setspontaneousPrevious(true);
-		} else {
+
 			setFormIndex(formIndex + 1);
-		}
+		
 	};
 
 	const goHome = () =>{

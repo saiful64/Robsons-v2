@@ -15,8 +15,8 @@
 			"title": "weeks",
 			"displayText": "Weeks",
 			"options": [
-				{ "value": "20-35", "displayText": "20-35" },
-				{ "value": "35<40", "displayText": "35<40" },
+				{ "value": "25", "displayText": "25" },
+				{ "value": "37", "displayText": "37" },
 				{ "value": ">=40", "displayText": ">=40" }
 			],
 			"showPrevious": true,
@@ -144,7 +144,7 @@
 			"displayText": "Delivery",
 			"options": [
 				{ "value": "svd", "displayText": "SVD" },
-				{ "value": "caesarean ", "displayText": "Caesarean" },
+				{ "value": "CS ", "displayText": "CS" },
 				{ "value": "vacuum", "displayText": "Vacuum" },
 				{ "value": "forceps", "displayText": "Forceps" },
 				{ "value": "vacuum-lowforceps", "displayText": "Vacuum - Low Forceps" }
@@ -157,8 +157,8 @@
 					"target": "baby_details"
 				},
 				{
-					"option": "caesarean",
-					"target": "indication_caesarean"
+					"option": "cesarean",
+					"target": "indication_cesarean"
 				}
 			]
 		},
@@ -181,8 +181,8 @@
 			]
 		},
 		{
-			"title": "indication_caesarean",
-			"displayText": "Indication for Caesarean",
+			"title": "indication_cesarean",
+			"displayText": "Indication for Cesarean",
 			"options": [
 				{ "value": "fail_ind", "displayText": "Failed induction" },
 				{ "value": "fail_ecv", "displayText": "Failed ECV" },
@@ -206,7 +206,7 @@
 
 		{
 			"title": "stage",
-			"displayText": "Stage for Caesarean",
+			"displayText": "Stage for Cesarean",
 			"options": [
 				{ "value": "i_stage", "displayText": "I Stage" },
 				{ "value": "ii_stage", "displayText": "II Stage" }
