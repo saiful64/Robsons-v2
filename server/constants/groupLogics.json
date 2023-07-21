@@ -1,88 +1,85 @@
- {
-    "groupLogics": [{
-      "id": "group 1",
-      "conditions": {
-          "obs_index": "primi",
-          "single_twins": "single",
-          "present": "vertex_cephalic",
-          "pog": ">36",
-          "Labour": "spontaneous"
-      }
-    },{
-      "id": "group 2",
-      "conditions": {
-          "obs_index": "primi",
-          "single_twins": "single",
-          "present": "vertex_cephalic",
-          "pog": ">36",
-          "Labour": "induced"
-      }
-    },{
-      "id": "group 3",
-      "conditions": {
-          "obs_index": "multi",
-          "previous_cesarean": "0",
-          "single_twins": "single",
-          "present": "vertex_cephalic",
-          "pog": ">36",
-          "Labour": "spontaneous"
-      }
-    },{
-      "id": "group 4",
-      "conditions": {
-          "obs_index": "multi",
-          "previous_cesarean": "0",
-          "single_twins": "single",
-          "present": "vertex_cephalic",
-          "pog": ">36",
-          "Labour": "pre_labour"
-      }
-    },{
-      "id": "group 5",
-      "conditions": {
-          "obs_index": "multi",
-          "previous_cesarean": ">0",
-          "single_twins": "single",
-          "present": "vertex_cephalic",
-          "pog": ">36"
-      }
-    },{
-      "id": "group 6",
-      "conditions": {
-          "obs_index": "multi",
-          "previous_cesarean": ">0",
-          "single_twins": "single",
-          "present": "breech",
-          "pog": ">36"
-      }
-    },{
-      "id": "group 7",
-      "conditions": {
-          "obs_index": "multi",
-          "previous_cesarean": ">0",
-          "present": "breech"
-      }
-    },{
-      "id": "group 8",
-      "conditions": {
-          "obs_index": "multi",
-          "previous_cesarean": ">0"
-      }
-    },{
-      "id": "group 9",
-      "conditions": {
-          "single_twins": "single",
-          "previous_cesarean": ">0",
-          "present": "others"
-      }
-    },{
-      "id": "group 10",
-      "conditions": {
-          "single_twins": "single",
-          "previous_cesarean": ">0",
-          "pog": "<36",
-          "present": "vertex_cephalic"
-      }
-    }]
- }
-  
+{
+	"groupLogics": [
+		{
+			"id": "group 1",
+			"conditions": {
+				"obs_index": "primi",
+				"previous_cesarean": "false",
+				"fetus_type": "single",
+				"presentation_single": "cephalic",
+				"labour": "spontaneous"
+			}
+		},
+		{
+			"id": "group 2",
+			"conditions": {
+				"obs_index": "primi",
+				"previous_cesarean": "false",
+				"fetus_type": "single",
+				"presentation_single": "cephalic",
+				"labour": "pre_labour"
+			}
+		},
+		{
+			"id": "group 3",
+			"conditions": {
+				"obs_index": "multi",
+				"previous_cesarean": "false",
+				"fetus_type": "single",
+				"presentation_single": "cephalic",
+				"labour": "spontaneous"
+			}
+		},
+		{
+			"id": "group 4",
+			"conditions": {
+				"obs_index": "multi",
+				"previous_cesarean": "false",
+				"fetus_type": "single",
+				"presentation_single": "cephalic",
+				"labour": "induction_of_labor"
+			}
+		},
+		{
+			"id": "group 5",
+			"conditions": {
+				"previous_cesarean": "true",
+				"fetus_type": "single",
+				"presentation_single": "cephalic"
+			}
+		},
+		{
+			"id": "group 6",
+			"conditions": {
+				"obs_index": "primi",
+				"fetus_type": "single",
+				"presentation_single": "breech"
+			}
+		},
+		{
+			"id": "group 7",
+			"conditions": {
+				"obs_index": "multi",
+				"fetus_type": "single",
+				"presentation_single": "breech"
+			}
+		},
+		{
+			"id": "group 8",
+			"conditions": {
+				"obs_index": "multi"
+			}
+		},
+		{
+			"id": "group 9",
+			"conditions": {}
+		},
+		{
+			"id": "group 10",
+			"conditions": {
+				"fetus_type": "single",
+				"presentation_single": "cephalic"
+			}
+		}
+	]
+}
