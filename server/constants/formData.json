@@ -14,11 +14,9 @@
 		{
 			"title": "weeks",
 			"displayText": "Weeks",
-			"options": [
-				{ "value": "20-35", "displayText": "20-35" },
-				{ "value": "35<40", "displayText": "35<40" },
-				{ "value": ">=40", "displayText": ">=40" }
-			],
+			"textBox": "true",
+			"options": [],
+			"type": "true",
 			"showPrevious": true,
 			"showNext": true
 		},
@@ -46,10 +44,6 @@
 			"showNext": true,
 			"conditions": [
 				{
-					"option": "single",
-					"target": "presentation_single"
-				},
-				{
 					"option": "twins",
 					"target": "presentation_twin"
 				}
@@ -65,7 +59,13 @@
 				{ "value": "transverse", "displayText": "Transverse" }
 			],
 			"showPrevious": true,
-			"showNext": true
+			"showNext": true,
+			"conditions": [
+				{
+					"option": "null",
+					"target": "labour"
+				}
+			]
 		},
 
 		{
@@ -144,7 +144,7 @@
 			"displayText": "Delivery",
 			"options": [
 				{ "value": "svd", "displayText": "SVD" },
-				{ "value": "caesarean ", "displayText": "Caesarean" },
+				{ "value": "CS ", "displayText": "Cesarean" },
 				{ "value": "vacuum", "displayText": "Vacuum" },
 				{ "value": "forceps", "displayText": "Forceps" },
 				{ "value": "vacuum-lowforceps", "displayText": "Vacuum - Low Forceps" }
@@ -153,12 +153,12 @@
 			"showNext": true,
 			"conditions": [
 				{
-					"options": "svd",
+					"option": "svd",
 					"target": "baby_details"
 				},
 				{
-					"option": "caesarean",
-					"target": "indication_caesarean"
+					"option": "cesarean",
+					"target": "indication_cesarean"
 				}
 			]
 		},
@@ -175,14 +175,14 @@
 			"showNext": true,
 			"conditions": [
 				{
-					"option": "indication_ovd",
+					"option": "",
 					"target": "baby_details"
 				}
 			]
 		},
 		{
-			"title": "indication_caesarean",
-			"displayText": "Indication for Caesarean",
+			"title": "indication_cesarean",
+			"displayText": "Indication for Cesarean",
 			"options": [
 				{ "value": "fail_ind", "displayText": "Failed induction" },
 				{ "value": "fail_ecv", "displayText": "Failed ECV" },
@@ -206,7 +206,7 @@
 
 		{
 			"title": "stage",
-			"displayText": "Stage for Caesarean",
+			"displayText": "Stage for Cesarean",
 			"options": [
 				{ "value": "i_stage", "displayText": "I Stage" },
 				{ "value": "ii_stage", "displayText": "II Stage" }
@@ -312,6 +312,14 @@
 				{ "value": "rh_neg", "displayText": "RH Neg" },
 				{ "value": "others", "displayText": "Others" }
 			],
+			"showPrevious": true,
+			"showNext": true
+		},
+		{
+			"title": "review",
+			"displayText": "Review",
+			"options": [],
+			"type" :"true",
 			"showPrevious": true,
 			"isSubmit": true
 		}

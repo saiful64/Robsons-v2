@@ -10,16 +10,13 @@ import { useNavigate } from "react-router-dom";
 import API_BASE_URL from "./config";
 
 function ObsIndexForm() {
-	const [formIndex, setFormIndex] = useState(0); // state to keep track of the current form
+	const [formIndex, setFormIndex] = useState(0);
 	const [formData, setFormData] = useState([]);
 	const [selectedOptions, setSelectedOptions] = useState({});
-	const [previousFormIndexStack, setPreviousFormIndexStack] = useState([]);
 	const [textBoxValue, setTextBoxValue] = useState("");
 	const [dateOfBirth, setDateOfBirth] = useState("");
 	const [timeOfBirth, setTimeOfBirth] = useState("");
-	const [isStatus, setIsStatus] = useState(false);
-	const [formId, setFormId] = useState("");
-	const [spontaneousPrevious, setspontaneousPrevious] = useState(false);
+	const [prevFormIndex, setPrevFormIndex] = useState(-1);
 	const auth = useAuth();
 
 	const [selectedRadioButton, setSelectedRadioButton] = useState(null);
@@ -44,62 +41,51 @@ function ObsIndexForm() {
 		{ key: "subText", displayText: "Made with 🧡 by MCA students" },
 	];
 
-	// function to handle navigation to the previous form
-	const goToPreviousForm = () => {
-		if (
-			formData[formIndex]?.showPrevious &&
-			previousFormIndexStack.length > 0
-		) {
-			const prevFormIndex = previousFormIndexStack.pop();
-			console.log(prevFormIndex, previousFormIndexStack);
-			if (prevFormIndex !== undefined) {
-				setFormIndex(prevFormIndex);
-				return;
-			}
-		}
-		if (spontaneousPrevious === true) {
-			setspontaneousPrevious(false);
-			setFormIndex(6);
-		} else {
-			setFormIndex(formIndex - 1);
+  const goToPreviousForm = () => {
+		if (prevFormIndex !== -1) {
+			setFormIndex(prevFormIndex);
+			setPrevFormIndex((prevForm) => prevForm - 1); // Update prevFormIndex
 		}
 	};
 
-	// function to handle navigation to the next form
 	const goToNextForm = () => {
-		if (formData[formIndex]?.conditions) {
-			const selectedOption = selectedOptions[formData[formIndex]?.title];
-			const condition = formData[formIndex]?.conditions.find(
-				(c) => c.option === selectedOption
-			);
-			if (condition) {
-				const targetFormIndex = formData.findIndex(
-					(f) => f.title === condition.target
-				);
-				if (targetFormIndex !== -1) {
-					setFormIndex(targetFormIndex);
-					setPreviousFormIndexStack((prev) => [...prev, formIndex]);
-					return;
+		if (!isClicked) {
+			const conditions = formData[formIndex]?.conditions;
+			if (conditions) {
+				let foundMatch = false;
+				conditions.forEach((condition) => {
+					const optionValue = condition.option;
+					const targetValue = condition.target;
+					if (selectedRadioButton === optionValue || "null" === optionValue) {
+						console.log("Its a match");
+						const targetFormIndex = formData.findIndex(
+							(item) => item.title === targetValue
+						);
+						setFormIndex(targetFormIndex);
+						setPrevFormIndex(formIndex); // Update prevFormIndex when moving to the next form
+						foundMatch = true;
+					}
+				});
+				if (!foundMatch) {
+					setFormIndex((prevForm) => prevForm + 1);
+					setPrevFormIndex(formIndex); // Update prevFormIndex when moving to the next form
 				}
+			} else {
+				setFormIndex((prevForm) => prevForm + 1);
+				setPrevFormIndex(formIndex); // Update prevFormIndex when moving to the next form
 			}
 		}
-		if (formIndex === 6 && selectedRadioButton === "Spontaneous") {
-			setFormIndex(9);
-			setspontaneousPrevious(true);
-		} else {
-			setFormIndex(formIndex + 1);
-		}
 	};
-
-	const goHome = () =>{
-		navigate("/home-view");
-	}
 
 	const updateThisOption = (title, option) => {
 		setSelectedOptions((prevState) => ({
 			...prevState,
 			[title]: option,
 		}));
+	};
+
+	const goHome = () => {
+		navigate("/home-view");
 	};
 
 	// function to handle navigation to the next form
@@ -112,39 +98,14 @@ function ObsIndexForm() {
 				console.log(response.data);
 				let groupDetails = response.data;
 				if (groupDetails) {
-					setFormId(groupDetails.formId);
 					setgroup(groupDetails.group);
 					toast.success("Form Submitted Successfully");
 					setIsClicked(true);
-					setgroup(groupDetails.group);
-					console.log(groupDetails.group);
 				}
 			})
 			.catch((error) => {
 				console.error(error);
-				toast.error("unexpected error occured");
-			});
-	};
-
-	// function to update status after successfully inserting data
-	const updateStatus = () => {
-		let indicationForInduction = selectedOptions[formData[formIndex]?.title];
-		axios
-			.post(`${API_BASE_URL}/api/update-status`, {
-				formId,
-				indicationForInduction,
-			})
-			.then((response) => {
-				console.log(response.data);
-				let groupDetails = response.data;
-				if (groupDetails) {
-					toast.success("Status Updated Successfully");
-					setFormIndex(0);
-				}
-			})
-			.catch((error) => {
-				console.error(error);
-				toast.error("unexpected error occured");
+				toast.error("Unexpected error occured");
 			});
 	};
 
@@ -182,7 +143,7 @@ function ObsIndexForm() {
 									type='radio'
 									className='form-radio hover:cursor-pointer'
 									name='radio'
-									value={option.displayText}
+									value={option.value}
 									checked={
 										option.displayText ===
 										selectedOptions[formData[formIndex]?.title]
@@ -198,30 +159,25 @@ function ObsIndexForm() {
 								/>
 								<span className='ml-2'>{option.displayText}</span>
 							</label>
-
-							{option.type &&
-								option.type === "textBox" &&
-								selectedOptions[formData[formIndex]?.title] ===
-									option.displayText && (
-									<div className='flex flex-col mb-4'>
-										{/* <label className="mb-1">{option.displayText}</label> */}
-										<input
-											type='text'
-											className='form-input'
-											value={textBoxValue}
-											placeholder={option.displayText}
-											onChange={(e) => {
-												setTextBoxValue(e.target.value);
-												updateThisOption(
-													formData[formIndex]?.title,
-													e.target.value
-												);
-											}}
-										/>
-									</div>
-								)}
 						</div>
 					))}
+				</div>
+				<div className='mt-6 flex'>
+					{formData[formIndex]?.type && (
+						<div className='flex flex-col mb-4'>
+							{/* <label className="mb-1">{option.displayText}</label> */}
+							<input
+								type='text'
+								className='form-input'
+								value={textBoxValue}
+								placeholder={"Enter Weeks"}
+								onChange={(e) => {
+									setTextBoxValue(e.target.value);
+									updateThisOption(formData[formIndex]?.title, e.target.value);
+								}}
+							/>
+						</div>
+					)}
 				</div>
 
 				{/* if date time picker is true then show the date time picker */}
@@ -269,7 +225,7 @@ function ObsIndexForm() {
 				</div>
 				{/* navigation buttons */}
 				<div className='mt-6 flex rounded-b-lg bg-gray-400'>
-					{formIndex == 0 && (
+					{!formData[formIndex]?.showPrevious && (
 						<button
 							onClick={goHome}
 							className=' text-white  hover:text-gray-800  rounded-bl-lg font-bold py-2 px-4  mr-auto'
@@ -287,9 +243,6 @@ function ObsIndexForm() {
 					)}
 					{formData[formIndex]?.showNext && (
 						<button
-							onKeyDown={(event) => {
-								if (event.key === "ArrowRight") goToNextForm();
-							}}
 							onClick={goToNextForm}
 							className=' text-white hover:text-gray-800  rounded-br-lg font-bold py-2 px-4  ml-auto'
 						>
