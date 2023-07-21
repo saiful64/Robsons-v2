@@ -98,6 +98,7 @@ app.post("/submit-form", (req, res) => {
 	}
 
 	let group = highestMatchedGroup.groupId;
+	
 	const sql = `
   INSERT INTO robosonsdata ( obs_index, weeks,pog,previous_cesarean,fetus_type,presentation_single,presentation_twin,Labour,ripening,induced_augmented,delivery,indication_ovd,indication_caesarean,Stage, BabyDetails,weight, apgar,outcome,indication,final_outcome,indication_for_induction,date_of_birth, time_of_birth, group_name, created_by, created_on
     ) VALUES ( "${data.obs_index}", "${
