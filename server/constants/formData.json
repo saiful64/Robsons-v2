@@ -16,7 +16,7 @@
 			"displayText": "Weeks",
 			"textBox": "true",
 			"options": [],
-			"type": "true",
+			"type": "textbox",
 			"showPrevious": true,
 			"showNext": true
 		},
@@ -319,7 +319,7 @@
 			"title": "review",
 			"displayText": "Review",
 			"options": [],
-			"type" :"true",
+			"type" :"textarea",
 			"showPrevious": true,
 			"isSubmit": true
 		}
