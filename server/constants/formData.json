@@ -14,11 +14,9 @@
 		{
 			"title": "weeks",
 			"displayText": "Weeks",
-			"options": [
-				{ "value": "25", "displayText": "25" },
-				{ "value": "37", "displayText": "37" },
-				{ "value": ">=40", "displayText": ">=40" }
-			],
+			"textBox": "true",
+			"options": [],
+			"type": "true",
 			"showPrevious": true,
 			"showNext": true
 		},
@@ -46,10 +44,6 @@
 			"showNext": true,
 			"conditions": [
 				{
-					"option": "single",
-					"target": "presentation_single"
-				},
-				{
 					"option": "twins",
 					"target": "presentation_twin"
 				}
@@ -65,7 +59,13 @@
 				{ "value": "transverse", "displayText": "Transverse" }
 			],
 			"showPrevious": true,
-			"showNext": true
+			"showNext": true,
+			"conditions": [
+				{
+					"option": "null",
+					"target": "labour"
+				}
+			]
 		},
 
 		{
@@ -144,7 +144,7 @@
 			"displayText": "Delivery",
 			"options": [
 				{ "value": "svd", "displayText": "SVD" },
-				{ "value": "CS ", "displayText": "CS" },
+				{ "value": "CS ", "displayText": "Cesarean" },
 				{ "value": "vacuum", "displayText": "Vacuum" },
 				{ "value": "forceps", "displayText": "Forceps" },
 				{ "value": "vacuum-lowforceps", "displayText": "Vacuum - Low Forceps" }
@@ -153,7 +153,7 @@
 			"showNext": true,
 			"conditions": [
 				{
-					"options": "svd",
+					"option": "svd",
 					"target": "baby_details"
 				},
 				{
@@ -175,7 +175,7 @@
 			"showNext": true,
 			"conditions": [
 				{
-					"option": "indication_ovd",
+					"option": "",
 					"target": "baby_details"
 				}
 			]
@@ -312,6 +312,14 @@
 				{ "value": "rh_neg", "displayText": "RH Neg" },
 				{ "value": "others", "displayText": "Others" }
 			],
+			"showPrevious": true,
+			"showNext": true
+		},
+		{
+			"title": "review",
+			"displayText": "Review",
+			"options": [],
+			"type" :"true",
 			"showPrevious": true,
 			"isSubmit": true
 		}

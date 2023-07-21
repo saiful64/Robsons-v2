@@ -89,23 +89,36 @@ app.post("/submit-form", (req, res) => {
 			}
 		});
 	});
-	let pog
-  if(data.weeks <36){
-	 pog = '<36';
-  }else{
-	pog = '>36';
-  }
+
+	let pog;
+	if (data.weeks < 36) {
+		pog = "<36";
+	} else {
+		pog = ">36";
+	}
+
 	let group = highestMatchedGroup.groupId;
 	
 	const sql = `
-    INSERT INTO robosonsdata ( obs_index, weeks,pog,previous_cesarean,fetus_type,presentation_single,presentation_twin,Labour,ripening,induced_augmented,delivery,indication_ovd,indication_caesarean,Stage, BabyDetails,weight, apgar,outcome,indication,final_outcome,indication_for_induction,date_of_birth, time_of_birth, group_name, created_by, created_on
-    ) VALUES ( "${data.obs_index}", "${data.weeks}", "${pog}","${actualPreviousCesarean}","${data.fetus_type}","${data.presentation_single}",
-	"${data.presentation_twin}",${data.labour ? `"${data.labour}"` : "null"},${data.ripening ? `"${data.ripening}"` : "null"},"${data.induced_augmented}",${data.delivery ? `"${data.delivery}"` : "null"},
+  INSERT INTO robosonsdata ( obs_index, weeks,pog,previous_cesarean,fetus_type,presentation_single,presentation_twin,Labour,ripening,induced_augmented,delivery,indication_ovd,indication_caesarean,Stage, BabyDetails,weight, apgar,outcome,indication,final_outcome,indication_for_induction,date_of_birth, time_of_birth, group_name, created_by, created_on
+    ) VALUES ( "${data.obs_index}", "${
+		data.weeks
+	}", "${pog}","${actualPreviousCesarean}","${data.fetus_type}","${
+		data.presentation_single
+	}",
+	"${data.presentation_twin}",${data.labour ? `"${data.labour}"` : "null"},${
+		data.ripening ? `"${data.ripening}"` : "null"
+	},"${data.induced_augmented}",${
+		data.delivery ? `"${data.delivery}"` : "null"
+	},
 	"${data.indication_ovd}","${data.indication_cesarean}",
-		"${data.stage}", "${data.baby_details}", "${data.weight}","${data.apgar}","${data.outcome}", "${data.indication}", "${data.final_outcome
-		}","${data.indication_for_induction}",${data.date_of_birth ? `"${data.date_of_birth}"` : "null"
-		}, ${data.time_of_birth ? `"${data.time_of_birth}"` : "null"},   "${group}", "${data.created_by
-		}", NOW()
+		"${data.stage}", "${data.baby_details}", "${data.weight}","${data.apgar}","${
+		data.outcome
+	}", "${data.indication}", "${data.final_outcome}","${
+		data.indication_for_induction
+	}",${data.date_of_birth ? `"${data.date_of_birth}"` : "null"}, ${
+		data.time_of_birth ? `"${data.time_of_birth}"` : "null"
+	},   "${group}", "${data.created_by}", NOW()
     )
   `;
 	con.query(sql, (err, result) => {
@@ -474,7 +487,6 @@ const calculateRelativeGroupSize = (groupsList, count_total) => {
 	let relativeGroupSize = [];
 	//console.log(groupsList);
 	_.forEach(totalGroupList, (thisGroup) => {
-
 		let count = _.filter(groupsList, { group_name: thisGroup }).length;
 		//console.log(groupsList);
 		//console.log(count);
@@ -490,7 +502,12 @@ const calculateRelativeGroupSize = (groupsList, count_total) => {
 };
 
 // function to calculate CS rate for Each group
-const calculateCSRateForEachGroup = async (groupsList, dateRangeOptions, res, relativeGroupSize) => {
+const calculateCSRateForEachGroup = async (
+	groupsList,
+	dateRangeOptions,
+	res,
+	relativeGroupSize
+) => {
 	try {
 		return new Promise((resolve, reject) => {
 			let csRateForEachGroup = [];
@@ -508,7 +525,10 @@ const calculateCSRateForEachGroup = async (groupsList, dateRangeOptions, res, re
 					}
 					let thisGroupCsCount = await result[0]["COUNT"];
 					let thisGroupCount = currentCalculation[index].count;
-					let CsRate = thisGroupCsCount && thisGroupCount ? (thisGroupCsCount / thisGroupCount) * 100 : 0;
+					let CsRate =
+						thisGroupCsCount && thisGroupCount
+							? (thisGroupCsCount / thisGroupCount) * 100
+							: 0;
 					let d = (currentCalculation[index].csRate = CsRate);
 					let c = (currentCalculation[index].groupCsCount = thisGroupCsCount);
 					csRateForEachGroup.push({
@@ -533,11 +553,7 @@ const calculateCSRateForEachGroup = async (groupsList, dateRangeOptions, res, re
 };
 
 // function to calculate Relative CS rate for Each group
-const calculateRelativeCsRate = async (
-	groupsList,
-	res,
-	relativeGroupSize
-) => {
+const calculateRelativeCsRate = async (groupsList, res, relativeGroupSize) => {
 	try {
 		return new Promise((resolve, reject) => {
 			let RelativecsRate = [];
@@ -547,9 +563,9 @@ const calculateRelativeCsRate = async (
 				con.query(robsonsQuery, async (error, result, fields) => {
 					if (error) {
 						console.error(error);
-						res
-							.status(500)
-							.send({ message: "Internal Server Error calculateRelativeCsRate" });
+						res.status(500).send({
+							message: "Internal Server Error calculateRelativeCsRate",
+						});
 						return;
 					}
 					let thisGroupCsCount = await result[0]["COUNT"];
@@ -573,8 +589,6 @@ const calculateRelativeCsRate = async (
 				});
 			});
 		});
-
-
 	} catch (error) {
 		console.error(error);
 		res
@@ -585,7 +599,12 @@ const calculateRelativeCsRate = async (
 };
 
 // function to calculate CS rate for Each group
-const calculateAbsoluteCSRate = async (groupsList, dateRangeOptions, res, count_total) => {
+const calculateAbsoluteCSRate = async (
+	groupsList,
+	dateRangeOptions,
+	res,
+	count_total
+) => {
 	try {
 		return new Promise((resolve, reject) => {
 			let AbsolutecsRate = [];
@@ -605,7 +624,10 @@ const calculateAbsoluteCSRate = async (groupsList, dateRangeOptions, res, count_
 					//console.log(thisGroupCsCount);
 					//console.log(count_total);
 					//let thisGroupCount = currentCalculation[index].count;
-					let AbsoluteCsRate = thisGroupCsCount && count_total ? (thisGroupCsCount / count_total) * 100 : 0;
+					let AbsoluteCsRate =
+						thisGroupCsCount && count_total
+							? (thisGroupCsCount / count_total) * 100
+							: 0;
 					//console.log(CsRate);
 					// let d = (currentCalculation[index].csRate = CsRate);
 					// let c = (currentCalculation[index].groupCsCount = thisGroupCsCount);
@@ -663,37 +685,66 @@ app.get("/api/generate-status-init", async (req, res) => {
 
 			// CSRateforeach group
 			//let dateRangeOptions = { startDate: moment().subtract(7, 'days').format('YY-MM-DD'), endDate: moment().format('YY-MM-DD') };
-			let dateRangeOptions = { startDate: moment(startDate).startOf("day").format("YYYY-MM-DD"), endDate: moment(endDate).endOf("day").format("YYYY-MM-DD") };
-			
-			let csRateForEachGroup = await calculateCSRateForEachGroup(groupsList, dateRangeOptions, res, relativeGroupSize);
-			// console.log("288",csRateForEachGroup)
-			const csRateData = csRateForEachGroup.map((obj) =>
-				_.omit(obj, "count")
-			);
+			let dateRangeOptions = {
+				startDate: moment(startDate).startOf("day").format("YYYY-MM-DD"),
+				endDate: moment(endDate).endOf("day").format("YYYY-MM-DD"),
+			};
 
-			let absoluteCsRateData = await calculateAbsoluteCSRate(groupsList, dateRangeOptions, res,count_total);
+			let csRateForEachGroup = await calculateCSRateForEachGroup(
+				groupsList,
+				dateRangeOptions,
+				res,
+				relativeGroupSize
+			);
+			// console.log("288",csRateForEachGroup)
+			const csRateData = csRateForEachGroup.map((obj) => _.omit(obj, "count"));
+
+			let absoluteCsRateData = await calculateAbsoluteCSRate(
+				groupsList,
+				dateRangeOptions,
+				res,
+				count_total
+			);
 			// console.log("288",csRateForEachGroup)
 			// const AbsolutecsRateData = AbsolutecsRate.map((obj) =>
 			// 	_.omit(obj, "count")
 			// );
-				//console.log(AbsolutecsRate);
+			//console.log(AbsolutecsRate);
 			// RelativeCSRateforeach group
 			//let dateRangeOptions = { startDate: moment().subtract(7, 'days').format('YY-MM-DD'), endDate: moment().format('YY-MM-DD') };
 
-			let RelativeCsRate = await calculateRelativeCsRate(groupsList, res, csRateForEachGroup);
+			let RelativeCsRate = await calculateRelativeCsRate(
+				groupsList,
+				res,
+				csRateForEachGroup
+			);
 			// console.log("288",csRateForEachGroup)
 			const relativeCsRateData = RelativeCsRate.map((obj) =>
 				_.omit(obj, "count")
 			);
-		//	console.log(relativeCsRateData);
+			//	console.log(relativeCsRateData);
 
 			//merge  array
 
 			const mergedData = relativeGroupSizeData.map((relativeGroupSizeItem) => {
-				const csRateItem = csRateData.find((csRateItem) => csRateItem.group_name === relativeGroupSizeItem.group_name);
-				const relativeCsRateItem = relativeCsRateData.find((relativeCsRateItem) => relativeCsRateItem.group_name === relativeGroupSizeItem.group_name);
-				const absoluteCsRateItem = absoluteCsRateData.find((absoluteCsRateItem) => absoluteCsRateItem.group_name === relativeGroupSizeItem.group_name);
-				return { ...relativeGroupSizeItem, ...csRateItem, ...relativeCsRateItem, ...absoluteCsRateItem};
+				const csRateItem = csRateData.find(
+					(csRateItem) =>
+						csRateItem.group_name === relativeGroupSizeItem.group_name
+				);
+				const relativeCsRateItem = relativeCsRateData.find(
+					(relativeCsRateItem) =>
+						relativeCsRateItem.group_name === relativeGroupSizeItem.group_name
+				);
+				const absoluteCsRateItem = absoluteCsRateData.find(
+					(absoluteCsRateItem) =>
+						absoluteCsRateItem.group_name === relativeGroupSizeItem.group_name
+				);
+				return {
+					...relativeGroupSizeItem,
+					...csRateItem,
+					...relativeCsRateItem,
+					...absoluteCsRateItem,
+				};
 			});
 
 			let columns = Object.keys(mergedData[0]).map((key) => ({
@@ -704,7 +755,6 @@ app.get("/api/generate-status-init", async (req, res) => {
 			statusData["data"] = mergedData;
 			// Calculate CS rate for Each group
 			// let dateRangeOptions = { startDate: moment().subtract(7, 'days').format('2023-05-02'), endDate: moment().format('2023-05-24') };
-
 
 			console.log(statusData);
 			res.status(200).send(statusData);
@@ -753,8 +803,6 @@ app.get("/api/barchart", async (req, res) => {
 			// 	endDate: moment().format("YY-MM-DD"),
 			// };
 
-			
-			
 			res.status(200).send(relativeGroupSizeData);
 		});
 	} catch (error) {
