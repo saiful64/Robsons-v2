@@ -9,7 +9,6 @@ import moment from "moment";
 import excel from "node-excel-export";
 import styles from "./constants/constants.js";
 
-// const constants = require('./constants/constants.cjs');
 
 //ip address of server machine
 const API_BASE_URL = "localhost";
@@ -41,14 +40,6 @@ con.connect((err) => {
 	else console.log("connection failed" + JSON.stringify(err));
 });
 
-// app.get('/getdata',(req,res)=>{
-//     con.query(`SELECT * FROM attendance`,(error,rows,fields)=>{
-//         if(!error)
-//         res.send(rows);
-//         else
-//         console.log(error)
-//     })
-// })
 
 app.get("/api/form-data", (req, res) => {
 	res.status(200).send(formData);
@@ -61,19 +52,12 @@ function calculatePercentageMatch(obj1, obj2) {
 	return (matchingValues.length / values1.length) * 100;
 }
 
-// // Find the object with the most percentage of match
-// let highestMatch = { percentage: 0 };
-// array.forEach(obj => {
-//   const percentage = calculatePercentageMatch(object, obj);
-//   if (percentage > highestMatch.percentage) {
-//     highestMatch = { object: obj, percentage: percentage };
-//   }
-// });
+
 app.post("/submit-form", (req, res) => {
 	let data = req.body;
 	let actualPreviousCesarean = req.body.previous_cesarean;
 	// we need to change it back to the actual form after condition checked
-	data.previous_cesarean = Number(data.previous_cesarean) > 0 ? ">0" : "0";
+	data.previous_cesarean = Number(data.previous_cesarean) > 0 ? "true" : "false";
 	let highestMatchedGroup = { percentage: 0 };
 	_.forEach(groupLogics, (logics) => {
 		_.forEach(logics, (thisGroupLogic) => {
