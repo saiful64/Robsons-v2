@@ -131,8 +131,11 @@ function ObsIndexForm() {
       } else if (selectedOptions.labour == "Pre Labour") {
         selectedOptions.ripening = undefined;
         selectedOptions.induced_augmented = undefined;
-        setFormIndex((prevForm) => prevForm + 2);
+        selectedOptions.delivery = "Cesarean";
+        setFormIndex((prevForm) => prevForm + 5);
         setPrevFormIndex(formIndex);
+        setFormIndexStack((prevStack) => [...prevStack, formIndex]);
+        return;
       }
     }
 
@@ -466,12 +469,24 @@ function ObsIndexForm() {
                   if (/^\d+$/.test(newValue) || newValue === "") {
                     // Input is a positive integer or an empty string
                     const numericValue = parseInt(newValue, 10);
-                    if (!isNaN(numericValue) && numericValue >= 0) {
+                    if (
+                      !isNaN(numericValue) &&
+                      numericValue >= 0 &&
+                      numericValue <= 100
+                    ) {
                       setWeeks(numericValue);
                       updateThisOption(
                         formData[formIndex]?.title,
                         numericValue
                       );
+                    } else if (numericValue < 0) {
+                      // Value is less than 0, set it to the minimum (0)
+                      setWeeks(0);
+                      updateThisOption(formData[formIndex]?.title, 0);
+                    } else if (numericValue > 100) {
+                      // Value is greater than 100, set it to the maximum (100)
+                      setWeeks(100);
+                      updateThisOption(formData[formIndex]?.title, 100);
                     }
                   }
                 }}
@@ -632,12 +647,32 @@ function ObsIndexForm() {
                   <input
                     id="weight"
                     type="number"
+                    step="0.01" //Allow decimal numbers with two decimal places
                     className="border border-gray-500 px-2 py-1 rounded-md"
                     value={b1Weight}
                     placeholder="Enter Weight in kg"
                     onChange={(e) => {
-                      setB1Weight(e.target.value);
-                      updateThisOption("b1_weight", e.target.value);
+                      const newValue = e.target.value;
+                      if (/^\d+(\.\d+)?$/.test(newValue) || newValue === "") {
+                        // Input is a positive number or an empty string
+                        const numericValue = parseFloat(newValue);
+                        if (
+                          !isNaN(numericValue) &&
+                          numericValue >= 0 &&
+                          numericValue <= 10
+                        ) {
+                          setB1Weight(numericValue);
+                          updateThisOption("b1_weight", numericValue);
+                        } else if (numericValue < 0) {
+                          // Value is less than 0, set it to the minimum (0)
+                          setB1Weight(0);
+                          updateThisOption("b1_weight", 0);
+                        } else if (numericValue > 10) {
+                          // Value is greater than 10, set it to the maximum (10)
+                          setB1Weight(10);
+                          updateThisOption("b1_weight", 10);
+                        }
+                      }
                     }}
                   />
                 </div>
@@ -713,12 +748,32 @@ function ObsIndexForm() {
                     <input
                       id="weight"
                       type="number"
+                      step="0.01" // Allow decimal numbers with two decimal places
                       className="border border-gray-500 px-2 py-1 rounded-md"
                       value={b2Weight}
                       placeholder="Enter Weight in kg"
                       onChange={(e) => {
-                        setB2Weight(e.target.value);
-                        updateThisOption("b1_weight", e.target.value);
+                        const newValue = e.target.value;
+                        if (/^\d+(\.\d+)?$/.test(newValue) || newValue === "") {
+                          // Input is a positive number or an empty string
+                          const numericValue = parseFloat(newValue);
+                          if (
+                            !isNaN(numericValue) &&
+                            numericValue >= 0 &&
+                            numericValue <= 10
+                          ) {
+                            setB2Weight(numericValue);
+                            updateThisOption("b2_weight", numericValue);
+                          } else if (numericValue < 0) {
+                            // Value is less than 0, set it to the minimum (0)
+                            setB2Weight(0);
+                            updateThisOption("b2_weight", 0);
+                          } else if (numericValue > 10) {
+                            // Value is greater than 10, set it to the maximum (10)
+                            setB2Weight(10);
+                            updateThisOption("b2_weight", 10);
+                          }
+                        }
                       }}
                     />
                   </div>
