@@ -3,71 +3,75 @@
 		{
 			"id": "group 1",
 			"conditions": {
-				"obs_index": "primi",
+				"obs_index": "Primi",
 				"previous_cesarean": "false",
-				"fetus_type": "single",
-				"presentation_single": "cephalic",
-				"labour": "spontaneous"
+				"fetus_type": "Single",
+				"presentation_single": "Cephalic",
+				"labour": "Spontaneous"
 			}
 		},
 		{
 			"id": "group 2",
 			"conditions": {
-				"obs_index": "primi",
+				"obs_index": "Primi",
 				"previous_cesarean": "false",
-				"fetus_type": "single",
-				"presentation_single": "cephalic",
-				"labour": "pre_labour"
+				"fetus_type": "Single",
+				"presentation_single": "Cephalic",
+				"labour": "Pre Labour"
+				
 			}
 		},
 		{
 			"id": "group 3",
 			"conditions": {
-				"obs_index": "multi",
+				"obs_index": "Multi",
 				"previous_cesarean": "false",
-				"fetus_type": "single",
-				"presentation_single": "cephalic",
-				"labour": "spontaneous"
+				"fetus_type": "Single",
+				"presentation_single": "Cephalic",
+				"labour": "Spontaneous"
 			}
 		},
 		{
 			"id": "group 4",
 			"conditions": {
-				"obs_index": "multi",
+				"obs_index": "Multi",
 				"previous_cesarean": "false",
-				"fetus_type": "single",
-				"presentation_single": "cephalic",
-				"labour": "induction_of_labor"
+				"fetus_type": "Single",
+				"presentation_single": "Cephalic",
+				"labour": "Induction of Labor"
+				
+				
 			}
 		},
 		{
 			"id": "group 5",
 			"conditions": {
 				"previous_cesarean": "true",
-				"fetus_type": "single",
-				"presentation_single": "cephalic"
+				"fetus_type": "Single",
+				"presentation_single": "Cephalic"
 			}
 		},
 		{
 			"id": "group 6",
 			"conditions": {
-				"obs_index": "primi",
-				"fetus_type": "single",
-				"presentation_single": "breech"
+				"obs_index": "Primi",
+				"fetus_type": "Single",
+				"presentation_single": "Breech"
+				
 			}
 		},
 		{
 			"id": "group 7",
 			"conditions": {
-				"obs_index": "multi",
-				"fetus_type": "single",
-				"presentation_single": "breech"
+				"obs_index": "Multi",
+				"fetus_type": "Single",
+				"presentation_single": "Breech"
 			}
 		},
 		{
 			"id": "group 8",
 			"conditions": {
-				"obs_index": "multi"
+				"obs_index": "Multi"
 			}
 		},
 		{
@@ -77,8 +81,8 @@
 		{
 			"id": "group 10",
 			"conditions": {
-				"fetus_type": "single",
-				"presentation_single": "cephalic"
+				"fetus_type": "Single",
+				"presentation_single": "Cephalic"
 			}
 		}
 	]
