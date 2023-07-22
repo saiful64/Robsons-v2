@@ -56,7 +56,8 @@ function ObsIndexForm() {
 				conditions.forEach((condition) => {
 					const optionValue = condition.option;
 					const targetValue = condition.target;
-					if (selectedRadioButton === optionValue || "null" === optionValue) {
+					console.log(selectedRadioButton, optionValue);
+					if (selectedRadioButton == optionValue || "null" === optionValue) {
 						console.log("Its a match");
 						const targetFormIndex = formData.findIndex(
 							(item) => item.title === targetValue

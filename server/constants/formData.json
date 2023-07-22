@@ -144,7 +144,7 @@
 			"displayText": "Delivery",
 			"options": [
 				{ "value": "svd", "displayText": "SVD" },
-				{ "value": "CS ", "displayText": "Cesarean" },
+				{ "value": "CS", "displayText": "Cesarean" },
 				{ "value": "vacuum", "displayText": "Vacuum" },
 				{ "value": "forceps", "displayText": "Forceps" },
 				{ "value": "vacuum-lowforceps", "displayText": "Vacuum - Low Forceps" }
@@ -157,7 +157,7 @@
 					"target": "baby_details"
 				},
 				{
-					"option": "cesarean",
+					"option": "CS",
 					"target": "indication_cesarean"
 				}
 			]
@@ -175,7 +175,7 @@
 			"showNext": true,
 			"conditions": [
 				{
-					"option": "",
+					"option": "null",
 					"target": "baby_details"
 				}
 			]
@@ -319,7 +319,7 @@
 			"title": "review",
 			"displayText": "Review",
 			"options": [],
-			"type" :"true",
+			"type": "true",
 			"showPrevious": true,
 			"isSubmit": true
 		}
