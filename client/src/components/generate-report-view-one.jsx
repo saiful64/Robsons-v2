@@ -48,7 +48,7 @@ function GenerateReportViewOne() {
 			.catch((error) => {
 				console.error(error);
 				 console.error(error.response);
-				toast.error("unexpected error occurred");
+				//toast.error("unexpected error occurred");
 			});
 	};
 

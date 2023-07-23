@@ -8,6 +8,9 @@ import _ from "lodash";
 import moment from "moment";
 import excel from "node-excel-export";
 import styles from "./constants/constants.js";
+import util  from "util";
+
+
 
 
 //ip address of server machine
@@ -41,7 +44,7 @@ con.connect((err) => {
 	else console.log("connection failed" + JSON.stringify(err));
 });
 
-
+const query11 = util.promisify(con.query).bind(con);
 app.get("/api/form-data", (req, res) => {
 	res.status(200).send(formData);
 });
@@ -187,6 +190,8 @@ app.get("/api/generate-report", (req, res) => {
 				res.status(400).send({ message: "No data Available" });
 				return;
 			}
+			
+
 			let santizedRobsonsDataList = [];
 			_.forEach(robsonsDataList, (thisRobsonData) => {
 				let tmpObject = {
@@ -195,14 +200,18 @@ app.get("/api/generate-report", (req, res) => {
 						: "",
 					weeks: !_.isEmpty(thisRobsonData.weeks) ? thisRobsonData.weeks : "",
 					pog: !_.isEmpty(thisRobsonData.pog) ? thisRobsonData.pog : "",
-					single_twins: !_.isEmpty(thisRobsonData.single_twins)
-						? thisRobsonData.single_twins
-						: "",
+					
 					previous_cesarean: !_.isEmpty(thisRobsonData.previous_cesarean)
 						? thisRobsonData.previous_cesarean
 						: "",
-					present: !_.isEmpty(thisRobsonData.present)
-						? thisRobsonData.present
+					fetus_type: !_.isEmpty(thisRobsonData.fetus_type)
+						? thisRobsonData.fetus_type
+						: "",
+					presentation_single: !_.isEmpty(thisRobsonData.presentation_single)
+						? thisRobsonData.presentation_single
+						: "",
+					presentation_twin: !_.isEmpty(thisRobsonData.presentation_twin)
+						? thisRobsonData.presentation_twin
 						: "",
 					Labour: !_.isEmpty(thisRobsonData.Labour)
 						? thisRobsonData.Labour
@@ -210,12 +219,7 @@ app.get("/api/generate-report", (req, res) => {
 					delivery: !_.isEmpty(thisRobsonData.delivery)
 						? thisRobsonData.delivery
 						: "",
-					indeovp: !_.isEmpty(thisRobsonData.indeovp)
-						? thisRobsonData.indeovp
-						: "",
-					IndeCS: !_.isEmpty(thisRobsonData.IndeCS)
-						? thisRobsonData.IndeCS
-						: "",
+					
 					Stage: !_.isEmpty(thisRobsonData.Stage) ? thisRobsonData.Stage : "",
 					BabyDetails: !_.isEmpty(thisRobsonData.BabyDetails)
 						? thisRobsonData.BabyDetails
@@ -233,14 +237,26 @@ app.get("/api/generate-report", (req, res) => {
 					outcome: !_.isEmpty(thisRobsonData.outcome)
 						? thisRobsonData.outcome
 						: "",
+					indication_ovd: !_.isEmpty(thisRobsonData.indication_ovd)
+						? thisRobsonData.indication_ovd
+						: "",
+					indication_caesarean: !_.isEmpty(thisRobsonData.indication_caesarean)
+						? thisRobsonData.indication_caesarean
+						: "",
 					indication: !_.isEmpty(thisRobsonData.indication)
 						? thisRobsonData.indication
 						: "",
 					final_outcome: !_.isEmpty(thisRobsonData.final_outcome)
 						? thisRobsonData.final_outcome
 						: "",
+					indication_for_induction: !_.isEmpty(thisRobsonData.indication_for_induction)
+						? thisRobsonData.indication_for_induction
+						: "",
 					ripening: !_.isEmpty(thisRobsonData.ripening)
 						? thisRobsonData.ripening
+						: "",
+					induced_augmented: !_.isEmpty(thisRobsonData.induced_augmented)
+						? thisRobsonData.induced_augmented
 						: "",
 					group_name: !_.isEmpty(thisRobsonData.group_name)
 						? thisRobsonData.group_name
@@ -259,13 +275,12 @@ app.get("/api/generate-report", (req, res) => {
 				"Obs Index",
 				"Weeks",
 				"POG",
-				"Single/Twins",
 				"Previous Cesarean",
-				"Present",
+				"Fetus Type",
+				"Presentation Single",
+				"Presentation Twin",
 				"Labour Type",
 				"Delivery",
-				"IndeOVP",
-				"IndeCS",
 				"Stage",
 				"Baby Details",
 				"Date of Birth",
@@ -273,8 +288,11 @@ app.get("/api/generate-report", (req, res) => {
 				"Weight",
 				"APGAR",
 				"Outcome",
+				"Indication OVD",
+				"Indication Caesarean",
 				"Indication",
 				"Final Outcome",
+				"Indication for Indication",
 				"Ripening",
 				"Group",
 				"Created By",
@@ -284,13 +302,12 @@ app.get("/api/generate-report", (req, res) => {
 				"obs_index",
 				"weeks",
 				"pog",
-				"single_twins",
 				"previous_cesarean",
-				"present",
+				"fetus_type",
+				"presentation_single",
+				"presentation_twin",
 				"Labour",
 				"delivery",
-				"indeovp",
-				"IndeCS",
 				"Stage",
 				"BabyDetails",
 				"date_of_birth",
@@ -298,9 +315,13 @@ app.get("/api/generate-report", (req, res) => {
 				"weight",
 				"apgar",
 				"outcome",
+				"indication_ovd",
+				"indication_caesarean",
 				"indication",
 				"final_outcome",
+				"indication_for_induction",
 				"ripening",
+				"induced_augmented",
 				"group_name",
 				"created_by",
 				"created_on",
@@ -347,13 +368,19 @@ app.get("/api/generate-report-one", (req, res) => {
 		obs_index,
 		weeks,
 		pog,
-		single_twins,
 		previous_cesarean,
-		present,
+		fetus_type,
+		presentation_single,
+		presentation_twin,
 		Labour,
 		delivery,
-		indeovp,
-		IndeCS
+		Stage,
+		BabyDetails,
+		date_of_birth,
+		time_of_birth,
+		weight,
+		apgar,
+		outcome
 	  FROM robosonsdata WHERE created_on BETWEEN '${startDate}' AND '${endDate}'`,
 		(error, robsonsDataList) => {
 			if (error) {
@@ -375,14 +402,18 @@ app.get("/api/generate-report-one", (req, res) => {
 						: "",
 					weeks: !_.isEmpty(thisRobsonData.weeks) ? thisRobsonData.weeks : "",
 					pog: !_.isEmpty(thisRobsonData.pog) ? thisRobsonData.pog : "",
-					single_twins: !_.isEmpty(thisRobsonData.single_twins)
-						? thisRobsonData.single_twins
-						: "",
+					
 					previous_cesarean: !_.isEmpty(thisRobsonData.previous_cesarean)
 						? thisRobsonData.previous_cesarean
 						: "",
-					present: !_.isEmpty(thisRobsonData.present)
-						? thisRobsonData.present
+					fetus_type: !_.isEmpty(thisRobsonData.fetus_type)
+						? thisRobsonData.fetus_type
+						: "",
+					presentation_single: !_.isEmpty(thisRobsonData.presentation_single)
+						? thisRobsonData.presentation_single
+						: "",
+					presentation_twin: !_.isEmpty(thisRobsonData.presentation_twin)
+						? thisRobsonData.presentation_twin
 						: "",
 					Labour: !_.isEmpty(thisRobsonData.Labour)
 						? thisRobsonData.Labour
@@ -390,11 +421,23 @@ app.get("/api/generate-report-one", (req, res) => {
 					delivery: !_.isEmpty(thisRobsonData.delivery)
 						? thisRobsonData.delivery
 						: "",
-					indeovp: !_.isEmpty(thisRobsonData.indeovp)
-						? thisRobsonData.indeovp
+					
+					Stage: !_.isEmpty(thisRobsonData.Stage) ? thisRobsonData.Stage : "",
+					BabyDetails: !_.isEmpty(thisRobsonData.BabyDetails)
+						? thisRobsonData.BabyDetails
 						: "",
-					IndeCS: !_.isEmpty(thisRobsonData.IndeCS)
-						? thisRobsonData.IndeCS
+					date_of_birth: moment(thisRobsonData.date_of_birth).format(
+						"ddd D MMM YYYY"
+					),
+					time_of_birth: !_.isEmpty(thisRobsonData.time_of_birth)
+						? thisRobsonData.time_of_birth
+						: "",
+					weight: !_.isEmpty(thisRobsonData.weight)
+						? thisRobsonData.weight
+						: "",
+					apgar: !_.isEmpty(thisRobsonData.apgar) ? thisRobsonData.apgar : "",
+					outcome: !_.isEmpty(thisRobsonData.outcome)
+						? thisRobsonData.outcome
 						: "",
 				};
 				santizedRobsonsDataList.push(tmpObject);
@@ -404,25 +447,37 @@ app.get("/api/generate-report-one", (req, res) => {
 				"Obs Index",
 				"Weeks",
 				"POG",
-				"Single/Twins",
 				"Previous Cesarean",
-				"Present",
+				"Fetus Type",
+				"Presentation Single",
+				"Presentation Twin",
 				"Labour Type",
 				"Delivery",
-				"IndeOVP",
-				"IndeCS",
+				"Stage",
+				"Baby Details",
+				"Date of Birth",
+				"Time of Birth",
+				"Weight",
+				"APGAR",
+				"Outcome"
 			];
 			let fields = [
 				"obs_index",
 				"weeks",
 				"pog",
-				"single_twins",
 				"previous_cesarean",
-				"present",
+				"fetus_type",
+				"presentation_single",
+				"presentation_twin",
 				"Labour",
 				"delivery",
-				"indeovp",
-				"IndeCS",
+				"Stage",
+				"BabyDetails",
+				"date_of_birth",
+				"time_of_birth",
+				"weight",
+				"apgar",
+				"outcome"
 			];
 			let groupSpecification = {};
 			_.forEach(fields, function (item, index) {
@@ -637,11 +692,8 @@ app.get("/api/generate-status-init", async (req, res) => {
 					.send({ message: "Internal Server Error generate-status-init" });
 				return;
 			}
-			let groupsList = result[0];
-			let totalCS = result[1];
-			let CS_total = totalCS.length;
-			
-			
+			let groupsList = result;
+			// console.log(groupsList);
 			if (_.isEmpty(groupsList)) {
 				res.status(400).send({ message: "No data Available" });
 				return;
@@ -704,6 +756,46 @@ app.get("/api/generate-status-init", async (req, res) => {
 		return;
 	}
 });
+
+app.get("/api/line-chart", async (req, res) => {
+	try {
+	  const groupsQuery = `
+	  SELECT DISTINCT MONTHNAME(created_on) AS xDataKey, COUNT(*) AS yDataKey1
+	  FROM robosonsdata
+	  WHERE MONTH(created_on) BETWEEN 1 AND 12 AND delivery='CS'
+	  GROUP BY MONTH(created_on)
+	`;
+	  const totalCSQuery = `
+		SELECT DISTINCT MONTHNAME(created_on) AS xDataKey, COUNT(*) AS yDataKey2
+		FROM robosonsdata
+		WHERE MONTH(created_on) BETWEEN 1 AND 12
+		GROUP BY MONTH(created_on)
+	  `;
+  
+	  const [groupsList, totalCS] = await Promise.all([
+		query11(groupsQuery),
+		query11(totalCSQuery),
+	  ]);
+  
+	  if (_.isEmpty(groupsList) || _.isEmpty(totalCS)) {
+		res.status(400).send({ message: "No data Available" });
+		return;
+	  }
+  
+	  const combinedData = {
+		data1: groupsList,
+		data2: totalCS,
+	  };
+  
+	  res.status(200).json(combinedData);
+	} catch (error) {
+	  console.error(error);
+	  res
+		.status(500)
+		.send({ message: "Internal Server Error generate-status-init" });
+	}
+  });
+  
 app.get("/api/barchart", async (req, res) => {
 	try {
 		//let statusData = {};
@@ -739,7 +831,6 @@ app.get("/api/barchart", async (req, res) => {
 			// 	startDate: moment().subtract(7, "days").format("YY-MM-DD"),
 			// 	endDate: moment().format("YY-MM-DD"),
 			// };
-
 			
 			
 			res.status(200).send(relativeGroupSizeData);
