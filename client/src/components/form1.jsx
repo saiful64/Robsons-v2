@@ -169,7 +169,7 @@ function ObsIndexForm() {
 							{/* <label className="mb-1">{option.displayText}</label> */}
 							<input
 								type='text'
-								className='form-input'
+								className='border ml-7 border-gray-400 p-2 w-full rounded-md'
 								value={textBoxValue}
 								placeholder={"Enter Weeks"}
 								onChange={(e) => {
