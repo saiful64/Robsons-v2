@@ -90,14 +90,14 @@ app.post("/submit-form", (req, res) => {
 	let group = highestMatchedGroup.groupId;
 	
 	const sql = `
-    INSERT INTO robosonsdata ( obs_index, weeks,pog,previous_cesarean,fetus_type,presentation_single,presentation_twin,Labour,ripening,induced_augmented,delivery,indication_ovd,indication_caesarean,Stage, BabyDetails,weight, apgar,outcome,indication,final_outcome,indication_for_induction,date_of_birth, time_of_birth, group_name, created_by, created_on
+    INSERT INTO robosonsdata ( obs_index, weeks,pog,previous_cesarean,fetus_type,presentation_single,presentation_twin,Labour,ripening,induced_augmented,delivery,indication_ovd,indication_caesarean,Stage, BabyDetails,weight, apgar,outcome,indication,final_outcome,indication_for_induction,date_of_birth, time_of_birth, group_name, created_by, created_on,review
     ) VALUES ( "${data.obs_index}", "${data.weeks}", "${pog}","${actualPreviousCesarean}","${data.fetus_type}","${data.presentation_single}",
 	"${data.presentation_twin}",${data.labour ? `"${data.labour}"` : "null"},${data.ripening ? `"${data.ripening}"` : "null"},"${data.induced_augmented}",${data.delivery ? `"${data.delivery}"` : "null"},
 	"${data.indication_ovd}","${data.indication_cesarean}",
 		"${data.stage}", "${data.baby_details}", "${data.weight}","${data.apgar}","${data.outcome}", "${data.indication}", "${data.final_outcome
 		}","${data.indication_for_induction}",${data.date_of_birth ? `"${data.date_of_birth}"` : "null"
 		}, ${data.time_of_birth ? `"${data.time_of_birth}"` : "null"},   "${group}", "${data.created_by
-		}", NOW()
+		}", NOW(),${data.review ? `"${data.review}"` : "null"}
     )
   `;
 	con.query(sql, (err, result) => {
@@ -261,6 +261,9 @@ app.get("/api/generate-report", (req, res) => {
 					group_name: !_.isEmpty(thisRobsonData.group_name)
 						? thisRobsonData.group_name
 						: "",
+					review: !_.isEmpty(thisRobsonData.review)
+						? thisRobsonData.review
+						: "",
 					created_by: !_.isEmpty(thisRobsonData.created_by)
 						? thisRobsonData.created_by
 						: "",
@@ -295,6 +298,7 @@ app.get("/api/generate-report", (req, res) => {
 				"Indication for Indication",
 				"Ripening",
 				"Group",
+				"Review",
 				"Created By",
 				"Created On",
 			];
@@ -323,6 +327,7 @@ app.get("/api/generate-report", (req, res) => {
 				"ripening",
 				"induced_augmented",
 				"group_name",
+				"review",
 				"created_by",
 				"created_on",
 			];
@@ -673,6 +678,25 @@ const calculateAbsoluteCSRate = async (groupsList, dateRangeOptions, res, count_
 		};
 	}
 };
+// function to calculate count of BarChart
+const calculateBarChart = (groupsList1, count_total) => {
+	let BarChart = [];
+	//console.log(groupsList);
+	_.forEach(totalGroupList, (thisGroup) => {
+
+		let count = _.filter(groupsList1, { group_name: thisGroup }).length;
+		//console.log(groupsList);
+		//console.log(count);
+		let percentage = (count / count_total) * 100;
+		BarChart.push({
+			group_name: thisGroup,
+			count: count,
+			BarChart: percentage,
+		});
+	});
+
+	return BarChart;
+};
 app.get("/api/generate-status-init", async (req, res) => {
 	try {
 		const { startDate, endDate } = req.query;
@@ -692,7 +716,8 @@ app.get("/api/generate-status-init", async (req, res) => {
 					.send({ message: "Internal Server Error generate-status-init" });
 				return;
 			}
-			let groupsList = result;
+			let groupsList = result[0];
+			let CS_total = result[1];
 			// console.log(groupsList);
 			if (_.isEmpty(groupsList)) {
 				res.status(400).send({ message: "No data Available" });
@@ -796,44 +821,81 @@ app.get("/api/line-chart", async (req, res) => {
 	}
   });
   
-app.get("/api/barchart", async (req, res) => {
+  app.get("/api/barchart", async (req, res) => {
 	try {
 		//let statusData = {};
-		let groupsQuery = `SELECT * FROM \`groups\``;
+		const groupsQuery = `
+		SELECT DISTINCT * FROM  groups WHERE MONTH(created_on) BETWEEN 1 AND 3;
+		SELECT * FROM \`groups\`WHERE MONTH(created_on) BETWEEN 4 AND 8;
+		SELECT * FROM \`groups\`WHERE MONTH(created_on) BETWEEN 9 AND 12;
+	`;
+		
+
 		con.query(groupsQuery, async (error, result) => {
 			if (error) {
 				console.error(error);
+				
 				res
 					.status(500)
 					.send({ message: "Internal Server Error generate-status-init" });
 				return;
 			}
-			let groupsList = result;
-			// console.log(groupsList);
-			if (_.isEmpty(groupsList)) {
+			//let groupsList = result;
+			let groupsList1 = result[0];
+			let groupsList2 = result[1];
+			let groupsList3 = result[2];
+			//console.log('jan',groupsList1);
+			//  console.log('apr',groupsList2);
+			//  console.log('jul',groupsList3); 
+			if (_.isEmpty(groupsList1,groupsList2,groupsList3)) {
 				res.status(400).send({ message: "No data Available" });
 				return;
 			}
-			let count_total = groupsList.length;
+			let count_total1 = groupsList1.length;
+			let count_total2 = groupsList2.length;
+			let count_total3 = groupsList3.length;
 
-			let relativeGroupSize = await calculateRelativeGroupSize(
-				groupsList,
-				count_total
+			let relativeGroupSize1 = await calculateBarChart(
+				groupsList1,
+				count_total1
 			);
-			//console.log("284", relativeGroupSize);
-			const relativeGroupSizeData = relativeGroupSize.map((obj) =>
-				_.omit(obj, "relativeGroupSize")
+			let relativeGroupSize2 = await calculateBarChart(
+				groupsList2,
+				count_total2
 			);
+			let relativeGroupSize3 = await calculateBarChart(
+				groupsList3,
+				count_total3
+			);
+			
+			// let relativeGroupSize1 = await calculateBarChart(
+			// 	groupsList2,
+			// 	count_total
+			// );
+			// console.log("285", relativeGroupSize1);
+			var relativeGroupSizeData1 = relativeGroupSize1.map((obj) =>
+				_.omit(obj, "BarChart")
+			);
+			 var relativeGroupSizeData2 = relativeGroupSize2.map((obj) =>
+				_.omit(obj, "BarChart")
+			);
+			var relativeGroupSizeData3 = relativeGroupSize3.map((obj) =>
+				_.omit(obj, "BarChart")
+			);
+			
+			console.log("284", relativeGroupSizeData1);
+			console.log("285", relativeGroupSizeData2);
+			console.log("286", relativeGroupSizeData3);
+			
+			// let CSrate = await calculateCsRate(	res)
 
-			console.log(relativeGroupSizeData);
-			// // CSRateforeach group
-			// let dateRangeOptions = {
-			// 	startDate: moment().subtract(7, "days").format("YY-MM-DD"),
-			// 	endDate: moment().format("YY-MM-DD"),
-			// };
+		
+			// const CSrateData = CSrate.map((obj) =>
+			//   _.omit(obj,["group_name","relativeGroupSize","relativeGroupSize","csRateForEachGroup","AbsolutecsRate"])
+			// );
 			
 			
-			res.status(200).send(relativeGroupSizeData);
+			res.status(200).send({data1:relativeGroupSizeData1,data2:relativeGroupSizeData2,data3:relativeGroupSizeData3});
 		});
 	} catch (error) {
 		console.error(error);
