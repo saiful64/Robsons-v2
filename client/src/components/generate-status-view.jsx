@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "./auth";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
@@ -62,6 +62,9 @@ function GenerateStatus() {
 				>
 					<h1 className='text-3xl font-bold mb-4 text-center'>
 						Data Visualization
+						<Link to="/newroute">
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold text-xs px-2 py-1 rounded ml-3 mt-5">Graph</button>
+      </Link>
 					</h1>
 
 					{showCalendar ? (
