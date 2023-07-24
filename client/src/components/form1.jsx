@@ -14,6 +14,7 @@ function ObsIndexForm() {
 	const [formData, setFormData] = useState([]);
 	const [selectedOptions, setSelectedOptions] = useState({});
 	const [textBoxValue, setTextBoxValue] = useState("");
+	const [textareaValue, setTextareaValue] = useState("");
 	const [dateOfBirth, setDateOfBirth] = useState("");
 	const [timeOfBirth, setTimeOfBirth] = useState("");
 	const [prevFormIndex, setPrevFormIndex] = useState(-1);
@@ -56,8 +57,7 @@ function ObsIndexForm() {
 				conditions.forEach((condition) => {
 					const optionValue = condition.option;
 					const targetValue = condition.target;
-					console.log(selectedRadioButton, optionValue);
-					if (selectedRadioButton == optionValue || "null" === optionValue) {
+					if (selectedRadioButton === optionValue || "null" === optionValue) {
 						console.log("Its a match");
 						const targetFormIndex = formData.findIndex(
 							(item) => item.title === targetValue
@@ -164,7 +164,7 @@ function ObsIndexForm() {
 					))}
 				</div>
 				<div className='mt-6 flex'>
-					{formData[formIndex]?.type && (
+					{formData[formIndex]?.type == "textbox" && (
 						<div className='flex flex-col mb-4'>
 							{/* <label className="mb-1">{option.displayText}</label> */}
 							<input
@@ -177,6 +177,24 @@ function ObsIndexForm() {
 									updateThisOption(formData[formIndex]?.title, e.target.value);
 								}}
 							/>
+						</div>
+					)}
+				</div>
+				<div className='mt-6 flex'>
+					{formData[formIndex]?.type == "textarea" && (
+						<div className='flex flex-col mb-4'>
+							{/* <label className="mb-1">{option.displayText}</label> */}
+							<textarea
+								className='form-textarea'
+								value={textareaValue}
+								onChange={(event) => {
+									setTextareaValue(event.target.value);
+									updateThisOption(
+										formData[formIndex]?.title,
+										event.target.value
+									);
+								}}
+							></textarea>
 						</div>
 					)}
 				</div>
