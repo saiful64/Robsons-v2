@@ -78,6 +78,22 @@ function ObsIndexForm() {
 		}
 	};
 
+	const handleKeyDown = (event) => {
+		if (event.key === 'Enter') {
+		  // 👇 Get input value
+		  goToNextForm();
+		}
+		if(event.key === 'Backspace'){
+			goToPreviousForm();
+		}
+	};
+
+	const handleKeyDownForSubmit = (event) => {
+		if(event.key === 'Enter'){
+			submitForms();
+		}
+	}
+
 	const updateThisOption = (title, option) => {
 		setSelectedOptions((prevState) => ({
 			...prevState,
@@ -263,6 +279,7 @@ function ObsIndexForm() {
 					{formData[formIndex]?.showNext && (
 						<button
 							onClick={goToNextForm}
+							onKeyDown={handleKeyDown}
 							className=' text-white hover:text-gray-800  rounded-br-lg font-bold py-2 px-4  ml-auto'
 						>
 							Next
@@ -271,7 +288,8 @@ function ObsIndexForm() {
 					{formData[formIndex]?.isSubmit && (
 						<button
 							onClick={submitForms}
-							className=' text-white hover:bg-gray-300 hover:text-gray-800 bg-gray-700  rounded-br-lg font-bold py-2 px-4  ml-auto'
+							onKeyDown={handleKeyDownForSubmit}
+							className=' text-white hover:bg-gray-300 hover:text-gray-800 bg-gray-500  rounded-br-lg font-bold py-2 px-4  ml-auto'
 						>
 							Submit
 						</button>

@@ -115,7 +115,7 @@ const Form = () => {
 
 	console.log(formData);
 
-	return <div>{renderForm()}</div>;
+	return <div className="bg-gray-500">{renderForm()}</div>;
 };
 
 export default Form;
