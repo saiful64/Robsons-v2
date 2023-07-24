@@ -88,11 +88,11 @@ function ObsIndexForm() {
 		}
 	};
 
-	const handleKeyDownForSubmit = (event) => {
-		if(event.key === 'Enter'){
-			submitForms();
-		}
-	}
+	// const handleKeyDownForSubmit = (event) => {
+	// 	if(event.key === 'Enter'){
+	// 		submitForms();
+	// 	}
+	// }
 
 	const updateThisOption = (title, option) => {
 		setSelectedOptions((prevState) => ({
@@ -196,12 +196,14 @@ function ObsIndexForm() {
 						</div>
 					)}
 				</div>
-				<div className='mt-6 flex'>
+				<div className='m-6 py-3 px-0 w-80 relative justify-center'>
 					{formData[formIndex]?.type == "textarea" && (
-						<div className='flex flex-col mb-4'>
-							{/* <label className="mb-1">{option.displayText}</label> */}
+						<div className='flex h-max flex-col mb-4 '>
+							<label for="message" className="mb-1 ml-1 text-sm font-bold">Enter your message:</label>
 							<textarea
-								className='form-textarea'
+								id="message"
+								className='border h-28 rounded-lg form-textarea p-2 block text-sm text-gray-700 mb-2 border-black'
+								placeholder="Enter your text here..."
 								value={textareaValue}
 								onChange={(event) => {
 									setTextareaValue(event.target.value);
@@ -288,7 +290,7 @@ function ObsIndexForm() {
 					{formData[formIndex]?.isSubmit && (
 						<button
 							onClick={submitForms}
-							onKeyDown={handleKeyDownForSubmit}
+							// onKeyDown={handleKeyDownForSubmit}
 							className=' text-white hover:bg-gray-300 hover:text-gray-800 bg-gray-500  rounded-br-lg font-bold py-2 px-4  ml-auto'
 						>
 							Submit
