@@ -74,16 +74,27 @@ function App() {
 							<Route
 								exact
 								path='/generate-status'
-								element={<GenerateStatus />}
+								element={
+									<ProtectedRoute>
+								<GenerateStatus />
+								</ProtectedRoute>
+								}
 							/>
 							<Route
 								exact
 								path='/bar-chart'
-								element={<MyChartComponent />}
+								element={
+									<ProtectedRoute>
+								<MyChartComponent />
+								</ProtectedRoute>}
 							/>
 
 							<Route path="/newroute" 
-							element={<LineChartComponent/>} />
+							element={
+								<ProtectedRoute>
+							<LineChartComponent/>
+							</ProtectedRoute>
+							} />
 						</Routes>
 					</Router>
 				</div>
