@@ -187,7 +187,7 @@ function ObsIndexForm() {
 						<div className='flex flex-col mb-4'>
 							{/* <label className="mb-1">{option.displayText}</label> */}
 
-							<div className='relative max-w-sm p-2 datetime-box'>
+							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-full mb-4 rounded-md'>
 								<Datetime
 									dateFormat='YYYY-mm-DD'
 									timeFormat={false}
@@ -204,7 +204,7 @@ function ObsIndexForm() {
 									}}
 								/>
 							</div>
-							<div className='relative max-w-sm mt-2 p-2 datetime-box'>
+							<div className='relative max-w-sm mt-2  datetime-box border ml-7 border-gray-400 p-2 w-full rounded-md'>
 								<Datetime
 									dateFormat={false}
 									timeFormat='HH:mm a'
