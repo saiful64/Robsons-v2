@@ -62,9 +62,7 @@ function GenerateStatus() {
 				>
 					<h1 className='text-3xl font-bold mb-4 text-center'>
 						Data Visualization
-						<Link to="/newroute">
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold text-xs px-2 py-1 rounded ml-3 mt-5">Graph</button>
-      </Link>
+						
 					</h1>
 
 					{showCalendar ? (
@@ -84,6 +82,7 @@ function GenerateStatus() {
 								>
 									OK
 								</button>
+								<Link to="/newroute"><button className="bg-blue-500 hover:bg-blue-700 text-white font-bold w-full p-2 mt-2 rounded">TD&CD Graph</button></Link>
 							</div>
 						</div>
 					) : (

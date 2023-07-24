@@ -717,7 +717,7 @@ app.get("/api/generate-status-init", async (req, res) => {
 				return;
 			}
 			let groupsList = result[0];
-			let CS_total = result[1];
+			let CS_total = result[1].length;
 			// console.log(groupsList);
 			if (_.isEmpty(groupsList)) {
 				res.status(400).send({ message: "No data Available" });
@@ -750,7 +750,7 @@ app.get("/api/generate-status-init", async (req, res) => {
 				
 			let relativeCsRateData = await calculateRelativeCsRate(groupsList, res, CS_total);
 			
-
+				//console.log(relativeCsRateData);
 			//merge  array
 
 			const mergedData = relativeGroupSizeData.map((relativeGroupSizeItem) => {
