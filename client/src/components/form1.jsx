@@ -78,6 +78,22 @@ function ObsIndexForm() {
 		}
 	};
 
+	const handleKeyDown = (event) => {
+		if (event.key === 'Enter') {
+		  // 👇 Get input value
+		  goToNextForm();
+		}
+		if(event.key === 'Backspace'){
+			goToPreviousForm();
+		}
+	};
+
+	const handleKeyDownForSubmit = (event) => {
+		if(event.key === 'Enter'){
+			submitForms();
+		}
+	}
+
 	const updateThisOption = (title, option) => {
 		setSelectedOptions((prevState) => ({
 			...prevState,
@@ -169,7 +185,7 @@ function ObsIndexForm() {
 							{/* <label className="mb-1">{option.displayText}</label> */}
 							<input
 								type='text'
-								className='form-input'
+								className='border ml-7 border-gray-400 p-2 w-full rounded-md'
 								value={textBoxValue}
 								placeholder={"Enter Weeks"}
 								onChange={(e) => {
@@ -205,7 +221,7 @@ function ObsIndexForm() {
 						<div className='flex flex-col mb-4'>
 							{/* <label className="mb-1">{option.displayText}</label> */}
 
-							<div className='relative max-w-sm p-2 datetime-box'>
+							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-full mb-4 rounded-md'>
 								<Datetime
 									dateFormat='YYYY-mm-DD'
 									timeFormat={false}
@@ -222,7 +238,7 @@ function ObsIndexForm() {
 									}}
 								/>
 							</div>
-							<div className='relative max-w-sm mt-2 p-2 datetime-box'>
+							<div className='relative max-w-sm mt-2  datetime-box border ml-7 border-gray-400 p-2 w-full rounded-md'>
 								<Datetime
 									dateFormat={false}
 									timeFormat='HH:mm a'
@@ -263,6 +279,7 @@ function ObsIndexForm() {
 					{formData[formIndex]?.showNext && (
 						<button
 							onClick={goToNextForm}
+							onKeyDown={handleKeyDown}
 							className=' text-white hover:text-gray-800  rounded-br-lg font-bold py-2 px-4  ml-auto'
 						>
 							Next
@@ -271,7 +288,8 @@ function ObsIndexForm() {
 					{formData[formIndex]?.isSubmit && (
 						<button
 							onClick={submitForms}
-							className=' text-white hover:bg-gray-300 hover:text-gray-800 bg-gray-700  rounded-br-lg font-bold py-2 px-4  ml-auto'
+							onKeyDown={handleKeyDownForSubmit}
+							className=' text-white hover:bg-gray-300 hover:text-gray-800 bg-gray-500  rounded-br-lg font-bold py-2 px-4  ml-auto'
 						>
 							Submit
 						</button>
