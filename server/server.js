@@ -51,20 +51,40 @@ app.get("/api/form-data", (req, res) => {
 // Calculate the percentage of match between two objects
 function calculatePercentageMatch(obj1, obj2) {
 	const values1 = _.values(obj1);
+	console.log(values1);
+	console.log(values1.length);
 
 	const values2 = _.values(obj2);
-	
+	console.log(values2);
+
 	const matchingValues = _.intersection(values1, values2);
+	console.log(matchingValues);
 	
+	console.log((matchingValues.length / values1.length) * 100);
 	return (matchingValues.length / values1.length) * 100;
 }
 
 
 app.post("/submit-form", (req, res) => {
 	let data = req.body;
+	if(req.body.presentation_single=='Cephalic' && data.weeks <36 ){
+		data.pog='<36';
+	}
+	else if(req.body.presentation_single=='Cephalic' && data.weeks >36){
+		data.pog='>36';
+	}else{
+		data = req.body;
+	}
+	
+	console.log(data);
 	let actualPreviousCesarean = req.body.previous_cesarean;
 
+	if(data.previous_cesarean===null){
+		data.new='1';
+	}else{
 		data.previous_cesarean = Number(data.previous_cesarean) > 0 ? "true" : "false";
+	}
+		
 		  
 	let highestMatchedGroup = { percentage: 0 };
 	_.forEach(groupLogics, (logics) => {

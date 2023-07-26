@@ -6,8 +6,10 @@
 				"obs_index": "Primi",
 				"previous_cesarean": "false",
 				"fetus_type": "Single",
-				"presentation_single": "Cephalic",
-				"labour": "Spontaneous"
+				"presentation_single":"Cephalic",
+				"presentation_single1":"Breech",
+				"labour": "Spontaneous",
+				"pog":">36"
 			}
 		},
 		{
@@ -16,8 +18,10 @@
 				"obs_index": "Primi",
 				"previous_cesarean": "false",
 				"fetus_type": "Single",
-				"presentation_single": "Cephalic",
-				"labour": "Pre Labour"
+				"presentation_single":"Cephalic",
+				"presentation_single1":"Breech",
+				"labour": "Pre Labour",
+				"pog":">36"
 				
 			}
 		},
@@ -27,8 +31,10 @@
 				"obs_index": "Multi",
 				"previous_cesarean": "false",
 				"fetus_type": "Single",
-				"presentation_single": "Cephalic",
-				"labour": "Spontaneous"
+				"presentation_single":"Cephalic",
+				"presentation_single1":"Breech",
+				"labour": "Spontaneous",
+				"pog":">36"
 			}
 		},
 		{
@@ -37,9 +43,10 @@
 				"obs_index": "Multi",
 				"previous_cesarean": "false",
 				"fetus_type": "Single",
-				"presentation_single": "Cephalic",
-				"labour": "Induction of Labor"
-				
+				"presentation_single":"Cephalic",
+				"presentation_single1":"Breech",
+				"labour": "Induction of Labor",
+				"pog":">36"
 				
 			}
 		},
@@ -48,15 +55,20 @@
 			"conditions": {
 				"previous_cesarean": "true",
 				"fetus_type": "Single",
-				"presentation_single": "Cephalic"
+				"presentation_single":"Cephalic",
+				"presentation_single1":"Breech",
+				"pog":">36"
 			}
 		},
 		{
 			"id": "group 6",
 			"conditions": {
 				"obs_index": "Primi",
+				
 				"fetus_type": "Single",
-				"presentation_single": "Breech"
+				"new": "1",
+				"presentation_single":"Cephalic",
+				"presentation_single1":"Breech"
 				
 			}
 		},
@@ -64,25 +76,37 @@
 			"id": "group 7",
 			"conditions": {
 				"obs_index": "Multi",
+				"previous_cesarean": "false",
 				"fetus_type": "Single",
-				"presentation_single": "Breech"
+				"presentation_single":"Cephalic",
+				"presentation_single1":"Breech"
+				
+				
 			}
 		},
 		{
 			"id": "group 8",
 			"conditions": {
-				"obs_index": "Multi"
+				"previous_cesarean": "false",
+				"fetus_type": "Twins"
 			}
 		},
 		{
 			"id": "group 9",
-			"conditions": {}
+			"conditions": {
+				"previous_cesarean": "false",
+				"fetus_type": "Single",
+				"presentation_single":"Transverse"
+			}
 		},
 		{
 			"id": "group 10",
 			"conditions": {
+				"previous_cesarean": "false",
 				"fetus_type": "Single",
-				"presentation_single": "Cephalic"
+				"presentation_single": "Cephalic",
+				"presentation_single1": "Breech",
+				"pog":"<36"
 			}
 		}
 	]
