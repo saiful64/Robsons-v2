@@ -1,21 +1,22 @@
-import os from "os";
+const os = require("os");
 
-function getIPAddress() {
+function getLocalIPAddress() {
 	const networkInterfaces = os.networkInterfaces();
-	const wifiInterface =
-		networkInterfaces["Wi-Fi"] || networkInterfaces["wlan0"]; // Replace with your specific interface name
-
-	if (wifiInterface) {
-		const wifiAddressInfo = wifiInterface.find(
-			(address) => address.family === "IPv4" && !address.internal
-		);
-
-		if (wifiAddressInfo) {
-			return wifiAddressInfo.address;
+	// Iterate over network interfaces to find the one that is not internal (127.0.0.1) and IPv4
+	for (const interfaceName in networkInterfaces) {
+		const interfaceInfoList = networkInterfaces[interfaceName];
+		for (const interfaceInfo of interfaceInfoList) {
+			if (!interfaceInfo.internal && interfaceInfo.family === "IPv4") {
+				return interfaceInfo.address;
+			}
 		}
 	}
-
-	return "localhost"; // Fallback to localhost if the WiFi IP address is not found
+	return null; // Return null if no local IP address is found
 }
 
-export default getIPAddress;
+// Usage
+const localIPAddress = getLocalIPAddress();
+console.log("Local IP Address:", localIPAddress);
+
+// Export the function directly to use it in other files
+module.exports = getLocalIPAddress;

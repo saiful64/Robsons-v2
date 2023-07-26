@@ -51,6 +51,41 @@ function GenerateReportView() {
 			});
 	};
 
+	const generateReportOne = () => {
+		axios({
+			url: `${API_BASE_URL}/api/generate-report-one`,
+			method: "GET",
+			responseType: "blob",
+			params: {
+				startDate: moment(dateRange[0].startDate).format("YYYY-MM-DD"),
+				endDate: moment(dateRange[0].endDate).format("YYYY-MM-DD"),
+			},
+		})
+			.then((response) => {
+				if (response.data) {
+					const url = window.URL.createObjectURL(new Blob([response.data]));
+					const link = document.createElement("a");
+					const randomNumber = Math.floor(Math.random() * 10000);
+					const fileName = `RobsonsClassificaton_Report_${moment(
+						dateRange[0].startDate
+					).format("YYYY-MM-DD")}_${moment(dateRange[0].endDate).format(
+						"YYYY-MM-DD"
+					)}_${moment(new Date()).format("x")}${randomNumber}.xlsx`;
+					link.href = url;
+					link.setAttribute("download", fileName); // set file name here
+					document.body.appendChild(link);
+					link.click();
+				} else {
+					console.log("No data found");
+				}
+			})
+			.catch((error) => {
+				console.error(error);
+				console.error(error.response);
+				//toast.error("unexpected error occurred");
+			});
+	};
+
 	return (
 		<>
 			<div className='flex flex-col items-center justify-center h-screen'>
@@ -74,7 +109,13 @@ function GenerateReportView() {
 								className='bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded m-2'
 								onClick={() => generateReport()}
 							>
-								GENERATE REPORT
+								GENERATE ALL DATA
+							</button>
+							<button
+								className='bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded m-2'
+								onClick={() => generateReportOne()}
+							>
+								GENERATE SPECIFIC DATA
 							</button>
 						</div>
 					</div>

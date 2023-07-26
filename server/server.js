@@ -76,16 +76,16 @@ app.post("/submit-form", (req, res) => {
 		data = req.body;
 	}
 	
-	console.log(data);
+	//console.log(data);
 	let actualPreviousCesarean = req.body.previous_cesarean;
-
-	if(data.previous_cesarean===null){
-		data.new='1';
+	console.log('hello',data.labour);
+	if(data.labour===undefined){
+		data.labour='None';
 	}else{
-		data.previous_cesarean = Number(data.previous_cesarean) > 0 ? "true" : "false";
+		data = req.body;
 	}
 		
-		  
+	data.previous_cesarean = Number(data.previous_cesarean) > 0 ? "true" : "false";	  
 	let highestMatchedGroup = { percentage: 0 };
 	_.forEach(groupLogics, (logics) => {
 		_.forEach(logics, (thisGroupLogic) => {

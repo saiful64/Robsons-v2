@@ -42,7 +42,7 @@ function ObsIndexForm() {
 		{ key: "subText", displayText: "Made with 🧡 by MCA students" },
 	];
 
-  const goToPreviousForm = () => {
+	const goToPreviousForm = () => {
 		if (prevFormIndex !== -1) {
 			setFormIndex(prevFormIndex);
 			setPrevFormIndex((prevForm) => prevForm - 1); // Update prevFormIndex
@@ -79,11 +79,11 @@ function ObsIndexForm() {
 	};
 
 	const handleKeyDown = (event) => {
-		if (event.key === 'Enter') {
-		  // 👇 Get input value
-		  goToNextForm();
+		if (event.key === "Enter") {
+			// 👇 Get input value
+			goToNextForm();
 		}
-		if(event.key === 'Backspace'){
+		if (event.key === "Backspace") {
 			goToPreviousForm();
 		}
 	};
@@ -199,11 +199,13 @@ function ObsIndexForm() {
 				<div className='m-6 py-3 px-0 w-80 relative justify-center'>
 					{formData[formIndex]?.type == "textarea" && (
 						<div className='flex h-max flex-col mb-4 '>
-							<label for="message" className="mb-1 ml-1 text-sm font-bold">Enter your message:</label>
+							<label for='message' className='mb-1 ml-1 text-sm font-bold'>
+								Enter your message:
+							</label>
 							<textarea
-								id="message"
+								id='message'
 								className='border h-28 rounded-lg form-textarea p-2 block text-sm text-gray-700 mb-2 border-black'
-								placeholder="Enter your text here..."
+								placeholder='Enter your text here...'
 								value={textareaValue}
 								onChange={(event) => {
 									setTextareaValue(event.target.value);
@@ -225,35 +227,45 @@ function ObsIndexForm() {
 
 							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-full mb-4 rounded-md'>
 								<Datetime
-									dateFormat='YYYY-mm-DD'
+									dateFormat='YYYY-MM-DD' // Use uppercase 'DD' for day of the month
 									timeFormat={false}
 									value={dateOfBirth}
 									inputProps={{ placeholder: "Date of Birth" }}
 									placeholderText='Date of Birth'
-									onClose={(value) => {
+									onChange={(value) => {
 										const formattedDate = moment(value).format("YYYY-MM-DD");
-										setDateOfBirth(formattedDate);
-										updateThisOption(
-											formData[formIndex]?.dateOfBirth,
-											formattedDate
-										);
+										if (moment(formattedDate, "YYYY-MM-DD", true).isValid()) {
+											setDateOfBirth(formattedDate);
+											updateThisOption(
+												formData[formIndex]?.dateOfBirth,
+												formattedDate
+											);
+										} else {
+											setDateOfBirth(""); // Set to an empty string or a default value
+										}
 									}}
 								/>
 							</div>
 							<div className='relative max-w-sm mt-2  datetime-box border ml-7 border-gray-400 p-2 w-full rounded-md'>
 								<Datetime
 									dateFormat={false}
-									timeFormat='HH:mm a'
+									timeFormat='HH:mm' // Use uppercase 'A' for AM/PM
 									value={timeOfBirth}
 									placeholderText='Time of Birth'
 									inputProps={{ placeholder: "Time of Birth" }}
-									onClose={(value) => {
-										const formattedTime = moment(value).format("HH:mm");
-										setTimeOfBirth(formattedTime);
-										updateThisOption(
-											formData[formIndex]?.timeOfBirth,
-											formattedTime
+									onChange={(value) => {
+										const formattedTime = moment(value, "HH:mm", true).format(
+											"HH:mm"
 										);
+										if (moment(formattedTime, "HH:mm", true).isValid()) {
+											setTimeOfBirth(formattedTime);
+											updateThisOption(
+												formData[formIndex]?.timeOfBirth,
+												formattedTime
+											);
+										} else {
+											setTimeOfBirth(""); // Set to an empty string or a default value
+										}
 									}}
 								/>
 							</div>

@@ -13,14 +13,11 @@ function HomeView() {
 	const goToFormPage = () => {
 		navigate("/forms");
 	};
-	const generateSheetPage = () => {
+	const recorderdata = () => {
 		navigate("/generate-excel-sheet");
 	};
-	const generateStatus = () => {
+	const analysis = () => {
 		navigate("/generate-status");
-	};
-	const generateSpecific = () => {
-		navigate("/generate-excel-sheet-one");
 	};
 	const barChart = () => {
 		navigate("/bar-chart")
@@ -41,27 +38,21 @@ function HomeView() {
 							className='bg-zinc-300 hover:bg-gray-800 hover:text-white text-gray-500 font-medium hover:font-bold hover:shadow-xl py-2 px-4 rounded m-2 mb-6'
 							onClick={() => goToFormPage()}
 						>
-							ENTER DATA
+							CLASSIFY
 						</button>
 						{auth.user === "doctor" && (
 							<>
 								<button
 									className='bg-zinc-400 hover:bg-gray-600 hover:text-zinc-200 text-white font-medium hover:font-bold hover:shadow-xl py-2 px-4 rounded m-2 mb-6'
-									onClick={() => generateSheetPage()}
+									onClick={() => recorderdata()}
 								>
-									GENERATE EXCEL SHEET REPORT
+									RECORDED DATA
 								</button>
 								<button
 									className='bg-zinc-500 hover:bg-gray-600 text-white font-medium hover:font-bold hover:shadow-xl py-2 px-4 rounded m-2 mb-6'
-									onClick={() => generateStatus()}
+									onClick={() => analysis()}
 								>
-									GENERATE STATUS
-								</button>
-								<button
-									className='bg-zinc-500 hover:bg-gray-600 text-white font-medium hover:font-bold hover:shadow-xl py-2 px-4 rounded m-2 mb-6'
-									onClick={() => generateSpecific()}
-								>
-									GENERATE SPECIFIC DATA
+									ANALYSIS
 								</button>
 								<button
 									className='bg-zinc-500 hover:bg-gray-600 text-white font-medium hover:font-bold hover:shadow-xl py-2 px-4 rounded m-2 mb-6'
