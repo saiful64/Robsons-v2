@@ -9,6 +9,7 @@ import moment from "moment";
 import excel from "node-excel-export";
 import styles from "./constants/constants.js";
 import util  from "util";
+import { log } from "console";
 
 
 
@@ -698,6 +699,58 @@ const calculateAbsoluteCSRate = async (groupsList, dateRangeOptions, res, count_
 		};
 	}
 };
+// function to calculate precentage of CSrate-Line chart
+const calculateCsRate = async (
+	res
+) => {
+	try {
+		return new Promise((resolve, reject) => {
+			let csRate1 = [];
+			
+				let robsonsQuery = `SELECT COUNT(*) as COUNT FROM robosonsdata WHERE delivery='CS'`;
+				let totalcount = `SELECT COUNT(*) as W_COUNT FROM robosonsdata`;
+				con.query(robsonsQuery, async (error, result, fields) => {
+					if (error) {
+						console.error(error);
+						res
+							.status(500)
+							.send({ message: "Internal Server Error calculateRelativeCsRate" });
+						return;
+					}
+				con.query(totalcount, async (error, result, fields) => {
+						if (error) {
+						  console.error('Error executing totalcount:', error);
+						  res.status(500).send({ message: 'Internal Server Error calculateRelativeCsRate' });
+						  return;
+						}
+					let totalCsCount = await result[0]["COUNT"];
+					let totalcount = await result[0]["W_COUNT"];
+					//console.log(thisGroupCsCount);
+					
+					let CsRate =
+					    totalCsCount && totalcount
+							? (totalCsCount / totalcount) * 100
+							: 0;
+						//console.log(CsRate);
+						csRate1.push({
+							csRate1: CsRate,
+					});
+
+					//if (RelativecsRate.length === totalGroupList.length) {
+						resolve(csRate1);
+				//	}
+				});
+			});
+
+		});
+	} catch (error) {
+		console.error(error);
+		res
+			.status(500)
+			.send({ message: "Internal Server Error calculateCSRateForEachGroup" });
+		return;
+	}
+};
 // function to calculate count of BarChart
 const calculateBarChart = (groupsList1, count_total) => {
 	let BarChart = [];
@@ -906,16 +959,20 @@ app.get("/api/line-chart", async (req, res) => {
 			console.log("284", relativeGroupSizeData1);
 			console.log("285", relativeGroupSizeData2);
 			console.log("286", relativeGroupSizeData3);
-			
-			// let CSrate = await calculateCsRate(	res)
 
-		
-			// const CSrateData = CSrate.map((obj) =>
-			//   _.omit(obj,["group_name","relativeGroupSize","relativeGroupSize","csRateForEachGroup","AbsolutecsRate"])
-			// );
-			
-			
-			res.status(200).send({data1:relativeGroupSizeData1,data2:relativeGroupSizeData2,data3:relativeGroupSizeData3});
+			let CSrate = await calculateCsRate(	res)
+
+			const CSrateData = CSrate.map((obj) =>
+			  _.omit(obj,["group_name","relativeGroupSize","relativeGroupSize","csRateForEachGroup","AbsolutecsRate"])
+			);
+			console.log(CSrateData);
+			res
+				.status(200)
+				.send({
+					data1: relativeGroupSizeData1,
+					data2: relativeGroupSizeData2,
+					data3: relativeGroupSizeData3,
+				});
 		});
 	} catch (error) {
 		console.error(error);
