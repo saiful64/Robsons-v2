@@ -6,7 +6,6 @@ import HomeView from "./components/home-view";
 import Register from "./components/Register";
 import ObsIndexForm from "../src/components/form1";
 import GenerateExcelSheet from "../src/components/generate-report-view";
-import GenerateExcelSheetOne from "../src/components/generate-report-view-one";
 import GenerateStatus from "../src/components/generate-status-view";
 import LineChartComponent from "../src/components/lineChart";
 import MyChartComponent from "./components/barchart";
@@ -59,15 +58,6 @@ function App() {
 								element={
 									<ProtectedRoute>
 										<GenerateExcelSheet />
-									</ProtectedRoute>
-								}
-							/>
-							<Route
-								exact
-								path='/generate-excel-sheet-one'
-								element={
-									<ProtectedRoute>
-										<GenerateExcelSheetOne />
 									</ProtectedRoute>
 								}
 							/>
