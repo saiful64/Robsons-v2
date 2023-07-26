@@ -234,28 +234,38 @@ function ObsIndexForm() {
 									placeholderText='Date of Birth'
 									onChange={(value) => {
 										const formattedDate = moment(value).format("YYYY-MM-DD");
-										setDateOfBirth(formattedDate);
-										updateThisOption(
-											formData[formIndex]?.dateOfBirth,
-											formattedDate
-										);
+										if (moment(formattedDate, "YYYY-MM-DD", true).isValid()) {
+											setDateOfBirth(formattedDate);
+											updateThisOption(
+												formData[formIndex]?.dateOfBirth,
+												formattedDate
+											);
+										} else {
+											setDateOfBirth(""); // Set to an empty string or a default value
+										}
 									}}
 								/>
 							</div>
 							<div className='relative max-w-sm mt-2  datetime-box border ml-7 border-gray-400 p-2 w-full rounded-md'>
 								<Datetime
 									dateFormat={false}
-									timeFormat='HH:mm A' // Use uppercase 'A' for AM/PM
+									timeFormat='HH:mm' // Use uppercase 'A' for AM/PM
 									value={timeOfBirth}
 									placeholderText='Time of Birth'
 									inputProps={{ placeholder: "Time of Birth" }}
 									onChange={(value) => {
-										const formattedTime = moment(value).format("HH:mm");
-										setTimeOfBirth(formattedTime);
-										updateThisOption(
-											formData[formIndex]?.timeOfBirth,
-											formattedTime
+										const formattedTime = moment(value, "HH:mm", true).format(
+											"HH:mm"
 										);
+										if (moment(formattedTime, "HH:mm", true).isValid()) {
+											setTimeOfBirth(formattedTime);
+											updateThisOption(
+												formData[formIndex]?.timeOfBirth,
+												formattedTime
+											);
+										} else {
+											setTimeOfBirth(""); // Set to an empty string or a default value
+										}
 									}}
 								/>
 							</div>
