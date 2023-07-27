@@ -1,41 +1,15 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "./auth";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
-import { DateRange } from "react-date-range";
-import moment from "moment";
 import { useTable, useResizeColumns } from "react-table";
 import API_BASE_URL from "./config";
 
 function GenerateStatus() {
-	const [dateRange, setDateRange] = useState([
-		{
-			startDate: moment().subtract(7, "days").toDate(),
-			endDate: new Date(),
-			key: "selection",
-		},
-	]);
-	
-	const [generateStatusData, setGenerateStatusData] = useState([]);
 	const [columns, setColumns] = useState([]);
 	const [data, setData] = useState([]);
-	const [showCalendar, setShowCalendar] = useState(true);
-	useEffect(() => {
 
-	}, []);
-	const navigate = useNavigate();
-	const auth = useAuth();
-
-	const handleClick = () => {
-		setShowCalendar(!showCalendar);
-		axios
-		.get(`${API_BASE_URL}/api/generate-status-init`, {
-			params: {
-				startDate: moment(dateRange[0].startDate).format("YYYY-MM-DD"),
-				endDate: moment(dateRange[0].endDate).format("YYYY-MM-DD"),
-			}
-		  })
+	axios
+		.get(`${API_BASE_URL}/api/generate-status-init`)
 		.then((response) => {
 			console.log(response.data);
 			setData(response.data.data);
@@ -44,7 +18,6 @@ function GenerateStatus() {
 		.catch((error) => {
 			console.error(error);
 		});
-	};
 
 	// Use useMemo to memoize the table instance to avoid unnecessary re-renders
 	const tableInstance = useTable({ data, columns }, useResizeColumns);
@@ -55,80 +28,53 @@ function GenerateStatus() {
 	return (
 		<>
 			<div className='flex flex-col items-center justify-center h-screen'>
-				<div
-					className={`bg-white p-6 rounded-lg shadow-md w-full ${
-						showCalendar ? "sm:w-96" : ""
-					}`}
-				>
+				<div className={"bg-white p-6 rounded-lg shadow-md w-full"}>
 					<h1 className='text-3xl font-bold mb-4 text-center'>
 						Data Visualization
-						
 					</h1>
 
-					{showCalendar ? (
-						<div className='flex flex-col justify-center mb-7'>
-							<div className='flex flex-col justify-center'>
-								<DateRange
-									editableDateInputs={true}
-									onChange={(item) => setDateRange([item.selection])}
-									moveRangeOnFirstSelection={false}
-									maxDate={new Date()}
-									ranges={dateRange}
-								/>
-
-								<button
-									className='bg-green-500 hover:bg-green-700 text-white font-bold p-2 rounded'
-									onClick={() => handleClick()}
+					<div className='flex flex-col justify-center'>
+						<div className='overflow-x-auto'>
+							<table {...getTableProps()} className='table-auto w-full'>
+								<thead className='bg-gray-200 text-gray-600 uppercase text-xs leading-normal'>
+									{headerGroups.map((headerGroup) => (
+										<tr {...headerGroup.getHeaderGroupProps()}>
+											{headerGroup.headers.map((column) => (
+												<th
+													{...column.getHeaderProps()}
+													className='py-3 px-6 text-left'
+												>
+													{column.render("Header")}
+												</th>
+											))}
+										</tr>
+									))}
+								</thead>
+								<tbody
+									{...getTableBodyProps()}
+									className='text-gray-600 text-sm font-light'
 								>
-									OK
-								</button>
-								<Link to="/newroute"><button className="bg-blue-500 hover:bg-blue-700 text-white font-bold w-full p-2 mt-2 rounded">TD&CD Graph</button></Link>
-							</div>
-						</div>
-					) : (
-						<div className='flex flex-col justify-center'>
-							<div className='overflow-x-auto'>
-								<table {...getTableProps()} className='table-auto w-full'>
-									<thead className='bg-gray-200 text-gray-600 uppercase text-xs leading-normal'>
-										{headerGroups.map((headerGroup) => (
-											<tr {...headerGroup.getHeaderGroupProps()}>
-												{headerGroup.headers.map((column) => (
-													<th
-														{...column.getHeaderProps()}
-														className='py-3 px-6 text-left'
-													>
-														{column.render("Header")}
-													</th>
-												))}
+									{rows.map((row) => {
+										prepareRow(row);
+										return (
+											<tr {...row.getRowProps()}>
+												{row.cells.map((cell) => {
+													return (
+														<td
+															{...cell.getCellProps()}
+															className='py-3 px-6 text-left whitespace-nowrap'
+														>
+															{cell.render("Cell")}
+														</td>
+													);
+												})}
 											</tr>
-										))}
-									</thead>
-									<tbody
-										{...getTableBodyProps()}
-										className='text-gray-600 text-sm font-light'
-									>
-										{rows.map((row) => {
-											prepareRow(row);
-											return (
-												<tr {...row.getRowProps()}>
-													{row.cells.map((cell) => {
-														return (
-															<td
-																{...cell.getCellProps()}
-																className='py-3 px-6 text-left whitespace-nowrap'
-															>
-																{cell.render("Cell")}
-															</td>
-														);
-													})}
-												</tr>
-											);
-										})}
-									</tbody>
-								</table>
-							</div>
+										);
+									})}
+								</tbody>
+							</table>
 						</div>
-					)}
+					</div>
 				</div>
 			</div>
 		</>

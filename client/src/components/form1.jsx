@@ -22,7 +22,7 @@ function ObsIndexForm() {
 
 	const [selectedRadioButton, setSelectedRadioButton] = useState(null);
 	const [group, setgroup] = useState("");
-
+	const [formIndexStack, setFormIndexStack] = useState([]);
 	const [isClicked, setIsClicked] = useState(false);
 	const navigate = useNavigate();
 
@@ -43,9 +43,10 @@ function ObsIndexForm() {
 	];
 
 	const goToPreviousForm = () => {
-		if (prevFormIndex !== -1) {
+		if (formIndexStack.length > 0) {
+			const prevFormIndex = formIndexStack.pop(); // Step 3: Pop the index from the stack
 			setFormIndex(prevFormIndex);
-			setPrevFormIndex((prevForm) => prevForm - 1); // Update prevFormIndex
+			setPrevFormIndex((prevForm) => prevForm - 1);
 		}
 	};
 
@@ -75,6 +76,7 @@ function ObsIndexForm() {
 				setFormIndex((prevForm) => prevForm + 1);
 				setPrevFormIndex(formIndex); // Update prevFormIndex when moving to the next form
 			}
+			setFormIndexStack((prevStack) => [...prevStack, formIndex]);
 		}
 	};
 
