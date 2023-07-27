@@ -1,24 +1,7 @@
 create database robsonclassification;
 use robsonclassification;
 
-desc `groups`;
-desc loginauth;
-desc robosonsdata;
-
-select * from `groups`;
-select * from loginauth;
-select * from robosonsdata;
-
--- Insert row for a doctor
-INSERT INTO loginauth (user_name, password, role)
-VALUES ('d', 'd', 'doctor');
-
--- Insert row for a student
-INSERT INTO loginauth (user_name, password, role)
-VALUES ('s', 's', 'student');
-
-
-CREATE TABLE robosonsdata (
+CREATE TABLE robsonsdata (
   id INT AUTO_INCREMENT PRIMARY KEY,
   obs_index VARCHAR(255),
   weeks VARCHAR(255),
@@ -36,7 +19,8 @@ CREATE TABLE robosonsdata (
   Stage VARCHAR(255),
   BabyDetails VARCHAR(255),
   weight VARCHAR(255),
-  apgar VARCHAR(255),
+  apgar1 VARCHAR(255),
+  apgar5 VARCHAR(255),
   outcome VARCHAR(255),
   indication VARCHAR(255),
   final_outcome VARCHAR(255),
@@ -55,7 +39,7 @@ CREATE TABLE `groups` (
   created_by VARCHAR(255),
   created_on DATETIME,
   dataId INT,
-  FOREIGN KEY (dataId) REFERENCES robosonsdata(id)
+  FOREIGN KEY (dataId) REFERENCES robsonsdata(id)
 );
 
 CREATE TABLE loginauth (
@@ -63,6 +47,24 @@ CREATE TABLE loginauth (
   password VARCHAR(255) NOT NULL,
   role ENUM('doctor', 'student') NOT NULL
 );
+
+desc `groups`;
+desc loginauth;
+desc robosonsdata;
+
+select * from `groups`;
+select * from loginauth;
+select * from robosonsdata;
+
+-- Insert row for a doctor
+INSERT INTO loginauth (user_name, password, role)
+VALUES ('d', 'd', 'doctor');
+
+-- Insert row for a student
+INSERT INTO loginauth (user_name, password, role)
+VALUES ('s', 's', 'student');
+
+
 
 
 
