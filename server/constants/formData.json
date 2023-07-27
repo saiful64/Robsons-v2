@@ -248,10 +248,8 @@
 		{
 			"title": "apgar",
 			"displayText": "APGAR",
-			"options": [
-				{ "value": "at_1_min", "displayText": "At 1 min", "type": "textBox" },
-				{ "value": "at_5_min", "displayText": "At 5 min", "type": "textBox" }
-			],
+			"options": [],
+			"type" : "twoInputs",
 			"showPrevious": true,
 			"showNext": true
 		},

@@ -18,6 +18,8 @@ function ObsIndexForm() {
 	const [dateOfBirth, setDateOfBirth] = useState("");
 	const [timeOfBirth, setTimeOfBirth] = useState("");
 	const [prevFormIndex, setPrevFormIndex] = useState(-1);
+	const [apgar1, setApgar1] = useState("");
+	const [apgar5, setApgar5] = useState("");
 	const auth = useAuth();
 
 	const [selectedRadioButton, setSelectedRadioButton] = useState(null);
@@ -193,6 +195,34 @@ function ObsIndexForm() {
 								onChange={(e) => {
 									setTextBoxValue(e.target.value);
 									updateThisOption(formData[formIndex]?.title, e.target.value);
+								}}
+							/>
+						</div>
+					)}
+				</div>
+				<div className='mt-6 flex'>
+					{formData[formIndex]?.type == "twoInputs" && (
+						<div className='flex flex-col mb-4 p-4'>
+							<p className="m-4">At 1 min</p>
+							<input
+								type='text'
+								className='border ml-7 border-gray-400 p-2 w-full rounded-md'
+								value={apgar1}
+								placeholder={"at 1 min"}
+								onChange={(e) => {
+									setApgar1(e.target.value);
+									updateThisOption("apgar1", e.target.value);
+								}}
+							/>
+							<p className="m-4">At 5 min</p>
+							<input
+								type='text'
+								className='border ml-7 border-gray-400 p-2 w-full rounded-md'
+								value={apgar5}
+								placeholder={"at 5 min"}
+								onChange={(e) => {
+									setApgar5(e.target.value);
+									updateThisOption("apgar5", e.target.value);
 								}}
 							/>
 						</div>
