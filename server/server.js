@@ -45,10 +45,10 @@ const totalMonthList = [
 app.use(bodyParser.json());
 app.use(cors());
 const con = mysql.createConnection({
-	host: `${API_BASE_URL}`,
-	user: "root",
-	password: "",
-	database: "robsonclassification",
+	host: `bryp5utndoci5ykphz7s-mysql.services.clever-cloud.com`,
+	user: "uox8dnc3skku9ro4",
+	password: "63vchJZOXy8G0eUFf6vj",
+	database: "bryp5utndoci5ykphz7s",
 	multipleStatements: true,
 });
 
