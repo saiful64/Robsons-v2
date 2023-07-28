@@ -79,7 +79,7 @@ function App() {
 								</ProtectedRoute>}
 							/>
 
-							<Route path="/newroute" 
+							<Route path="/line-chart" 
 							element={
 								<ProtectedRoute>
 							<LineChartComponent/>
