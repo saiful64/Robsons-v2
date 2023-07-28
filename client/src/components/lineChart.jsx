@@ -31,17 +31,17 @@ const LineChartComponent = () => {
  
     
   const chartData = {
-    labels: data1.map((item) => item.xDataKey),
+    labels: data1.map((item) => item.month_name),
     datasets: [
       {
         label: 'Caesarean Del',
-        data: data1.map((item) => item.yDataKey1),
+        data: data1.map((item) => item.csCount),
         borderColor: '#8884d8',
         fill: false,
       },
       {
-        label: 'Deliveries',
-        data: data2.map((item) => item.yDataKey2),
+        label: 'Total Deliveries',
+        data: data2.map((item) => item.totalCount),
         borderColor: '#82ca9d',
         fill: false,
       },
