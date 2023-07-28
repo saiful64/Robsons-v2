@@ -44,13 +44,14 @@ const totalMonthList = [
 ];
 app.use(bodyParser.json());
 app.use(cors());
-var con = mysql.createConnection({
+const con = mysql.createConnection({
 	host: `${API_BASE_URL}`,
 	user: "root",
 	password: "",
 	database: "robsonclassification",
 	multipleStatements: true,
 });
+
 
 con.connect((err) => {
 	if (!err) console.log("connection successful");

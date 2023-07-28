@@ -1,4 +1,5 @@
 // config.js
-const API_BASE_URL = "http://localhost:3050"; // Replace with your IP address and port
+const API_BASE_URL =
+	"https://bryp5utndoci5ykphz7s-mysql.services.clever-cloud.com:3050"; // Replace with your IP address and port
 
 export default API_BASE_URL;
