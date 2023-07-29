@@ -20,6 +20,7 @@ function ObsIndexForm() {
 	const [prevFormIndex, setPrevFormIndex] = useState(-1);
 	const [apgar1, setApgar1] = useState("");
 	const [apgar5, setApgar5] = useState("");
+	const [prelabour, setprelabour] = useState(false);
 	const auth = useAuth();
 
 	const [selectedRadioButton, setSelectedRadioButton] = useState(null);
@@ -56,6 +57,10 @@ function ObsIndexForm() {
 
 	const goToNextForm = () => {
 		if (!isClicked) {
+			if (prelabour && formIndex == 16) {
+				setFormIndex((prevForm) => prevForm + 1);
+				setPrevFormIndex(formIndex);
+			}
 			const conditions = formData[formIndex]?.conditions;
 			if (conditions) {
 				let foundMatch = false;
@@ -63,22 +68,21 @@ function ObsIndexForm() {
 					const optionValue = condition.option;
 					const targetValue = condition.target;
 					if (selectedRadioButton === optionValue || "null" === optionValue) {
-						console.log("Its a match");
 						const targetFormIndex = formData.findIndex(
 							(item) => item.title === targetValue
 						);
 						setFormIndex(targetFormIndex);
-						setPrevFormIndex(formIndex); // Update prevFormIndex when moving to the next form
+						setPrevFormIndex(formIndex);
 						foundMatch = true;
 					}
 				});
 				if (!foundMatch) {
 					setFormIndex((prevForm) => prevForm + 1);
-					setPrevFormIndex(formIndex); // Update prevFormIndex when moving to the next form
+					setPrevFormIndex(formIndex); 
 				}
 			} else {
 				setFormIndex((prevForm) => prevForm + 1);
-				setPrevFormIndex(formIndex); // Update prevFormIndex when moving to the next form
+				setPrevFormIndex(formIndex); 
 			}
 			setFormIndexStack((prevStack) => [...prevStack, formIndex]);
 		}
@@ -173,7 +177,13 @@ function ObsIndexForm() {
 									}
 									onChange={(event) => {
 										setSelectedRadioButton(event.target.value);
-										console.log(event.target.value);
+										if (formData[formIndex]?.title === "labour") {
+											if (event.target.value === "pre_labour") {
+												setprelabour(true);
+											} else {
+												setprelabour(false);
+											}
+										}
 										if (formData[formIndex]?.title === "indication_cesarean") {
 											if (event.target.value === "others") {
 												setShowTextInput(true);
@@ -201,14 +211,14 @@ function ObsIndexForm() {
 								<input
 									type='text'
 									className='border ml-7 border-gray-400 p-2 w-full rounded-md'
-									value={textInputValue} 
+									value={textInputValue}
 									onChange={(e) => {
 										setTextInputValue(e.target.value);
 										updateThisOption(
 											formData[formIndex]?.title,
 											e.target.value
 										);
-									}} 
+									}}
 									placeholder='Enter your text here...'
 								/>
 							</div>
