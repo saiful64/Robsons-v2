@@ -177,6 +177,12 @@ function ObsIndexForm() {
 											option.displayText
 										);
 									}}
+									onClick={() => {
+										updateThisOption(
+											formData[formIndex]?.title,
+											option.displayText
+										);
+									}}
 								/>
 								<span className='ml-2'>{option.displayText}</span>
 							</label>
@@ -203,23 +209,25 @@ function ObsIndexForm() {
 				<div className='mt-6 flex'>
 					{formData[formIndex]?.type == "twoInputs" && (
 						<div className='flex flex-col mb-4 p-4'>
-							<p className="m-4">At 1 min</p>
+							<p className='m-4'>At 1 min: {apgar1}</p>
 							<input
-								type='text'
+								type='range'
+								min={0}
+								max={10}
 								className='border ml-7 border-gray-400 p-2 w-full rounded-md'
 								value={apgar1}
-								placeholder={"at 1 min"}
 								onChange={(e) => {
 									setApgar1(e.target.value);
 									updateThisOption("apgar1", e.target.value);
 								}}
 							/>
-							<p className="m-4">At 5 min</p>
+							<p className='m-4'>At 5 min: {apgar5}</p>
 							<input
-								type='text'
+								type='range'
+								min={0}
+								max={10}
 								className='border ml-7 border-gray-400 p-2 w-full rounded-md'
 								value={apgar5}
-								placeholder={"at 5 min"}
 								onChange={(e) => {
 									setApgar5(e.target.value);
 									updateThisOption("apgar5", e.target.value);

@@ -209,7 +209,8 @@
 			"displayText": "Stage for Cesarean",
 			"options": [
 				{ "value": "i_stage", "displayText": "I Stage" },
-				{ "value": "ii_stage", "displayText": "II Stage" }
+				{ "value": "ii_stage", "displayText": "II Stage" },
+				{ "value": "pre_labour", "displayText": "Pre Labour" }
 			],
 			"showPrevious": true,
 			"showNext": true
@@ -249,7 +250,7 @@
 			"title": "apgar",
 			"displayText": "APGAR",
 			"options": [],
-			"type" : "twoInputs",
+			"type": "twoInputs",
 			"showPrevious": true,
 			"showNext": true
 		},
@@ -262,6 +263,7 @@
 				{ "value": "nicv", "displayText": "NICV" },
 				{ "value": "sb", "displayText": "SB" }
 			],
+			"conditions": [{ "option": "m_s", "target": "final_outcome" }],
 			"showPrevious": true,
 			"showNext": true
 		},
@@ -317,10 +319,9 @@
 			"title": "review",
 			"displayText": "Review",
 			"options": [],
-			"type" :"textarea",
+			"type": "textarea",
 			"showPrevious": true,
 			"isSubmit": true
 		}
 	]
 }
-
