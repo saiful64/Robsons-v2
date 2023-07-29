@@ -27,6 +27,8 @@ function ObsIndexForm() {
 	const [formIndexStack, setFormIndexStack] = useState([]);
 	const [isClicked, setIsClicked] = useState(false);
 	const navigate = useNavigate();
+	const [showTextInput, setShowTextInput] = useState(false);
+	const [textInputValue, setTextInputValue] = useState("");
 
 	useEffect(() => {
 		axios
@@ -171,7 +173,12 @@ function ObsIndexForm() {
 									}
 									onChange={(event) => {
 										setSelectedRadioButton(event.target.value);
-
+										console.log(event.target.value);
+										if (formData[formIndex]?.title === "indication_cesarean") {
+											if (event.target.value === "others") {
+												setShowTextInput(true);
+											}
+										}
 										updateThisOption(
 											formData[formIndex]?.title,
 											option.displayText
@@ -188,6 +195,24 @@ function ObsIndexForm() {
 							</label>
 						</div>
 					))}
+					{showTextInput &&
+						formData[formIndex]?.title == "indication_cesarean" && (
+							<div>
+								<input
+									type='text'
+									className='border ml-7 border-gray-400 p-2 w-full rounded-md'
+									value={textInputValue} 
+									onChange={(e) => {
+										setTextInputValue(e.target.value);
+										updateThisOption(
+											formData[formIndex]?.title,
+											e.target.value
+										);
+									}} 
+									placeholder='Enter your text here...'
+								/>
+							</div>
+						)}
 				</div>
 				<div className='mt-6 flex'>
 					{formData[formIndex]?.type == "textbox" && (
