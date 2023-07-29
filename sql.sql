@@ -50,11 +50,11 @@ CREATE TABLE loginauth (
 
 desc `groups`;
 desc loginauth;
-desc robosonsdata;
+desc robsonsdata;
 
 select * from `groups`;
 select * from loginauth;
-select * from robosonsdata;
+select * from robsonsdata;
 
 -- Insert row for a doctor
 INSERT INTO loginauth (user_name, password, role)
