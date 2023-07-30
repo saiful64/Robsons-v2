@@ -121,7 +121,10 @@ app.post("/submit-form", (req, res) => {
 	} else {
 		pog = ">36";
 	}
-		let group;
+	let group;
+	console.log(pog === ">36");
+
+	
 
 	if (
 		data.obs_index === "Primi" &&
@@ -129,16 +132,16 @@ app.post("/submit-form", (req, res) => {
 		data.fetus_type === "Single" &&
 		data.presentation_single === "Cephalic" &&
 		data.labour === "Spontaneous" &&
-		data.pog === ">36"
+		pog === ">36"
 	) {
-		group="Group 1";
+		group = "Group 1";
 	} else if (
 		data.obs_index === "Primi" &&
 		data.previous_cesarean === "false" &&
 		data.fetus_type === "Single" &&
 		data.presentation_single === "Cephalic" &&
 		(data.labour === "Pre Labour" || data.labour === "Induction of Labor") &&
-		data.pog === ">36"
+		pog === ">36"
 	) {
 		group = "Group 2";
 	} else if (
@@ -147,7 +150,7 @@ app.post("/submit-form", (req, res) => {
 		data.fetus_type === "Single" &&
 		data.presentation_single === "Cephalic" &&
 		data.labour === "Spontaneous" &&
-		data.pog === ">36"
+		pog === ">36"
 	) {
 		group = "Group 3";
 	} else if (
@@ -156,14 +159,14 @@ app.post("/submit-form", (req, res) => {
 		data.fetus_type === "Single" &&
 		data.presentation_single === "Cephalic" &&
 		(data.labour === "Induction of Labor" || data.labour === "Pre Labour") &&
-		data.pog === ">36"
+		pog === ">36"
 	) {
 		group = "Group 4";
 	} else if (
 		data.previous_cesarean === "true" &&
 		data.fetus_type === "Single" &&
 		data.presentation_single === "Cephalic" &&
-		data.pog === ">36"
+		pog === ">36"
 	) {
 		group = "Group 5";
 	} else if (
@@ -178,9 +181,7 @@ app.post("/submit-form", (req, res) => {
 		data.presentation_single === "Breech"
 	) {
 		group = "Group 7";
-	} else if (
-		data.fetus_type === "Twins"
-	) {
+	} else if (data.fetus_type === "Twins") {
 		group = "Group 8";
 	} else if (
 		data.fetus_type === "Single" &&
@@ -194,12 +195,11 @@ app.post("/submit-form", (req, res) => {
 	) {
 		group = "Group 10";
 	} else {
-
-	let	err=true;
-		res.status(200).send(err);
+		let err = true;
+		console.error("Error in group logics");
+		res.status(400).send({ message: "Group Logic Error" });
 		return;
 	}
-
 
 	const sql = `
     INSERT INTO robsonsdata (

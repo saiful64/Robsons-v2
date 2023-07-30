@@ -117,31 +117,38 @@ function ObsIndexForm() {
 		navigate("/home-view");
 	};
 
-	// function to handle navigation to the next form
-	const submitForms = () => {
-		let created_by = auth.user;
-		selectedOptions["created_by"] = created_by;
-		axios
-			.post(`${API_BASE_URL}/submit-form`, selectedOptions)
-			.then((response) => {
-				if(response.err)
-				{
-					toast.warning("Form logic error");
-				}
-				else{
-				let groupDetails = response.data;
-				if (groupDetails) {
-					setgroup(groupDetails.group);
-					toast.success("Form Submitted Successfully");
-					setIsClicked(true);
-				}
+const submitForms = () => {
+	let created_by = auth.user;
+	selectedOptions["created_by"] = created_by;
+	axios
+		.post(`${API_BASE_URL}/submit-form`, selectedOptions)
+		.then((response) => {
+			console.log(response.data);
+			let groupDetails = response.data;
+			if (groupDetails && groupDetails.group) {
+				setgroup(groupDetails.group);
+				toast.success("Form Submitted Successfully");
+				setIsClicked(true);
+			} else {
+				toast.error("Group Logic Error");
+				setIsClicked(false); // Reset the isClicked state to false in case of error
 			}
-			})
-			.catch((error) => {
-				console.error(error);
-				toast.error("Unexpected error occured");
-			});
-	};
+		})
+		.catch((error) => {
+			if (error.response && error.response.status === 400) {
+				// Show toast message for 400 (Bad Request) error
+				console.error("Error response:", error.response.data); // Log the error response for debugging
+				toast.warning("Group Logic Error kindly verify it again");
+			} else {
+				// Show toast message for other errors
+				console.error("Unexpected error:", error);
+				toast.error("Unexpected error occurred");
+			}
+		});
+};
+
+
+
 
 	return (
 		<div className='flex flex-col items-center justify-center h-screen'>
@@ -283,7 +290,7 @@ function ObsIndexForm() {
 				<div className='m-6 py-3 px-0 w-80 relative justify-center'>
 					{formData[formIndex]?.type == "textarea" && (
 						<div className='flex h-max flex-col mb-4 '>
-							<label for='message' className='mb-1 ml-1 text-sm font-bold'>
+							<label htmlFor='message' className='mb-1 ml-1 text-sm font-bold'>
 								Enter your message:
 							</label>
 							<textarea
