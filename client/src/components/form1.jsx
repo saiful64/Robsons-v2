@@ -124,13 +124,18 @@ function ObsIndexForm() {
 		axios
 			.post(`${API_BASE_URL}/submit-form`, selectedOptions)
 			.then((response) => {
-				console.log(response.data);
+				if(response.err)
+				{
+					toast.warning("Form logic error");
+				}
+				else{
 				let groupDetails = response.data;
 				if (groupDetails) {
 					setgroup(groupDetails.group);
 					toast.success("Form Submitted Successfully");
 					setIsClicked(true);
 				}
+			}
 			})
 			.catch((error) => {
 				console.error(error);
