@@ -122,7 +122,10 @@ app.post("/submit-form", (req, res) => {
 	} else {
 		pog = ">36";
 	}
-		let group;
+	let group;
+	console.log(pog === ">36");
+
+	
 
 	if (
 		data.obs_index === "Primi" &&
@@ -132,7 +135,7 @@ app.post("/submit-form", (req, res) => {
 		data.labour === "Spontaneous" &&
 		pog === ">36"
 	) {
-		group="Group 1";
+		group = "Group 1";
 	} else if (
 		data.obs_index === "Primi" &&
 		data.previous_cesarean === "false" &&
@@ -179,9 +182,7 @@ app.post("/submit-form", (req, res) => {
 		data.presentation_single === "Breech"
 	) {
 		group = "Group 7";
-	} else if (
-		data.fetus_type === "Twins"
-	) {
+	} else if (data.fetus_type === "Twins") {
 		group = "Group 8";
 	} else if (
 		data.fetus_type === "Single" &&
@@ -195,12 +196,11 @@ app.post("/submit-form", (req, res) => {
 	) {
 		group = "Group 10";
 	} else {
-
-	let	err=true;
-		res.status(200).send(err);
+		let err = true;
+		console.error("Error in group logics");
+		res.status(400).send({ message: "Group Logic Error" });
 		return;
 	}
-
 
 	const sql = `
     INSERT INTO robsonsdata (
