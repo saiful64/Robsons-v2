@@ -192,7 +192,7 @@ app.post("/submit-form", (req, res) => {
 	} else if (
 		data.fetus_type === "Single" &&
 		data.presentation_single === "Cephalic" &&
-		data.pog === "<36"
+		pog === "<36"
 	) {
 		group = "Group 10";
 	} else {
@@ -900,11 +900,11 @@ const calculateCsRate = async (res) => {
 // function to calculate count of BarChart
 const calculateBarChart = async (groupsList1, count_total) => {
 	let BarChart = [];
-	//console.log(groupsList);
+	console.log(groupsList1);
 	_.forEach(totalGroupList, (thisGroup) => {
 		let count = _.filter(groupsList1, { group_name: thisGroup }).length;
 		//console.log(groupsList);
-		//console.log(count);
+		console.log(count);
 		let percentage = (count / count_total) * 100;
 		BarChart.push({
 			group_name: thisGroup,
@@ -1122,9 +1122,10 @@ app.get("/api/dashboard", async (req, res) => {
 			let CesareanDel = result[0];
 			let totalDel = result[1];
 			
+			
 			let count_CSDel=CesareanDel.length;
 			let count_totalDel=totalDel.length;
-
+			
 			// Three month Cesarean Delivery
 			let groupsList1 = result[2];
 			let groupsList2 = result[3];
@@ -1163,7 +1164,7 @@ app.get("/api/dashboard", async (req, res) => {
 				groupsList3,
 				count_total3
 			);
-
+			console.log(relativeGroupSize3);
 			var relativeGroupSizeData1 = relativeGroupSize1.map((obj) =>
 				_.omit(obj, "BarChart")
 			);
@@ -1175,6 +1176,7 @@ app.get("/api/dashboard", async (req, res) => {
 			);
 			
 			
+			
 			const combinedData = {
 						data1: CesareanDelivery,
 						data2: TotalDelivery,
@@ -1182,7 +1184,7 @@ app.get("/api/dashboard", async (req, res) => {
 						data4: relativeGroupSizeData2,
 						data5: relativeGroupSizeData3,
 						};
-
+					//	console.log(combinedData);
 			res.status(200).send(combinedData);
 		});
 	} catch (error) {

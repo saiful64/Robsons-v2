@@ -8,14 +8,16 @@ import "react-toastify/dist/ReactToastify.css";
 import Modal from "./Modal";
 import { useNavigate } from "react-router-dom";
 import API_BASE_URL from "./config";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 function ObsIndexForm() {
 	const [formIndex, setFormIndex] = useState(0);
-	const [formData, setFormData] = useState([]);
+	const [formData, setFormData] = useState({dateOfBirth: null});
 	const [selectedOptions, setSelectedOptions] = useState({});
 	const [textBoxValue, setTextBoxValue] = useState("");
 	const [textareaValue, setTextareaValue] = useState("");
-	const [dateOfBirth, setDateOfBirth] = useState("");
+	const [dateOfBirth, setDateOfBirth] = useState(null);
 	const [timeOfBirth, setTimeOfBirth] = useState("");
 	const [prevFormIndex, setPrevFormIndex] = useState(-1);
 	const [apgar1, setApgar1] = useState("");
@@ -317,25 +319,23 @@ const submitForms = () => {
 							{/* <label className="mb-1">{option.displayText}</label> */}
 
 							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-full mb-4 rounded-md'>
-								<Datetime
-									dateFormat='YYYY-MM-DD' // Use uppercase 'DD' for day of the month
-									timeFormat={false}
-									value={dateOfBirth}
-									inputProps={{ placeholder: "Date of Birth" }}
-									placeholderText='Date of Birth'
-									onChange={(value) => {
-										const formattedDate = moment(value).format("YYYY-MM-DD");
-										if (moment(formattedDate, "YYYY-MM-DD", true).isValid()) {
-											setDateOfBirth(formattedDate);
-											updateThisOption(
-												formData[formIndex]?.dateOfBirth,
-												formattedDate
-											);
-										} else {
-											setDateOfBirth(""); // Set to an empty string or a default value
-										}
-									}}
-								/>
+							<DatePicker
+      dateFormat="YYYY-MM-DD"
+      timeFormat={false}
+      value={dateOfBirth}
+      inputProps={{ placeholder: "Date of Birth" }}
+      placeholderText="Date of Birth"
+      maxDate={new Date()}
+      onChange={(value) => {
+        const formattedDate = moment(value).format("YYYY-MM-DD");
+        if (moment(formattedDate, "YYYY-MM-DD", true).isValid()) {
+          setDateOfBirth(formattedDate);
+          updateThisOption(formData[formIndex]?.dateofBirth, formattedDate);
+        } else {
+          setDateOfBirth("");
+        }
+      }}
+    />
 							</div>
 							<div className='relative max-w-sm mt-2  datetime-box border ml-7 border-gray-400 p-2 w-full rounded-md'>
 								<Datetime
