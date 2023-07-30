@@ -20,6 +20,7 @@ function ObsIndexForm() {
 	const [prevFormIndex, setPrevFormIndex] = useState(-1);
 	const [apgar1, setApgar1] = useState("");
 	const [apgar5, setApgar5] = useState("");
+	const [prelabour, setprelabour] = useState(false);
 	const auth = useAuth();
 
 	const [selectedRadioButton, setSelectedRadioButton] = useState(null);
@@ -27,6 +28,10 @@ function ObsIndexForm() {
 	const [formIndexStack, setFormIndexStack] = useState([]);
 	const [isClicked, setIsClicked] = useState(false);
 	const navigate = useNavigate();
+	const [showTextInput, setShowTextInput] = useState(false);
+	const [textInputValue, setTextInputValue] = useState("");
+
+	
 
 	useEffect(() => {
 		axios
@@ -54,6 +59,10 @@ function ObsIndexForm() {
 
 	const goToNextForm = () => {
 		if (!isClicked) {
+			if (prelabour && formIndex == 16) {
+				setFormIndex((prevForm) => prevForm + 1);
+				setPrevFormIndex(formIndex);
+			}
 			const conditions = formData[formIndex]?.conditions;
 			if (conditions) {
 				let foundMatch = false;
@@ -61,22 +70,21 @@ function ObsIndexForm() {
 					const optionValue = condition.option;
 					const targetValue = condition.target;
 					if (selectedRadioButton === optionValue || "null" === optionValue) {
-						console.log("Its a match");
 						const targetFormIndex = formData.findIndex(
 							(item) => item.title === targetValue
 						);
 						setFormIndex(targetFormIndex);
-						setPrevFormIndex(formIndex); // Update prevFormIndex when moving to the next form
+						setPrevFormIndex(formIndex);
 						foundMatch = true;
 					}
 				});
 				if (!foundMatch) {
 					setFormIndex((prevForm) => prevForm + 1);
-					setPrevFormIndex(formIndex); // Update prevFormIndex when moving to the next form
+					setPrevFormIndex(formIndex);
 				}
 			} else {
 				setFormIndex((prevForm) => prevForm + 1);
-				setPrevFormIndex(formIndex); // Update prevFormIndex when moving to the next form
+				setPrevFormIndex(formIndex);
 			}
 			setFormIndexStack((prevStack) => [...prevStack, formIndex]);
 		}
@@ -116,13 +124,18 @@ function ObsIndexForm() {
 		axios
 			.post(`${API_BASE_URL}/submit-form`, selectedOptions)
 			.then((response) => {
-				console.log(response.data);
+				if(response.err)
+				{
+					toast.warning("Form logic error");
+				}
+				else{
 				let groupDetails = response.data;
 				if (groupDetails) {
 					setgroup(groupDetails.group);
 					toast.success("Form Submitted Successfully");
 					setIsClicked(true);
 				}
+			}
 			})
 			.catch((error) => {
 				console.error(error);
@@ -171,7 +184,26 @@ function ObsIndexForm() {
 									}
 									onChange={(event) => {
 										setSelectedRadioButton(event.target.value);
-
+										if (formData[formIndex]?.title === "labour") {
+											if (event.target.value === "pre_labour") {
+												setprelabour(true);
+											} else {
+												setprelabour(false);
+											}
+										}
+										if (formData[formIndex]?.title === "indication_cesarean") {
+											if (event.target.value === "others") {
+												setShowTextInput(true);
+											}
+											else
+											setShowTextInput(false);
+										}
+										updateThisOption(
+											formData[formIndex]?.title,
+											option.displayText
+										);
+									}}
+									onClick={() => {
 										updateThisOption(
 											formData[formIndex]?.title,
 											option.displayText
@@ -182,6 +214,24 @@ function ObsIndexForm() {
 							</label>
 						</div>
 					))}
+					{showTextInput &&
+						formData[formIndex]?.title == "indication_cesarean" && (
+							<div>
+								<input
+									type='text'
+									className='border ml-7 border-gray-400 p-2 w-full rounded-md'
+									value={textInputValue}
+									onChange={(e) => {
+										setTextInputValue(e.target.value);
+										updateThisOption(
+											formData[formIndex]?.title,
+											e.target.value
+										);
+									}}
+									placeholder='Enter your text here...'
+								/>
+							</div>
+						)}
 				</div>
 				<div className='mt-6 flex'>
 					{formData[formIndex]?.type == "textbox" && (
@@ -203,23 +253,25 @@ function ObsIndexForm() {
 				<div className='mt-6 flex'>
 					{formData[formIndex]?.type == "twoInputs" && (
 						<div className='flex flex-col mb-4 p-4'>
-							<p className="m-4">At 1 min</p>
+							<p className='m-4'>At 1 min: {apgar1}</p>
 							<input
-								type='text'
+								type='range'
+								min={0}
+								max={10}
 								className='border ml-7 border-gray-400 p-2 w-full rounded-md'
 								value={apgar1}
-								placeholder={"at 1 min"}
 								onChange={(e) => {
 									setApgar1(e.target.value);
 									updateThisOption("apgar1", e.target.value);
 								}}
 							/>
-							<p className="m-4">At 5 min</p>
+							<p className='m-4'>At 5 min: {apgar5}</p>
 							<input
-								type='text'
+								type='range'
+								min={0}
+								max={10}
 								className='border ml-7 border-gray-400 p-2 w-full rounded-md'
 								value={apgar5}
-								placeholder={"at 5 min"}
 								onChange={(e) => {
 									setApgar5(e.target.value);
 									updateThisOption("apgar5", e.target.value);
@@ -341,13 +393,6 @@ function ObsIndexForm() {
 						</button>
 					)}
 				</div>
-			</div>
-			<div className='flex flex-col bottom-[4%] absolute font-light inset-x-0 mt-10 animate-bounce items-center justify-center'>
-				{footerData.map((item) => (
-					<p key={item.key} className='text-md'>
-						{item.displayText}
-					</p>
-				))}
 			</div>
 		</div>
 	);
