@@ -51,7 +51,15 @@ app.use(cors(
 		methods : [ "GET, POST, PUT, DELETE" ],
 		credentials : true
 );
+app.options('/auth-login', (req, res) => {
+  // Set the appropriate CORS headers for the OPTIONS response
+  res.setHeader('Access-Control-Allow-Origin', 'https://robsons-v2-k8ac.vercel.app');
+  res.setHeader('Access-Control-Allow-Methods', 'POST');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
+  // Send a 200 status code to indicate the OPTIONS request was successful
+  res.status(200).end();
+});
 
 const dbHost = process.env.HOST || "localhost"
 const dbUser = process.env.USER || "root"
