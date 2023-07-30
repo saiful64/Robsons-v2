@@ -45,12 +45,12 @@ const totalMonthList = [
 ];
 app.use(bodyParser.json());
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  next();
-});
+app.use(cors(
+	{
+		origin : [ "https://robsons-v2-k8ac.vercel.app" ],
+		methods : [ "GET, POST, PUT, DELETE" ],
+		credentials : true
+);
 
 
 const dbHost = process.env.HOST || "localhost"
