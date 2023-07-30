@@ -44,8 +44,13 @@ const totalMonthList = [
 	"December",
 ];
 app.use(bodyParser.json());
-app.use(cors());
+const corsOptions = {
+  origin: '*',
+  methods: 'GET, POST, PUT, DELETE',
+  allowedHeaders: 'Content-Type, Authorization',
+};
 
+app.use(cors(corsOptions));
 const dbHost = process.env.HOST || "localhost"
 const dbUser = process.env.USER || "root"
 const db_Pass = process.env.PASS || ""
