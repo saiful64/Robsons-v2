@@ -25,6 +25,9 @@ function HomeView() {
 	const lineChart = () => {
 		navigate("/line-chart")
 	}
+	const dashboard = () => {
+		navigate("/dashboard")
+	}
   const footerData = [
 		{ key: "mainText", displayText: "@ 2023 JIPMER, O & G  Dept." },
 		{ key: "subText", displayText: "Made with 🧡 by MCA students" },
@@ -37,6 +40,12 @@ function HomeView() {
 						{auth.user === "student" ? "Welcome Student" : "Welcome Doctor"}
 					</h1>
 					<div className='flex flex-col justify-center'>
+					<button
+							className='bg-zinc-300 hover:bg-gray-800 hover:text-white text-gray-500 font-medium hover:font-bold hover:shadow-xl py-2 px-4 rounded m-2 mb-6'
+							onClick={() => dashboard()}
+						>
+							DASHBOARD
+						</button>
 						<button
 							className='bg-zinc-300 hover:bg-gray-800 hover:text-white text-gray-500 font-medium hover:font-bold hover:shadow-xl py-2 px-4 rounded m-2 mb-6'
 							onClick={() => goToFormPage()}
@@ -57,18 +66,18 @@ function HomeView() {
 								>
 									ANALYSIS
 								</button>
-								<button
+								{/* <button disabled
 									className='bg-zinc-500 hover:bg-gray-600 text-white font-medium hover:font-bold hover:shadow-xl py-2 px-4 rounded m-2 mb-6'
 									onClick={() => barChart()}
 								>
 									BAR CHART
 								</button>
-								<button
+								<button disabled
 									className='bg-zinc-500 hover:bg-gray-600 text-white font-medium hover:font-bold hover:shadow-xl py-2 px-4 rounded m-2 mb-6'
 									onClick={() => lineChart()}
 								>
 									LINE CHART
-								</button>
+								</button> */}
 							</>
 						)}
 						<button

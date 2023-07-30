@@ -46,10 +46,10 @@ app.use(bodyParser.json());
 
 app.use(cors());
 const con = mysql.createConnection({
-	host: `bryp5utndoci5ykphz7s-mysql.services.clever-cloud.com`,
-	user: "uox8dnc3skku9ro4",
-	password: "63vchJZOXy8G0eUFf6vj",
-	database: "bryp5utndoci5ykphz7s",
+	host: API_BASE_URL,
+	user: "root",
+	password: "",
+	database: "robsonclassification",
 	multipleStatements: true,
 });
 
@@ -1098,6 +1098,101 @@ const calculateTotalDel = async (totalDel, count_totalDel) => {
 		};
 	}
 };
+app.get("/api/dashboard", async (req, res) => {
+	try {
+		//let statusData = {};
+		const groupsQuery = `
+		SELECT * FROM robsonsdata WHERE delivery='Cesarean';
+		SELECT * FROM robsonsdata ;
+		SELECT DISTINCT * FROM  groups WHERE MONTH(created_on) BETWEEN 1 AND 3;
+		SELECT * FROM \`groups\`WHERE MONTH(created_on) BETWEEN 4 AND 8;
+		SELECT * FROM \`groups\`WHERE MONTH(created_on) BETWEEN 9 AND 12;
+	`;
+
+		con.query(groupsQuery, async (error, result) => {
+			if (error) {
+				console.error(error);
+
+				res
+					.status(500)
+					.send({ message: "Internal Server Error line chart" });
+				return;
+			}
+			// Total Delivery and Cesarean Delivery
+			let CesareanDel = result[0];
+			let totalDel = result[1];
+			
+			let count_CSDel=CesareanDel.length;
+			let count_totalDel=totalDel.length;
+
+			// Three month Cesarean Delivery
+			let groupsList1 = result[2];
+			let groupsList2 = result[3];
+			let groupsList3 = result[4];
+
+			let count_total1 = groupsList1.length;
+			let count_total2 = groupsList2.length;
+			let count_total3 = groupsList3.length;
+			
+			if (_.isEmpty(CesareanDel, totalDel,groupsList1,groupsList2,groupsList3)) {
+				res.status(400).send({ message: "No data Available" });
+				return;
+			}
+			// Total Delivery and Cesarean Delivery
+			let CesareanDelivery = await calculateCesareanDel(
+				CesareanDel,
+				count_CSDel
+			);
+
+			
+			let TotalDelivery = await calculateTotalDel(
+				totalDel,
+				count_totalDel
+			);
+
+			// Three month Cesarean Delivery
+			let relativeGroupSize1 = await calculateBarChart(
+				groupsList1,
+				count_total1
+			);
+			let relativeGroupSize2 = await calculateBarChart(
+				groupsList2,
+				count_total2
+			);
+			let relativeGroupSize3 = await calculateBarChart(
+				groupsList3,
+				count_total3
+			);
+
+			var relativeGroupSizeData1 = relativeGroupSize1.map((obj) =>
+				_.omit(obj, "BarChart")
+			);
+			var relativeGroupSizeData2 = relativeGroupSize2.map((obj) =>
+				_.omit(obj, "BarChart")
+			);
+			var relativeGroupSizeData3 = relativeGroupSize3.map((obj) =>
+				_.omit(obj, "BarChart")
+			);
+			
+			
+			const combinedData = {
+						data1: CesareanDelivery,
+						data2: TotalDelivery,
+						data3: relativeGroupSizeData1,
+						data4: relativeGroupSizeData2,
+						data5: relativeGroupSizeData3,
+						};
+
+			res.status(200).send(combinedData);
+		});
+	} catch (error) {
+		console.error(error);
+		res
+			.status(500)
+			.send({ message: "Internal Server Error Dashboard" });
+		return;
+	}
+});
 app.get("/api/line-chart", async (req, res) => {
 	try {
 		//let statusData = {};

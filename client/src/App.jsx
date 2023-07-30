@@ -8,6 +8,7 @@ import ObsIndexForm from "../src/components/form1";
 import GenerateExcelSheet from "../src/components/generate-report-view";
 import GenerateStatus from "../src/components/generate-status-view";
 import LineChartComponent from "../src/components/lineChart";
+import GraphContainer from "./components/dashboard";
 import MyChartComponent from "./components/barchart";
 import { AuthProvider } from "../src/components/auth";
 import HomePage from "../src/components/HomePage";
@@ -83,6 +84,12 @@ function App() {
 							element={
 								<ProtectedRoute>
 							<LineChartComponent/>
+							</ProtectedRoute>
+							} />
+							<Route path="/dashboard" 
+							element={
+								<ProtectedRoute>
+							<GraphContainer/>
 							</ProtectedRoute>
 							} />
 						</Routes>

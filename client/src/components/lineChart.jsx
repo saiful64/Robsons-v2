@@ -40,7 +40,7 @@ const LineChartComponent = () => {
         fill: false,
       },
       {
-        label: 'Total Deliveries',
+        label: 'Deliveries',
         data: data2.map((item) => item.totalCount),
         borderColor: '#82ca9d',
         fill: false,
