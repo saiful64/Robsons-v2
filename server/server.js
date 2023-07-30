@@ -1,3 +1,5 @@
+import dotenv from 'dotenv'
+dotenv.config();
 import express from "express";
 import mysql from "mysql2";
 import bodyParser from "body-parser";
@@ -12,7 +14,6 @@ import util from "util";
 import { log } from "console";
 
 //ip address of server machine
-const API_BASE_URL = "localhost";
 
 const app = express();
 const totalGroupList = [
@@ -44,11 +45,20 @@ const totalMonthList = [
 ];
 app.use(bodyParser.json());
 app.use(cors());
+
+const dbHost = process.env.HOST || "localhost"
+const dbUser = process.env.USER || "root"
+const db_Pass = process.env.PASS || ""
+const db = process.env.DB || "robsonclassification";
+
+console.log(db);
+
+
 var con = mysql.createConnection({
-	host: `${API_BASE_URL}`,
-	user: "root",
-	password: "",
-	database: "robsonclassification",
+	host: dbHost,
+	user: dbUser,
+	password: db_Pass,
+	database: db,
 	multipleStatements: true,
 });
 
@@ -723,7 +733,7 @@ const calculateRelativeCsRate = async (groupsList, res, CS_total) => {
 // function to calculate CS rate for Each group
 const calculateAbsoluteCSRate = async (
 	groupsList,
-	
+
 	res,
 	count_total
 ) => {
@@ -785,29 +795,28 @@ const calculateCsRate = async (res) => {
 						.send({ message: "Internal Server Error calculateRelativeCsRate" });
 					return;
 				}
-				
-					if (error) {
-						console.error("Error executing totalcount:", error);
-						res.status(500).send({
-							message: "Internal Server Error calculateRelativeCsRate",
-						});
-						return;
-					}
-					let totalCsCount = result[0].length;
-					let totalcount = result[1].length;
-					//console.log(thisGroupCsCount);
 
-					let CsRate =
-						totalCsCount && totalcount ? (totalCsCount / totalcount) * 100 : 0;
-					//console.log(CsRate);
-					csRate1.push({
-						csRate1: CsRate,
+				if (error) {
+					console.error("Error executing totalcount:", error);
+					res.status(500).send({
+						message: "Internal Server Error calculateRelativeCsRate",
 					});
+					return;
+				}
+				let totalCsCount = result[0].length;
+				let totalcount = result[1].length;
+				//console.log(thisGroupCsCount);
 
-					//if (RelativecsRate.length === totalGroupList.length) {
-					resolve(csRate1);
-					//	}
-				
+				let CsRate =
+					totalCsCount && totalcount ? (totalCsCount / totalcount) * 100 : 0;
+				//console.log(CsRate);
+				csRate1.push({
+					csRate1: CsRate,
+				});
+
+				//if (RelativecsRate.length === totalGroupList.length) {
+				resolve(csRate1);
+				//	}
 			});
 		});
 	} catch (error) {
@@ -838,9 +847,8 @@ const calculateBarChart = async (groupsList1, count_total) => {
 };
 app.get("/api/generate-status-init", async (req, res) => {
 	try {
-		
 		let statusData = {};
-		
+
 		const query = `
 		SELECT * FROM \`groups\`;
 		SELECT * FROM robsonsdata WHERE delivery="Cesarean";
@@ -855,7 +863,7 @@ app.get("/api/generate-status-init", async (req, res) => {
 			}
 			let groupsList = result[0];
 			let CS_total = result[1].length;
-			 console.log(CS_total);
+			console.log(CS_total);
 			if (_.isEmpty(groupsList)) {
 				res.status(400).send({ message: "No data Available" });
 				return;
@@ -866,7 +874,7 @@ app.get("/api/generate-status-init", async (req, res) => {
 				groupsList,
 				count_total
 			);
-			
+
 			//console.log("284", relativeGroupSize);
 			const relativeGroupSizeData = relativeGroupSize.map((obj) =>
 				_.omit(obj, "count")
@@ -885,12 +893,12 @@ app.get("/api/generate-status-init", async (req, res) => {
 				res,
 				relativeGroupSize
 			);
-			 
+
 			const csRateData = csRateForEachGroup.map((obj) => _.omit(obj, "count"));
 
 			let absoluteCsRateData = await calculateAbsoluteCSRate(
 				groupsList,
-				
+
 				res,
 				count_total
 			);
@@ -946,11 +954,7 @@ app.get("/api/generate-status-init", async (req, res) => {
 	}
 });
 
-
-const calculateCesareanDel = async (
-	CesareanDel,
-	count_CSDel
-) => {
+const calculateCesareanDel = async (CesareanDel, count_CSDel) => {
 	try {
 		return new Promise((resolve, reject) => {
 			let CesareanDelivery = [];
@@ -968,12 +972,9 @@ const calculateCesareanDel = async (
 					}
 					let thisMonthCsCount = await result[0]["COUNT"];
 
-					
-
 					CesareanDelivery.push({
 						month_name: month,
 						csCount: thisMonthCsCount,
-						
 					});
 
 					if (CesareanDelivery.length === totalMonthList.length) {
@@ -990,14 +991,11 @@ const calculateCesareanDel = async (
 		};
 	}
 };
-const calculateTotalDel = async (
-	totalDel,
-	count_totalDel
-) => {
+const calculateTotalDel = async (totalDel, count_totalDel) => {
 	try {
 		return new Promise((resolve, reject) => {
 			let TotalDelivery = [];
-			
+
 			_.forEach(totalMonthList, async (month, index) => {
 				let robsonsQuery = `SELECT COUNT(*) as COUNT FROM robsonsdata WHERE MONTHNAME(created_on) = '${month}'`;
 				con.query(robsonsQuery, async (error, result, fields) => {
@@ -1011,12 +1009,9 @@ const calculateTotalDel = async (
 					}
 					let thisMonthCsCount = await result[0]["COUNT"];
 
-					
-
 					TotalDelivery.push({
 						month_name: month,
 						totalCount: thisMonthCsCount,
-						
 					});
 
 					if (TotalDelivery.length === totalMonthList.length) {
@@ -1045,47 +1040,38 @@ app.get("/api/line-chart", async (req, res) => {
 			if (error) {
 				console.error(error);
 
-				res
-					.status(500)
-					.send({ message: "Internal Server Error line chart" });
+				res.status(500).send({ message: "Internal Server Error line chart" });
 				return;
 			}
-			
+
 			let CesareanDel = result[0];
 			let totalDel = result[1];
-			
-			let count_CSDel=CesareanDel.length;
-			let count_totalDel=totalDel.length;
-			
+
+			let count_CSDel = CesareanDel.length;
+			let count_totalDel = totalDel.length;
+
 			if (_.isEmpty(CesareanDel, totalDel)) {
 				res.status(400).send({ message: "No data Available" });
 				return;
 			}
-			
+
 			let CesareanDelivery = await calculateCesareanDel(
 				CesareanDel,
 				count_CSDel
 			);
 
-			
-			let TotalDelivery = await calculateTotalDel(
-				totalDel,
-				count_totalDel
-			);
-			
-			
+			let TotalDelivery = await calculateTotalDel(totalDel, count_totalDel);
+
 			const combinedData = {
-						data1: CesareanDelivery,
-						data2: TotalDelivery,
-						};
+				data1: CesareanDelivery,
+				data2: TotalDelivery,
+			};
 
 			res.status(200).send(combinedData);
 		});
 	} catch (error) {
 		console.error(error);
-		res
-			.status(500)
-			.send({ message: "Internal Server Error line chart" });
+		res.status(500).send({ message: "Internal Server Error line chart" });
 		return;
 	}
 });
@@ -1150,8 +1136,6 @@ app.get("/api/barchart", async (req, res) => {
 				_.omit(obj, "BarChart")
 			);
 
-			
-
 			let CSrate = await calculateCsRate(res);
 
 			const CSrateData = CSrate.map((obj) =>
@@ -1206,7 +1190,7 @@ app.post("/register", (req, res) => {
 		}
 	});
 });
-
-app.listen(3050, () => {
-	console.log("Server is running");
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+	console.log("Server is running on ", port);
 });
