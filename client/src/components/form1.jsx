@@ -31,6 +31,8 @@ function ObsIndexForm() {
 	const [showTextInput, setShowTextInput] = useState(false);
 	const [textInputValue, setTextInputValue] = useState("");
 
+	
+
 	useEffect(() => {
 		axios
 			.get(`${API_BASE_URL}/api/form-data`)
@@ -78,11 +80,11 @@ function ObsIndexForm() {
 				});
 				if (!foundMatch) {
 					setFormIndex((prevForm) => prevForm + 1);
-					setPrevFormIndex(formIndex); 
+					setPrevFormIndex(formIndex);
 				}
 			} else {
 				setFormIndex((prevForm) => prevForm + 1);
-				setPrevFormIndex(formIndex); 
+				setPrevFormIndex(formIndex);
 			}
 			setFormIndexStack((prevStack) => [...prevStack, formIndex]);
 		}
@@ -188,6 +190,8 @@ function ObsIndexForm() {
 											if (event.target.value === "others") {
 												setShowTextInput(true);
 											}
+											else
+											setShowTextInput(false);
 										}
 										updateThisOption(
 											formData[formIndex]?.title,
@@ -384,13 +388,6 @@ function ObsIndexForm() {
 						</button>
 					)}
 				</div>
-			</div>
-			<div className='flex flex-col bottom-[4%] absolute font-light inset-x-0 mt-10 animate-bounce items-center justify-center'>
-				{footerData.map((item) => (
-					<p key={item.key} className='text-md'>
-						{item.displayText}
-					</p>
-				))}
 			</div>
 		</div>
 	);
