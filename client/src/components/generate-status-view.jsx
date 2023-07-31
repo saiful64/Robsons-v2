@@ -31,7 +31,7 @@ function GenerateStatus() {
 			<div className='flex flex-col items-center justify-center h-screen'>
 				<div className={"bg-white p-6 rounded-lg shadow-md w-full"}>
 					<h1 className='text-3xl font-bold mb-4 text-center'>
-						Data Visualization
+						Data Tabularization
 					</h1>
 
 					<div className='flex flex-col justify-center'>
