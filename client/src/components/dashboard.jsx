@@ -154,15 +154,17 @@ const MultiGraphComponent = () => {
   };
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto px-4 p-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* First row */}
         <div className="w-full  md:w-auto">
+        <h2 className="text-sm font-bold mb-4">Total Deliveries and Caesarean Deliveries</h2>
           <div className="bg-white p-4 rounded-lg shadow-md">
           <Line data={chartData} options={chartOptions1} />
           </div>
         </div>
         <div className="w-full md:w-auto">
+        <h2 className="text-sm font-bold mb-4">Contribution To Overall Cesarean rate</h2>
           <div className="bg-white p-4 rounded-lg shadow-md">
           <Bar data={barChart} options={chartOptions2} />
           </div>
@@ -170,11 +172,13 @@ const MultiGraphComponent = () => {
 
         {/* Second row */}
         <div className="w-full md:w-auto">
+        <h2 className="text-sm font-bold mb-4">To be updated</h2>
           <div className="bg-white p-4 rounded-lg shadow-md">
             <Line data={lineChartData3} />
           </div>
         </div>
         <div className="w-full md:w-auto">
+        <h2 className="text-sm font-bold mb-4">To be updated</h2>
           <div className="bg-white p-4 rounded-lg shadow-md">
             <Line data={lineChartData4} />
           </div>
