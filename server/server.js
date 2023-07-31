@@ -16,16 +16,16 @@ const API_BASE_URL = "localhost";
 
 const app = express();
 const totalGroupList = [
-	"group 1",
-	"group 2",
-	"group 3",
-	"group 4",
-	"group 5",
-	"group 6",
-	"group 7",
-	"group 8",
-	"group 9",
-	"group 10",
+	"Group 1",
+	"Group 2",
+	"Group 3",
+	"Group 4",
+	"Group 5",
+	"Group 6",
+	"Group 7",
+	"Group 8",
+	"Group 9",
+	"Group 10",
 ];
 
 const totalMonthList = [
