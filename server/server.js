@@ -394,7 +394,8 @@ app.get("/api/generate-report", (req, res) => {
 					weight: !_.isEmpty(thisRobsonData.weight)
 						? thisRobsonData.weight
 						: "",
-					apgar: !_.isEmpty(thisRobsonData.apgar) ? thisRobsonData.apgar : "",
+					apgar1: !_.isEmpty(thisRobsonData.apgar1) ? thisRobsonData.apgar1 : "",
+					apgar5: !_.isEmpty(thisRobsonData.apgar5) ? thisRobsonData.apgar5 : "",
 					outcome: !_.isEmpty(thisRobsonData.outcome)
 						? thisRobsonData.outcome
 						: "",
@@ -448,11 +449,12 @@ app.get("/api/generate-report", (req, res) => {
 				"Labour Type",
 				"Delivery",
 				"Stage",
-				"Baby Details",
+				"Gender",
 				"Date of Birth",
 				"Time of Birth",
 				"Weight",
-				"APGAR",
+				"APGAR1",
+				"APGAR5",
 				"Outcome",
 				"Indication OVD",
 				"Indication Caesarean",
@@ -460,6 +462,7 @@ app.get("/api/generate-report", (req, res) => {
 				"Final Outcome",
 				"Indication for Indication",
 				"Ripening",
+				"Induced Augmented",
 				"Group",
 				"Review",
 				"Created By",
@@ -480,7 +483,8 @@ app.get("/api/generate-report", (req, res) => {
 				"date_of_birth",
 				"time_of_birth",
 				"weight",
-				"apgar",
+				"apgar1",
+				"apgar5",
 				"outcome",
 				"indication_ovd",
 				"indication_caesarean",
@@ -541,14 +545,10 @@ app.get("/api/generate-report-one", (req, res) => {
 		presentation_single,
 		presentation_twin,
 		Labour,
-		delivery,
-		Stage,
 		BabyDetails,
 		date_of_birth,
 		time_of_birth,
-		weight,
-		apgar,
-		outcome
+		weight
 	  FROM robsonsdata WHERE created_on BETWEEN '${startDate}' AND '${endDate}'`,
 		(error, robsonsDataList) => {
 			if (error) {
@@ -568,7 +568,9 @@ app.get("/api/generate-report-one", (req, res) => {
 					obs_index: !_.isEmpty(thisRobsonData.obs_index)
 						? thisRobsonData.obs_index
 						: "",
-					weeks: !_.isEmpty(thisRobsonData.weeks) ? thisRobsonData.weeks : "",
+					weeks: !_.isEmpty(thisRobsonData.weeks)
+						? thisRobsonData.weeks
+						: "",
 					pog: !_.isEmpty(thisRobsonData.pog) ? thisRobsonData.pog : "",
 
 					previous_cesarean: !_.isEmpty(thisRobsonData.previous_cesarean)
@@ -586,11 +588,6 @@ app.get("/api/generate-report-one", (req, res) => {
 					Labour: !_.isEmpty(thisRobsonData.Labour)
 						? thisRobsonData.Labour
 						: "",
-					delivery: !_.isEmpty(thisRobsonData.delivery)
-						? thisRobsonData.delivery
-						: "",
-
-					Stage: !_.isEmpty(thisRobsonData.Stage) ? thisRobsonData.Stage : "",
 					BabyDetails: !_.isEmpty(thisRobsonData.BabyDetails)
 						? thisRobsonData.BabyDetails
 						: "",
@@ -602,10 +599,6 @@ app.get("/api/generate-report-one", (req, res) => {
 						: "",
 					weight: !_.isEmpty(thisRobsonData.weight)
 						? thisRobsonData.weight
-						: "",
-					apgar: !_.isEmpty(thisRobsonData.apgar) ? thisRobsonData.apgar : "",
-					outcome: !_.isEmpty(thisRobsonData.outcome)
-						? thisRobsonData.outcome
 						: "",
 				};
 				santizedRobsonsDataList.push(tmpObject);
@@ -620,14 +613,10 @@ app.get("/api/generate-report-one", (req, res) => {
 				"Presentation Single",
 				"Presentation Twin",
 				"Labour Type",
-				"Delivery",
-				"Stage",
-				"Baby Details",
+				"Gender",
 				"Date of Birth",
 				"Time of Birth",
 				"Weight",
-				"APGAR",
-				"Outcome",
 			];
 			let fields = [
 				"obs_index",
@@ -638,14 +627,10 @@ app.get("/api/generate-report-one", (req, res) => {
 				"presentation_single",
 				"presentation_twin",
 				"Labour",
-				"delivery",
-				"Stage",
 				"BabyDetails",
 				"date_of_birth",
 				"time_of_birth",
-				"weight",
-				"apgar",
-				"outcome",
+				"weight"
 			];
 			let groupSpecification = {};
 			_.forEach(fields, function (item, index) {
@@ -1104,7 +1089,7 @@ app.get("/api/dashboard", async (req, res) => {
 		const groupsQuery = `
 		SELECT * FROM robsonsdata WHERE delivery='Cesarean';
 		SELECT * FROM robsonsdata ;
-		SELECT DISTINCT * FROM  groups WHERE MONTH(created_on) BETWEEN 1 AND 3;
+		SELECT DISTINCT * FROM  \`groups\` WHERE MONTH(created_on) BETWEEN 1 AND 3;
 		SELECT * FROM \`groups\`WHERE MONTH(created_on) BETWEEN 4 AND 8;
 		SELECT * FROM \`groups\`WHERE MONTH(created_on) BETWEEN 9 AND 12;
 	`;
