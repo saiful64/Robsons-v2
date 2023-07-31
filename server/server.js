@@ -1089,9 +1089,9 @@ app.get("/api/dashboard", async (req, res) => {
 		const groupsQuery = `
 		SELECT * FROM robsonsdata WHERE delivery='Cesarean';
 		SELECT * FROM robsonsdata ;
-		SELECT DISTINCT * FROM  \`groups\` WHERE MONTH(created_on) BETWEEN 1 AND 3;
-		SELECT * FROM \`groups\`WHERE MONTH(created_on) BETWEEN 4 AND 8;
-		SELECT * FROM \`groups\`WHERE MONTH(created_on) BETWEEN 9 AND 12;
+		SELECT DISTINCT * FROM \`groups\` WHERE MONTH(created_on) BETWEEN 1 AND 3;
+		SELECT * FROM \`groups\` WHERE MONTH(created_on) BETWEEN 4 AND 8;
+		SELECT * FROM \`groups\` WHERE MONTH(created_on) BETWEEN 9 AND 12;
 	`;
 
 		con.query(groupsQuery, async (error, result) => {
