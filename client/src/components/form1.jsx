@@ -15,7 +15,8 @@ function ObsIndexForm() {
 	const [formIndex, setFormIndex] = useState(0);
 	const [formData, setFormData] = useState({ dateOfBirth: null });
 	const [selectedOptions, setSelectedOptions] = useState({});
-	const [textBoxValue, setTextBoxValue] = useState("");
+	const [weeks, setWeeks] = useState("");
+	const [patientId, setPatientId] = useState("");
 	const [textareaValue, setTextareaValue] = useState("");
 	const [dateOfBirth, setDateOfBirth] = useState(null);
 	const [timeOfBirth, setTimeOfBirth] = useState("");
@@ -59,7 +60,7 @@ function ObsIndexForm() {
 
 	const goToNextForm = () => {
 		if (!isClicked) {
-			if (prelabour && formIndex == 18) {
+			if (prelabour && formIndex == 19) {
 				setFormIndex((prevForm) => prevForm + 1);
 				setPrevFormIndex(formIndex);
 			}
@@ -153,10 +154,7 @@ function ObsIndexForm() {
 					<h2 className='text-2xl relative font-bold text-center'>
 						Robsons Classification
 					</h2>
-					{/* radio buttons */}
 				</div>
-
-				{/* form title */}
 				<div className='flex form-title mb-4 pr-20 pl-2'>
 					<h3 className='text-lg font-bold'>
 						{formData[formIndex]?.displayText}
@@ -229,16 +227,33 @@ function ObsIndexForm() {
 						)}
 				</div>
 				<div className='mt-6 flex'>
-					{formData[formIndex]?.type == "textbox" && (
+					{formData[formIndex]?.type == "id" && (
 						<div className='flex flex-col mb-4'>
 							{/* <label className="mb-1">{option.displayText}</label> */}
 							<input
 								type='text'
 								className='border ml-7 border-gray-400 p-2 w-full rounded-md'
-								value={textBoxValue}
+								value={patientId}
+								placeholder={"Enter Patient Id"}
+								onChange={(e) => {
+									setPatientId(e.target.value);
+									updateThisOption(formData[formIndex]?.title, e.target.value);
+								}}
+							/>
+						</div>
+					)}
+				</div>
+				<div className='mt-6 flex'>
+					{formData[formIndex]?.type == "weeks" && (
+						<div className='flex flex-col mb-4'>
+							{/* <label className="mb-1">{option.displayText}</label> */}
+							<input
+								type='number'
+								className='border ml-7 border-gray-400 p-2 w-full rounded-md'
+								value={weeks}
 								placeholder={"Enter Weeks"}
 								onChange={(e) => {
-									setTextBoxValue(e.target.value);
+									setWeeks(e.target.value);
 									updateThisOption(formData[formIndex]?.title, e.target.value);
 								}}
 							/>

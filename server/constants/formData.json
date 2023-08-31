@@ -1,13 +1,22 @@
 {
 	"formData": [
 		{
+			"title": "patient_id",
+			"displayText": "Patient ID",
+			"options": [],
+			"type": "id",
+			"showPrevious": false,
+			"showNext": true
+		},
+
+		{
 			"title": "obs_index",
 			"displayText": "Obs Index",
 			"options": [
 				{ "value": "primi", "displayText": "Primi" },
 				{ "value": "multi", "displayText": "Multi" }
 			],
-			"showPrevious": false,
+			"showPrevious": true,
 			"showNext": true,
 			"conditions": [
 				{
@@ -18,6 +27,18 @@
 		},
 
 		{
+<<<<<<< HEAD
+=======
+			"title": "weeks",
+			"displayText": "Weeks",
+			"textBox": "true",
+			"options": [],
+			"type": "textbox",
+			"showPrevious": true,
+			"showNext": true
+		},
+		{
+>>>>>>> origin/form
 			"title": "previous_cesarean",
 			"displayText": "Previous Cesarean",
 			"options": [
@@ -33,9 +54,8 @@
 		{
 			"title": "weeks",
 			"displayText": "Weeks",
-			"textBox": "true",
 			"options": [],
-			"type": "textbox",
+			"type": "weeks",
 			"showPrevious": true,
 			"showNext": true
 		},
@@ -326,7 +346,11 @@
 			"title": "review",
 			"displayText": "Review",
 			"options": [],
+<<<<<<< HEAD
 			"type": "textarea",
+=======
+			"type" :"textarea",
+>>>>>>> origin/form
 			"showPrevious": true,
 			"isSubmit": true
 		}
