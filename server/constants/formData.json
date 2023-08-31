@@ -27,6 +27,18 @@
 		},
 
 		{
+<<<<<<< HEAD
+=======
+			"title": "weeks",
+			"displayText": "Weeks",
+			"textBox": "true",
+			"options": [],
+			"type": "textbox",
+			"showPrevious": true,
+			"showNext": true
+		},
+		{
+>>>>>>> origin/form
 			"title": "previous_cesarean",
 			"displayText": "Previous Cesarean",
 			"options": [
@@ -334,7 +346,11 @@
 			"title": "review",
 			"displayText": "Review",
 			"options": [],
+<<<<<<< HEAD
 			"type": "textarea",
+=======
+			"type" :"textarea",
+>>>>>>> origin/form
 			"showPrevious": true,
 			"isSubmit": true
 		}
