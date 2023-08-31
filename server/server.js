@@ -11,8 +11,6 @@ import styles from "./constants/constants.js";
 import util from "util";
 import { log } from "console";
 
-//ip address of server machine
-const API_BASE_URL = "localhost";
 
 const app = express();
 const totalGroupList = [
@@ -46,7 +44,7 @@ app.use(bodyParser.json());
 
 app.use(cors());
 const con = mysql.createConnection({
-	host: API_BASE_URL,
+	host: "localhost",
 	user: "root",
 	password: "",
 	database: "robsonclassification",

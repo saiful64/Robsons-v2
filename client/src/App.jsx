@@ -11,7 +11,6 @@ import LineChartComponent from "../src/components/lineChart";
 import GraphContainer from "./components/dashboard";
 import MyChartComponent from "./components/barchart";
 import { AuthProvider } from "../src/components/auth";
-import HomePage from "../src/components/HomePage";
 import ProtectedRoute from "../src/components/requiredAuth";
 import "react-datetime/css/react-datetime.css";
 import "react-date-range/dist/styles.css"; // main css file for date-range
@@ -32,8 +31,7 @@ function App() {
 				<div className='relative'>
 					<Router>
 						<Routes>
-							{/* <Route exact path='/' element={<HomePage />} />
-							<Route exact path='/register' element={<Register />} /> */}
+							{/* <Route exact path='/register' element={<Register />} /> */}
 							<Route exact path='/' element={<LoginAuthView />} />
 							<Route
 								exact
@@ -67,8 +65,8 @@ function App() {
 								path='/generate-status'
 								element={
 									<ProtectedRoute>
-								<GenerateStatus />
-								</ProtectedRoute>
+										<GenerateStatus />
+									</ProtectedRoute>
 								}
 							/>
 							<Route
@@ -76,22 +74,27 @@ function App() {
 								path='/bar-chart'
 								element={
 									<ProtectedRoute>
-								<MyChartComponent />
-								</ProtectedRoute>}
+										<MyChartComponent />
+									</ProtectedRoute>
+								}
 							/>
 
-							<Route path="/line-chart" 
-							element={
-								<ProtectedRoute>
-							<LineChartComponent/>
-							</ProtectedRoute>
-							} />
-							<Route path="/dashboard" 
-							element={
-								<ProtectedRoute>
-							<GraphContainer/>
-							</ProtectedRoute>
-							} />
+							<Route
+								path='/line-chart'
+								element={
+									<ProtectedRoute>
+										<LineChartComponent />
+									</ProtectedRoute>
+								}
+							/>
+							<Route
+								path='/dashboard'
+								element={
+									<ProtectedRoute>
+										<GraphContainer />
+									</ProtectedRoute>
+								}
+							/>
 						</Routes>
 					</Router>
 				</div>
