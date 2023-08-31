@@ -8,18 +8,15 @@
 				{ "value": "multi", "displayText": "Multi" }
 			],
 			"showPrevious": false,
-			"showNext": true
+			"showNext": true,
+			"conditions": [
+				{
+					"option": "primi",
+					"target": "weeks"
+				}
+			]
 		},
 
-		{
-			"title": "weeks",
-			"displayText": "Weeks",
-			"textBox": "true",
-			"options": [],
-			"type": "textbox",
-			"showPrevious": true,
-			"showNext": true
-		},
 		{
 			"title": "previous_cesarean",
 			"displayText": "Previous Cesarean",
@@ -29,6 +26,16 @@
 				{ "value": "2", "displayText": "2" },
 				{ "value": "3", "displayText": "3" }
 			],
+			"showPrevious": true,
+			"showNext": true
+		},
+
+		{
+			"title": "weeks",
+			"displayText": "Weeks",
+			"textBox": "true",
+			"options": [],
+			"type": "textbox",
 			"showPrevious": true,
 			"showNext": true
 		},
@@ -133,7 +140,7 @@
 				{ "value": "arm", "displayText": "ARM" },
 				{ "value": "oxyto", "displayText": "Oxyto" },
 				{ "value": "others", "displayText": "Others" },
-				{ "value": "nil", "displayText": "NIL"}
+				{ "value": "nil", "displayText": "NIL" }
 			],
 			"showPrevious": true,
 			"showNext": true

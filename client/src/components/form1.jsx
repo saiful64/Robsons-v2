@@ -59,7 +59,7 @@ function ObsIndexForm() {
 
 	const goToNextForm = () => {
 		if (!isClicked) {
-			if (prelabour && formIndex == 16) {
+			if (prelabour && formIndex == 18) {
 				setFormIndex((prevForm) => prevForm + 1);
 				setPrevFormIndex(formIndex);
 			}
