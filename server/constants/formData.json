@@ -1,13 +1,22 @@
 {
 	"formData": [
 		{
+			"title": "patient_id",
+			"displayText": "Patient ID",
+			"options": [],
+			"type": "id",
+			"showPrevious": false,
+			"showNext": true
+		},
+
+		{
 			"title": "obs_index",
 			"displayText": "Obs Index",
 			"options": [
 				{ "value": "primi", "displayText": "Primi" },
 				{ "value": "multi", "displayText": "Multi" }
 			],
-			"showPrevious": false,
+			"showPrevious": true,
 			"showNext": true,
 			"conditions": [
 				{
@@ -33,9 +42,8 @@
 		{
 			"title": "weeks",
 			"displayText": "Weeks",
-			"textBox": "true",
 			"options": [],
-			"type": "textbox",
+			"type": "weeks",
 			"showPrevious": true,
 			"showNext": true
 		},

@@ -11,7 +11,6 @@ import styles from "./constants/constants.js";
 import util from "util";
 import { log } from "console";
 
-
 const app = express();
 const totalGroupList = [
 	"Group 1",
@@ -199,6 +198,7 @@ app.post("/submit-form", (req, res) => {
 
 	const sql = `
     INSERT INTO robsonsdata (
+		patient_id,
 		obs_index,
 		weeks,
 		pog,
@@ -228,6 +228,7 @@ app.post("/submit-form", (req, res) => {
 		created_on,
 		review
 		) VALUES (
+		"${data.patient_id}",
 		"${data.obs_index}",
 		"${data.weeks}",
 		"${pog}",
