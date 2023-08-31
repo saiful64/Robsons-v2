@@ -114,8 +114,7 @@
 			"options": [
 				{ "value": "f", "displayText": "F" },
 				{ "value": "easi", "displayText": "EASI" },
-				{ "value": "pge1_gel", "displayText": "PGE1 gel" },
-				{ "value": "pge2_gel", "displayText": "PGE2 gel" },
+				{ "value": "tablet", "displayText": "Tablet" },
 				{ "value": "propess", "displayText": "Propess" },
 				{ "value": "combina", "displayText": "Combina" },
 				{ "value": "oxytoxin", "displayText": "Oxytoxin" },
@@ -133,7 +132,8 @@
 			"options": [
 				{ "value": "arm", "displayText": "ARM" },
 				{ "value": "oxyto", "displayText": "Oxyto" },
-				{ "value": "others", "displayText": "Others" }
+				{ "value": "others", "displayText": "Others" },
+				{ "value": "nil", "displayText": "NIL"}
 			],
 			"showPrevious": true,
 			"showNext": true
@@ -260,7 +260,7 @@
 			"options": [
 				{ "value": "m_s", "displayText": "M/S" },
 				{ "value": "lr", "displayText": "LR" },
-				{ "value": "nicv", "displayText": "NICV" },
+				{ "value": "nicu", "displayText": "NICU" },
 				{ "value": "sb", "displayText": "SB" }
 			],
 			"conditions": [{ "option": "m_s", "target": "final_outcome" }],

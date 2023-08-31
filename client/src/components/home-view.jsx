@@ -18,12 +18,6 @@ function HomeView() {
 	const analysis = () => {
 		navigate("/generate-status");
 	};
-	const barChart = () => {
-		navigate("/bar-chart");
-	};
-	const lineChart = () => {
-		navigate("/line-chart");
-	};
 	const dashboard = () => {
 		navigate("/dashboard");
 	};

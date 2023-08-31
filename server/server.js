@@ -53,7 +53,6 @@ const con = mysql.createConnection({
 	multipleStatements: true,
 });
 
-
 con.connect((err) => {
 	if (!err) console.log("connection successful");
 	else console.log("connection failed" + JSON.stringify(err));
@@ -124,8 +123,6 @@ app.post("/submit-form", (req, res) => {
 	}
 	let group;
 	console.log(pog === ">36");
-
-	
 
 	if (
 		data.obs_index === "Primi" &&
@@ -394,8 +391,12 @@ app.get("/api/generate-report", (req, res) => {
 					weight: !_.isEmpty(thisRobsonData.weight)
 						? thisRobsonData.weight
 						: "",
-					apgar1: !_.isEmpty(thisRobsonData.apgar1) ? thisRobsonData.apgar1 : "",
-					apgar5: !_.isEmpty(thisRobsonData.apgar5) ? thisRobsonData.apgar5 : "",
+					apgar1: !_.isEmpty(thisRobsonData.apgar1)
+						? thisRobsonData.apgar1
+						: "",
+					apgar5: !_.isEmpty(thisRobsonData.apgar5)
+						? thisRobsonData.apgar5
+						: "",
 					outcome: !_.isEmpty(thisRobsonData.outcome)
 						? thisRobsonData.outcome
 						: "",
@@ -568,9 +569,7 @@ app.get("/api/generate-report-one", (req, res) => {
 					obs_index: !_.isEmpty(thisRobsonData.obs_index)
 						? thisRobsonData.obs_index
 						: "",
-					weeks: !_.isEmpty(thisRobsonData.weeks)
-						? thisRobsonData.weeks
-						: "",
+					weeks: !_.isEmpty(thisRobsonData.weeks) ? thisRobsonData.weeks : "",
 					pog: !_.isEmpty(thisRobsonData.pog) ? thisRobsonData.pog : "",
 
 					previous_cesarean: !_.isEmpty(thisRobsonData.previous_cesarean)
@@ -630,7 +629,7 @@ app.get("/api/generate-report-one", (req, res) => {
 				"BabyDetails",
 				"date_of_birth",
 				"time_of_birth",
-				"weight"
+				"weight",
 			];
 			let groupSpecification = {};
 			_.forEach(fields, function (item, index) {
@@ -1098,19 +1097,16 @@ app.get("/api/dashboard", async (req, res) => {
 			if (error) {
 				console.error(error);
 
-				res
-					.status(500)
-					.send({ message: "Internal Server Error line chart" });
+				res.status(500).send({ message: "Internal Server Error line chart" });
 				return;
 			}
 			// Total Delivery and Cesarean Delivery
 			let CesareanDel = result[0];
 			let totalDel = result[1];
-			
-			
-			let count_CSDel=CesareanDel.length;
-			let count_totalDel=totalDel.length;
-			
+
+			let count_CSDel = CesareanDel.length;
+			let count_totalDel = totalDel.length;
+
 			// Three month Cesarean Delivery
 			let groupsList1 = result[2];
 			let groupsList2 = result[3];
@@ -1119,8 +1115,10 @@ app.get("/api/dashboard", async (req, res) => {
 			let count_total1 = groupsList1.length;
 			let count_total2 = groupsList2.length;
 			let count_total3 = groupsList3.length;
-			
-			if (_.isEmpty(CesareanDel, totalDel,groupsList1,groupsList2,groupsList3)) {
+
+			if (
+				_.isEmpty(CesareanDel, totalDel, groupsList1, groupsList2, groupsList3)
+			) {
 				res.status(400).send({ message: "No data Available" });
 				return;
 			}
@@ -1130,11 +1128,7 @@ app.get("/api/dashboard", async (req, res) => {
 				count_CSDel
 			);
 
-			
-			let TotalDelivery = await calculateTotalDel(
-				totalDel,
-				count_totalDel
-			);
+			let TotalDelivery = await calculateTotalDel(totalDel, count_totalDel);
 
 			// Three month Cesarean Delivery
 			let relativeGroupSize1 = await calculateBarChart(
@@ -1159,24 +1153,20 @@ app.get("/api/dashboard", async (req, res) => {
 			var relativeGroupSizeData3 = relativeGroupSize3.map((obj) =>
 				_.omit(obj, "BarChart")
 			);
-			
-			
-			
+
 			const combinedData = {
-						data1: CesareanDelivery,
-						data2: TotalDelivery,
-						data3: relativeGroupSizeData1,
-						data4: relativeGroupSizeData2,
-						data5: relativeGroupSizeData3,
-						};
-					//	console.log(combinedData);
+				data1: CesareanDelivery,
+				data2: TotalDelivery,
+				data3: relativeGroupSizeData1,
+				data4: relativeGroupSizeData2,
+				data5: relativeGroupSizeData3,
+			};
+			//	console.log(combinedData);
 			res.status(200).send(combinedData);
 		});
 	} catch (error) {
 		console.error(error);
-		res
-			.status(500)
-			.send({ message: "Internal Server Error Dashboard" });
+		res.status(500).send({ message: "Internal Server Error Dashboard" });
 		return;
 	}
 });

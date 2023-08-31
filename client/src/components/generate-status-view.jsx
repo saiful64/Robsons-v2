@@ -7,19 +7,19 @@ import API_BASE_URL from "./config";
 function GenerateStatus() {
 	const [columns, setColumns] = useState([]);
 	const [data, setData] = useState([]);
-	
+
 	useEffect(() => {
-	axios
-		.get(`${API_BASE_URL}/api/generate-status-init`)
-		.then((response) => {
-			console.log(response.data);
-			setData(response.data.data);
-			setColumns(response.data.columns);
-		})
-		.catch((error) => {
-			console.error(error);
-		});
-	},[]);
+		axios
+			.get(`${API_BASE_URL}/api/generate-status-init`)
+			.then((response) => {
+				console.log(response.data);
+				setData(response.data.data);
+				setColumns(response.data.columns);
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	}, []);
 	// Use useMemo to memoize the table instance to avoid unnecessary re-renders
 	const tableInstance = useTable({ data, columns }, useResizeColumns);
 

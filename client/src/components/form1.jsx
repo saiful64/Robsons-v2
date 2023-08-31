@@ -13,7 +13,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 function ObsIndexForm() {
 	const [formIndex, setFormIndex] = useState(0);
-	const [formData, setFormData] = useState({dateOfBirth: null});
+	const [formData, setFormData] = useState({ dateOfBirth: null });
 	const [selectedOptions, setSelectedOptions] = useState({});
 	const [textBoxValue, setTextBoxValue] = useState("");
 	const [textareaValue, setTextareaValue] = useState("");
@@ -33,8 +33,6 @@ function ObsIndexForm() {
 	const [showTextInput, setShowTextInput] = useState(false);
 	const [textInputValue, setTextInputValue] = useState("");
 
-	
-
 	useEffect(() => {
 		axios
 			.get(`${API_BASE_URL}/api/form-data`)
@@ -53,7 +51,7 @@ function ObsIndexForm() {
 
 	const goToPreviousForm = () => {
 		if (formIndexStack.length > 0) {
-			const prevFormIndex = formIndexStack.pop(); // Step 3: Pop the index from the stack
+			const prevFormIndex = formIndexStack.pop();
 			setFormIndex(prevFormIndex);
 			setPrevFormIndex((prevForm) => prevForm - 1);
 		}
@@ -94,19 +92,12 @@ function ObsIndexForm() {
 
 	const handleKeyDown = (event) => {
 		if (event.key === "Enter") {
-			// 👇 Get input value
 			goToNextForm();
 		}
 		if (event.key === "Backspace") {
 			goToPreviousForm();
 		}
 	};
-
-	// const handleKeyDownForSubmit = (event) => {
-	// 	if(event.key === 'Enter'){
-	// 		submitForms();
-	// 	}
-	// }
 
 	const updateThisOption = (title, option) => {
 		setSelectedOptions((prevState) => ({
@@ -119,38 +110,35 @@ function ObsIndexForm() {
 		navigate("/home-view");
 	};
 
-const submitForms = () => {
-	let created_by = auth.user;
-	selectedOptions["created_by"] = created_by;
-	axios
-		.post(`${API_BASE_URL}/submit-form`, selectedOptions)
-		.then((response) => {
-			console.log(response.data);
-			let groupDetails = response.data;
-			if (groupDetails && groupDetails.group) {
-				setgroup(groupDetails.group);
-				toast.success("Form Submitted Successfully");
-				setIsClicked(true);
-			} else {
-				toast.error("Group Logic Error");
-				setIsClicked(false); // Reset the isClicked state to false in case of error
-			}
-		})
-		.catch((error) => {
-			if (error.response && error.response.status === 400) {
-				// Show toast message for 400 (Bad Request) error
-				console.error("Error response:", error.response.data); // Log the error response for debugging
-				toast.warning("Group Logic Error kindly verify it again");
-			} else {
-				// Show toast message for other errors
-				console.error("Unexpected error:", error);
-				toast.error("Unexpected error occurred");
-			}
-		});
-};
-
-
-
+	const submitForms = () => {
+		let created_by = auth.user;
+		selectedOptions["created_by"] = created_by;
+		axios
+			.post(`${API_BASE_URL}/submit-form`, selectedOptions)
+			.then((response) => {
+				console.log(response.data);
+				let groupDetails = response.data;
+				if (groupDetails && groupDetails.group) {
+					setgroup(groupDetails.group);
+					toast.success("Form Submitted Successfully");
+					setIsClicked(true);
+				} else {
+					toast.error("Group Logic Error");
+					setIsClicked(false); // Reset the isClicked state to false in case of error
+				}
+			})
+			.catch((error) => {
+				if (error.response && error.response.status === 400) {
+					// Show toast message for 400 (Bad Request) error
+					console.error("Error response:", error.response.data); // Log the error response for debugging
+					toast.warning("Group Logic Error kindly verify it again");
+				} else {
+					// Show toast message for other errors
+					console.error("Unexpected error:", error);
+					toast.error("Unexpected error occurred");
+				}
+			});
+	};
 
 	return (
 		<div className='flex flex-col items-center justify-center h-screen'>
@@ -203,9 +191,7 @@ const submitForms = () => {
 										if (formData[formIndex]?.title === "indication_cesarean") {
 											if (event.target.value === "others") {
 												setShowTextInput(true);
-											}
-											else
-											setShowTextInput(false);
+											} else setShowTextInput(false);
 										}
 										updateThisOption(
 											formData[formIndex]?.title,
@@ -319,23 +305,26 @@ const submitForms = () => {
 							{/* <label className="mb-1">{option.displayText}</label> */}
 
 							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-full mb-4 rounded-md'>
-							<DatePicker
-      dateFormat="YYYY-MM-DD"
-      timeFormat={false}
-      value={dateOfBirth}
-      inputProps={{ placeholder: "Date of Birth" }}
-      placeholderText="Date of Birth"
-      maxDate={new Date()}
-      onChange={(value) => {
-        const formattedDate = moment(value).format("YYYY-MM-DD");
-        if (moment(formattedDate, "YYYY-MM-DD", true).isValid()) {
-          setDateOfBirth(formattedDate);
-          updateThisOption(formData[formIndex]?.dateofBirth, formattedDate);
-        } else {
-          setDateOfBirth("");
-        }
-      }}
-    />
+								<DatePicker
+									dateFormat='YYYY-MM-DD'
+									timeFormat={false}
+									value={dateOfBirth}
+									inputProps={{ placeholder: "Date of Birth" }}
+									placeholderText='Date of Birth'
+									maxDate={new Date()}
+									onChange={(value) => {
+										const formattedDate = moment(value).format("YYYY-MM-DD");
+										if (moment(formattedDate, "YYYY-MM-DD", true).isValid()) {
+											setDateOfBirth(formattedDate);
+											updateThisOption(
+												formData[formIndex]?.dateofBirth,
+												formattedDate
+											);
+										} else {
+											setDateOfBirth("");
+										}
+									}}
+								/>
 							</div>
 							<div className='relative max-w-sm mt-2  datetime-box border ml-7 border-gray-400 p-2 w-full rounded-md'>
 								<Datetime
