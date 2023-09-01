@@ -169,7 +169,7 @@
 			"conditions": [
 				{
 					"option": "svd",
-					"target": "baby_details"
+					"target": "b1_gender"
 				},
 				{
 					"option": "CS",
@@ -191,7 +191,7 @@
 			"conditions": [
 				{
 					"option": "",
-					"target": "baby_details"
+					"target": "b1_gender"
 				}
 			]
 		},
@@ -232,35 +232,34 @@
 		},
 
 		{
-			"title": "baby_details",
-			"displayText": "Baby Details",
+			"title": "b1_gender",
+			"displayText": "Baby Details of first child",
 			"options": [
 				{ "value": "female", "displayText": "Female" },
 				{ "value": "male", "displayText": "Male" },
 				{ "value": "ind_sex", "displayText": "Indeterminate sex" }
 			],
-			"dateOfBirth": "date_of_birth",
-			"timeOfBirth": "time_of_birth",
-			"dateAndTimePicker": true,
+			"b1_dateOfBirth": "b1_date_of_birth",
+			"b1_timeOfBirth": "b1_time_of_birth",
+			"b1": true,
 			"showPrevious": true,
 			"showNext": true
 		},
 		{
-			"title": "weight",
-			"displayText": "Weight (kg)",
+			"title": "b2_gender",
+			"displayText": "Baby Details of second child",
 			"options": [
-				{ "value": "<1", "displayText": "<1kg" },
-				{ "value": "1-1.5", "displayText": "1-1.5 kg" },
-				{ "value": "1.5-2", "displayText": "1.5-2 kg" },
-				{ "value": "2-2.5", "displayText": "2-2.5 kg" },
-				{ "value": "2.5-3.5", "displayText": "2.5-3.5 kg" },
-				{ "value": "3.5-4", "displayText": "3.5-4 kg" },
-				{ "value": ">=4", "displayText": ">=4 kg" },
-				{ "value": ">=5", "displayText": ">=5 kg" }
+				{ "value": "female", "displayText": "Female" },
+				{ "value": "male", "displayText": "Male" },
+				{ "value": "ind_sex", "displayText": "Indeterminate sex" }
 			],
+			"b2_dateOfBirth": "b2_date_of_birth",
+			"b2_timeOfBirth": "b2_time_of_birth",
+			"b2": true,
 			"showPrevious": true,
 			"showNext": true
 		},
+
 		{
 			"title": "apgar",
 			"displayText": "APGAR",
