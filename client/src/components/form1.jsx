@@ -18,8 +18,10 @@ function ObsIndexForm() {
 	const [weeks, setWeeks] = useState("");
 	const [patientId, setPatientId] = useState("");
 	const [textareaValue, setTextareaValue] = useState("");
-	const [dateOfBirth, setDateOfBirth] = useState(null);
-	const [timeOfBirth, setTimeOfBirth] = useState("");
+	const [b1DateOfBirth, setB1DateOfBirth] = useState(null);
+	const [b1TimeOfBirth, setB1TimeOfBirth] = useState("");
+	const [b2DateOfBirth, setB2DateOfBirth] = useState(null);
+	const [b2TimeOfBirth, setB2TimeOfBirth] = useState("");
 	const [prevFormIndex, setPrevFormIndex] = useState(-1);
 	const [apgar1, setApgar1] = useState("");
 	const [apgar5, setApgar5] = useState("");
@@ -33,6 +35,8 @@ function ObsIndexForm() {
 	const navigate = useNavigate();
 	const [showTextInput, setShowTextInput] = useState(false);
 	const [textInputValue, setTextInputValue] = useState("");
+	const [b1Weight, setB1Weight] = useState("");
+	const [b2Weight, setB2Weight] = useState("");
 
 	useEffect(() => {
 		axios
@@ -331,37 +335,50 @@ function ObsIndexForm() {
 
 				{/* if date time picker is true then show the date time picker */}
 				<div className='mt-6 flex'>
-					{formData[formIndex]?.dateAndTimePicker && (
+					{formData[formIndex]?.b1 && (
 						<div className='flex flex-col mb-4'>
-							{/* <label className="mb-1">{option.displayText}</label> */}
-
 							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-full mb-4 rounded-md'>
+								Weight:
+								<input
+									type='number'
+									className='border p-2 w-full rounded-md'
+									value={b1Weight}
+									placeholder='Enter Weight'
+									onChange={(e) => {
+										setB1Weight(e.target.value);
+										updateThisOption("b1_weight", e.target.value);
+									}}
+								/>
+							</div>
+							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-full mb-4 rounded-md'>
+								Date :
 								<DatePicker
 									dateFormat='YYYY-MM-DD'
 									timeFormat={false}
-									value={dateOfBirth}
+									value={b1DateOfBirth}
 									inputProps={{ placeholder: "Date of Birth" }}
 									placeholderText='Date of Birth'
 									maxDate={new Date()}
 									onChange={(value) => {
 										const formattedDate = moment(value).format("YYYY-MM-DD");
 										if (moment(formattedDate, "YYYY-MM-DD", true).isValid()) {
-											setDateOfBirth(formattedDate);
+											setB1DateOfBirth(formattedDate);
 											updateThisOption(
-												formData[formIndex]?.dateofBirth,
+												formData[formIndex]?.b1_dateofBirth,
 												formattedDate
 											);
 										} else {
-											setDateOfBirth("");
+											setB1DateOfBirth("");
 										}
 									}}
 								/>
 							</div>
-							<div className='relative max-w-sm mt-2  datetime-box border ml-7 border-gray-400 p-2 w-full rounded-md'>
+							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-full mb-4 rounded-md'>
+								Time :
 								<Datetime
 									dateFormat={false}
 									timeFormat='HH:mm' // Use uppercase 'A' for AM/PM
-									value={timeOfBirth}
+									value={b1TimeOfBirth}
 									placeholderText='Time of Birth'
 									inputProps={{ placeholder: "Time of Birth" }}
 									onChange={(value) => {
@@ -369,13 +386,79 @@ function ObsIndexForm() {
 											"HH:mm"
 										);
 										if (moment(formattedTime, "HH:mm", true).isValid()) {
-											setTimeOfBirth(formattedTime);
+											setB1TimeOfBirth(formattedTime);
 											updateThisOption(
-												formData[formIndex]?.timeOfBirth,
+												formData[formIndex]?.b1_timeOfBirth,
 												formattedTime
 											);
 										} else {
-											setTimeOfBirth(""); // Set to an empty string or a default value
+											setB1TimeOfBirth(""); // Set to an empty string or a default value
+										}
+									}}
+								/>
+							</div>
+						</div>
+					)}
+				</div>
+				<div className='mt-6 flex'>
+					{formData[formIndex]?.b2 && (
+						<div className='flex flex-col mb-4'>
+							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-full mb-4 rounded-md'>
+								Weight:
+								<input
+									type='number'
+									className='border p-2 w-full rounded-md'
+									value={b2Weight}
+									placeholder='Enter Weight'
+									onChange={(e) => {
+										setB2Weight(e.target.value);
+										updateThisOption("b2_weight", e.target.value);
+									}}
+								/>
+							</div>
+							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-full mb-4 rounded-md'>
+								Date :
+								<DatePicker
+									dateFormat='YYYY-MM-DD'
+									timeFormat={false}
+									value={b2DateOfBirth}
+									inputProps={{ placeholder: "Date of Birth" }}
+									placeholderText='Date of Birth'
+									maxDate={new Date()}
+									onChange={(value) => {
+										const formattedDate = moment(value).format("YYYY-MM-DD");
+										if (moment(formattedDate, "YYYY-MM-DD", true).isValid()) {
+											setB2DateOfBirth(formattedDate);
+											updateThisOption(
+												formData[formIndex]?.b2_dateofBirth,
+												formattedDate
+											);
+										} else {
+											setB2DateOfBirth("");
+										}
+									}}
+								/>
+							</div>
+							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-full mb-4 rounded-md'>
+								Time :
+								<Datetime
+									dateFormat={false}
+									timeFormat='HH:mm' // Use uppercase 'A' for AM/PM
+									value={b2TimeOfBirth}
+									placeholderText='Time of Birth'
+									inputProps={{ placeholder: "Time of Birth" }}
+									onChange={(value) => {
+										const formattedTime = moment(value, "HH:mm", true).format(
+											"HH:mm"
+										);
+										if (moment(formattedTime, "HH:mm", true).isValid()) {
+											setB2TimeOfBirth(formattedTime);
+											updateThisOption(
+												formData[formIndex]?.b2_timeOfBirth,
+												formattedTime
+											);
+										} else {
+											setB2TimeOfBirth(""); // Set to an empty string or a default value
 										}
 									}}
 								/>
