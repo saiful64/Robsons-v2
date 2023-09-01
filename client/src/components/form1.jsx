@@ -25,7 +25,7 @@ function ObsIndexForm() {
 	const [apgar5, setApgar5] = useState("");
 	const [prelabour, setprelabour] = useState(false);
 	const auth = useAuth();
-
+	const [patientExists, setPatientExists] = useState(false);
 	const [selectedRadioButton, setSelectedRadioButton] = useState(null);
 	const [group, setgroup] = useState("");
 	const [formIndexStack, setFormIndexStack] = useState([]);
@@ -59,6 +59,10 @@ function ObsIndexForm() {
 	};
 
 	const goToNextForm = () => {
+		if (formIndex == 0) {
+			console.log("hii ");
+			checkPatientExists();
+		}
 		if (!isClicked) {
 			if (prelabour && formIndex == 19) {
 				setFormIndex((prevForm) => prevForm + 1);
@@ -88,6 +92,18 @@ function ObsIndexForm() {
 				setPrevFormIndex(formIndex);
 			}
 			setFormIndexStack((prevStack) => [...prevStack, formIndex]);
+		}
+	};
+
+	const checkPatientExists = async () => {
+		try {
+			console.log("hiii");
+			const response = await axios.get(`/api/check-id/${patientId}`);
+			const { exists } = response.data;
+			setPatientExists(exists);
+			console.log(patientExists);
+		} catch (error) {
+			console.error("Error checking patient existence:", error);
 		}
 	};
 

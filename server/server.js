@@ -75,6 +75,29 @@ function calculatePercentageMatch(obj1, obj2) {
 	return (matchingValues.length / values1.length) * 100;
 }
 
+app.get("/api/check-id/:patientId", (req, res) => {
+	const { patientId } = req.params;
+
+	// Debugging: Print the received patientId
+	console.log("Received patientId:", patientId);
+
+	// Perform a database query to check if the patient ID exists
+	const query = "SELECT COUNT(*) AS count FROM patients WHERE patient_id = ?";
+
+	// Debugging: Print the SQL query being executed
+	console.log("SQL Query:", query);
+
+	db.query(query, [patientId], (err, results) => {
+		if (err) {
+			console.error("Error querying the database:", err);
+			res.status(500).json({ error: "Internal server error" });
+		} else {
+			const exists = results[0].count > 0;
+			res.json({ exists });
+		}
+	});
+});
+
 app.post("/submit-form", (req, res) => {
 	let data = req.body;
 	console.log(data);
@@ -268,7 +291,7 @@ app.post("/submit-form", (req, res) => {
 		const groupQuery = `INSERT INTO \`groups\` (group_name, created_by, created_on, dataId) VALUES ("${group}", "${data.created_by}", NOW(), "${robsonsId}")`;
 		con.query(groupQuery, (err, result) => {
 			if (err) {
-				console.error("Error while inserting data INTO GROUPS: ", err);
+				console.log("Error while inserting data INTO GROUPS: ", err);
 				res
 					.status(400)
 					.send({ message: "Error while inserting data in groups" });
