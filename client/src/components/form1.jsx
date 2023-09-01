@@ -444,7 +444,7 @@ function ObsIndexForm() {
 								<Datetime
 									dateFormat={false}
 									timeFormat='HH:mm' // Use uppercase 'A' for AM/PM
-									value={b2imeOfBirth}
+									value={b2TimeOfBirth}
 									placeholderText='Time of Birth'
 									inputProps={{ placeholder: "Time of Birth" }}
 									onChange={(value) => {
