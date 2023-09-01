@@ -1,6 +1,26 @@
 create database robsonclassification;
 use robsonclassification;
 
+
+ALTER TABLE robsonsdata
+ADD COLUMN B2Gender VARCHAR(255);
+ALTER TABLE robsonsdata
+ADD COLUMN B2Weight VARCHAR(255);
+ALTER TABLE robsonsdata
+ADD COLUMN b2_date_of_birth DATE;
+ALTER TABLE robsonsdata
+ADD COLUMN b2_time_of_birth TIME;
+
+ALTER TABLE robsonsdata
+CHANGE COLUMN BabyDetails B1Gender VARCHAR(255);
+ALTER TABLE robsonsdata
+CHANGE COLUMN weight B1Weight VARCHAR(255);
+ALTER TABLE robsonsdata
+CHANGE COLUMN date_of_birth b1_date_of_birth DATE;
+ALTER TABLE robsonsdata
+CHANGE COLUMN time_of_birth b1_time_of_birth TIME;
+
+
 CREATE TABLE robsonsdata (
   id INT AUTO_INCREMENT PRIMARY KEY,
   obs_index VARCHAR(255),
@@ -55,9 +75,9 @@ desc robsonsdata;
 select * from `groups`;
 select * from loginauth;
 select * from robsonsdata;
-
+SELECT COUNT(*) AS count FROM robsonsdata WHERE patient_id = 'JD';
 -- Insert row for a doctor
-INSERT INTO loginauth (user_name, password, role)
+INSERT INTO loginauth (user_name, password, role);
 VALUES ('d', 'd', 'doctor');
 
 -- Insert row for a student
