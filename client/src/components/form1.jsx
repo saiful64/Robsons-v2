@@ -26,6 +26,7 @@ function ObsIndexForm() {
 	const [apgar1, setApgar1] = useState("");
 	const [apgar5, setApgar5] = useState("");
 	const [prelabour, setprelabour] = useState(false);
+	const [spontaneous, setspontaneous] = useState(false);
 	const auth = useAuth();
 	const [patientExists, setPatientExists] = useState(false);
 	const [selectedRadioButton, setSelectedRadioButton] = useState(null);
@@ -72,10 +73,17 @@ function ObsIndexForm() {
 				setisB2(true);
 			} else setisB2(false);
 		}
-		``;
-		if (formData[formIndex]?.title == "b1_gender" && !isB2) {
-			setFormIndex((prevForm) => prevForm + 1);
+
+		if (formData[formIndex]?.title == "labour") {
+			if (selectedRadioButton == "spontaneous") {
+				setspontaneous(true);
+			} else setspontaneous(false);
 		}
+		if (formData[formIndex]?.title == "final_outcome" && spontaneous) {
+			setFormIndex((prevForm) => prevForm + 1);
+			setPrevFormIndex(formIndex);
+		}
+
 		if (!isClicked) {
 			if (prelabour && formIndex == 19) {
 				setFormIndex((prevForm) => prevForm + 1);
