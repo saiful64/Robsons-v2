@@ -64,7 +64,6 @@ function ObsIndexForm() {
 	};
 
 	const goToNextForm = () => {
-		console.log(isB2);
 		if (formIndex == 0) {
 			checkPatientExists();
 		}
@@ -111,13 +110,15 @@ function ObsIndexForm() {
 
 	const checkPatientExists = async () => {
 		try {
-			console.log("hiii");
-			console.log(patientId);
-			const response = await axios.get(`${API_BASE_URL}/api/check_id/${patientId}`);
-			console.log("helloo");
+			const response = await axios.get(
+				`${API_BASE_URL}/api/check_id/${patientId}`
+			);
 			const { exists } = response.data;
-			setPatientExists(exists);
-			console.log(patientExists);
+
+			if (exists) {
+				// Patient ID already exists, show a Toast warning
+				toast.warning("Patient ID already exists");
+			}
 		} catch (error) {
 			console.error("Error checking patient existence:", error);
 		}

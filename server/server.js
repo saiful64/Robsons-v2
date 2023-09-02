@@ -11,8 +11,6 @@ import styles from "./constants/constants.js";
 import util from "util";
 import { log } from "console";
 
-
-
 const app = express();
 const totalGroupList = [
 	"Group 1",
@@ -62,17 +60,11 @@ app.get("/api/form-data", (req, res) => {
 	res.status(200).send(formData);
 });
 
-app.get('/api/check_id/:patientId', (req, res) => {
+app.get("/api/check_id/:patientId", (req, res) => {
 	const { patientId } = req.params;
-		console.log('hello');
-	// Debugging: Print the received patientId
-	console.log("Received patientId:", patientId);
 
-	// Perform a database query to check if the patient ID exists
-	const query = "SELECT COUNT(*) AS count FROM robsonsdata WHERE patient_id = ?";
-
-	// Debugging: Print the SQL query being executed
-	console.log("SQL Query:", query);
+	const query =
+		"SELECT COUNT(*) AS count FROM robsonsdata WHERE patient_id = ?";
 
 	con.query(query, [patientId], (err, results) => {
 		if (err) {
@@ -80,7 +72,14 @@ app.get('/api/check_id/:patientId', (req, res) => {
 			res.status(500).json({ error: "Internal server error" });
 		} else {
 			const exists = results[0].count > 0;
-			res.json({ exists });
+
+			if (exists) {
+				// Send a response indicating that the patient ID exists
+				res.json({ exists: true });
+			} else {
+				// Send a response indicating that the patient ID does not exist
+				res.json({ exists: false });
+			}
 		}
 	});
 });
@@ -89,11 +88,10 @@ app.post("/submit-form", (req, res) => {
 	let data = req.body;
 
 	let actualPreviousCesarean = req.body.previous_cesarean;
-	
 
 	data.previous_cesarean =
 		Number(data.previous_cesarean) > 0 ? "true" : "false";
-	
+
 	let pog;
 	if (data.weeks <= 36) {
 		pog = "<36";
@@ -274,8 +272,6 @@ app.post("/submit-form", (req, res) => {
 	});
 });
 
-
-
 app.post("/api/update-status", (req, res) => {
 	// console.log(req.body)
 	let formId = req.body.formId;
@@ -326,7 +322,7 @@ app.get("/api/generate-report", (req, res) => {
 	let { startDate, endDate } = req.query;
 	startDate = moment(startDate).startOf("day").format("YYYY-MM-DD HH:mm:ss");
 	endDate = moment(endDate).endOf("day").format("YYYY-MM-DD HH:mm:ss");
-	
+
 	con.query(
 		`SELECT * FROM robsonsdata WHERE created_on BETWEEN '${startDate}' AND '${endDate}'`,
 		(error, robsonsDataList) => {
@@ -528,7 +524,7 @@ app.get("/api/generate-report-one", (req, res) => {
 	let { startDate, endDate } = req.query;
 	startDate = moment(startDate).startOf("day").format("YYYY-MM-DD HH:mm:ss");
 	endDate = moment(endDate).endOf("day").format("YYYY-MM-DD HH:mm:ss");
-	
+
 	con.query(
 		`SELECT 
 		obs_index,
@@ -845,7 +841,7 @@ const calculateCsRate = async (res) => {
 				}
 				let totalCsCount = result[0].length;
 				let totalcount = result[1].length;
-				
+
 				let CsRate =
 					totalCsCount && totalcount ? (totalCsCount / totalcount) * 100 : 0;
 				//console.log(CsRate);
@@ -901,7 +897,7 @@ app.get("/api/generate-status-init", async (req, res) => {
 			}
 			let groupsList = result[0];
 			let CS_total = result[1].length;
-		
+
 			if (_.isEmpty(groupsList)) {
 				res.status(400).send({ message: "No data Available" });
 				return;
@@ -917,7 +913,6 @@ app.get("/api/generate-status-init", async (req, res) => {
 				_.omit(obj, "count")
 			);
 
-		
 			let csRateForEachGroup = await calculateCSRateForEachGroup(
 				groupsList,
 				//dateRangeOptions,
@@ -967,7 +962,7 @@ app.get("/api/generate-status-init", async (req, res) => {
 			}));
 			statusData["columns"] = columns;
 			statusData["data"] = mergedData;
-			
+
 			res.status(200).send(statusData);
 		});
 	} catch (error) {
@@ -1206,11 +1201,11 @@ app.get("/api/barchart", async (req, res) => {
 					.send({ message: "Internal Server Error generate-status-init" });
 				return;
 			}
-			
+
 			let groupsList1 = result[0];
 			let groupsList2 = result[1];
 			let groupsList3 = result[2];
-		
+
 			if (_.isEmpty(groupsList1, groupsList2, groupsList3)) {
 				res.status(400).send({ message: "No data Available" });
 				return;
@@ -1232,7 +1227,6 @@ app.get("/api/barchart", async (req, res) => {
 				count_total3
 			);
 
-			
 			var relativeGroupSizeData1 = relativeGroupSize1.map((obj) =>
 				_.omit(obj, "BarChart")
 			);
@@ -1254,7 +1248,7 @@ app.get("/api/barchart", async (req, res) => {
 					"AbsolutecsRate",
 				])
 			);
-			
+
 			res.status(200).send({
 				data1: relativeGroupSizeData1,
 				data2: relativeGroupSizeData2,
@@ -1269,8 +1263,6 @@ app.get("/api/barchart", async (req, res) => {
 		return;
 	}
 });
-
-
 
 /**
  * TODO:  Create a different database idea
