@@ -102,7 +102,9 @@ function ObsIndexForm() {
 	const checkPatientExists = async () => {
 		try {
 			console.log("hiii");
-			const response = await axios.get(`/api/check-id/${patientId}`);
+			console.log(patientId);
+			const response = await axios.get(`${API_BASE_URL}/api/check_id/${patientId}`);
+			console.log("helloo");
 			const { exists } = response.data;
 			setPatientExists(exists);
 			console.log(patientExists);

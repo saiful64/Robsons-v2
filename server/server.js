@@ -11,6 +11,8 @@ import styles from "./constants/constants.js";
 import util from "util";
 import { log } from "console";
 
+
+
 const app = express();
 const totalGroupList = [
 	"Group 1",
@@ -59,35 +61,20 @@ const query11 = util.promisify(con.query).bind(con);
 app.get("/api/form-data", (req, res) => {
 	res.status(200).send(formData);
 });
-// Calculate the percentage of match between two objects
-function calculatePercentageMatch(obj1, obj2) {
-	const values1 = _.values(obj1);
-	// console.log(values1);
-	// console.log(values1.length);
 
-	const values2 = _.values(obj2);
-	// console.log(values2);
-
-	const matchingValues = _.intersection(values1, values2);
-	// console.log(matchingValues);
-
-	// console.log((matchingValues.length / values1.length) * 100);
-	return (matchingValues.length / values1.length) * 100;
-}
-
-app.get("/api/check-id/:patientId", (req, res) => {
+app.get('/api/check_id/:patientId', (req, res) => {
 	const { patientId } = req.params;
-
+		console.log('hello');
 	// Debugging: Print the received patientId
 	console.log("Received patientId:", patientId);
 
 	// Perform a database query to check if the patient ID exists
-	const query = "SELECT COUNT(*) AS count FROM patients WHERE patient_id = ?";
+	const query = "SELECT COUNT(*) AS count FROM robsonsdata WHERE patient_id = ?";
 
 	// Debugging: Print the SQL query being executed
 	console.log("SQL Query:", query);
 
-	db.query(query, [patientId], (err, results) => {
+	con.query(query, [patientId], (err, results) => {
 		if (err) {
 			console.error("Error querying the database:", err);
 			res.status(500).json({ error: "Internal server error" });
@@ -100,43 +87,15 @@ app.get("/api/check-id/:patientId", (req, res) => {
 
 app.post("/submit-form", (req, res) => {
 	let data = req.body;
-	console.log(data);
-	if (req.body.presentation_single == "Cephalic" && data.weeks < 36) {
-		data.pog = "<36";
-	} else if (req.body.presentation_single == "Cephalic" && data.weeks > 36) {
-		data.pog = ">36";
-	} else {
-		data = req.body;
-	}
 
-	//console.log(data);
 	let actualPreviousCesarean = req.body.previous_cesarean;
-	// console.log("hello", data.labour);
-	// if (data.labour === undefined) {
-	// 	data.labour = "None";
-	// } else {
-	// 	data = req.body;
-	// }
+	
 
 	data.previous_cesarean =
 		Number(data.previous_cesarean) > 0 ? "true" : "false";
-	// let highestMatchedGroup = { percentage: 0 };
-	// _.forEach(groupLogics, (logics) => {
-	// 	_.forEach(logics, (thisGroupLogic) => {
-	// 		const percentage = calculatePercentageMatch(
-	// 			data,
-	// 			thisGroupLogic.conditions
-	// 		);
-	// 		if (percentage > highestMatchedGroup.percentage) {
-	// 			highestMatchedGroup = {
-	// 				groupId: thisGroupLogic.id,
-	// 				percentage: percentage,
-	// 			};
-	// 		}
-	// 	});
-	// });
+	
 	let pog;
-	if (data.weeks < 36) {
+	if (data.weeks <= 36) {
 		pog = "<36";
 	} else {
 		pog = ">36";
@@ -315,6 +274,8 @@ app.post("/submit-form", (req, res) => {
 	});
 });
 
+
+
 app.post("/api/update-status", (req, res) => {
 	// console.log(req.body)
 	let formId = req.body.formId;
@@ -365,7 +326,7 @@ app.get("/api/generate-report", (req, res) => {
 	let { startDate, endDate } = req.query;
 	startDate = moment(startDate).startOf("day").format("YYYY-MM-DD HH:mm:ss");
 	endDate = moment(endDate).endOf("day").format("YYYY-MM-DD HH:mm:ss");
-	console.log(startDate, endDate);
+	
 	con.query(
 		`SELECT * FROM robsonsdata WHERE created_on BETWEEN '${startDate}' AND '${endDate}'`,
 		(error, robsonsDataList) => {
@@ -561,11 +522,13 @@ app.get("/api/generate-report", (req, res) => {
 	);
 });
 
+//Generate Report for Specific data
+
 app.get("/api/generate-report-one", (req, res) => {
 	let { startDate, endDate } = req.query;
 	startDate = moment(startDate).startOf("day").format("YYYY-MM-DD HH:mm:ss");
 	endDate = moment(endDate).endOf("day").format("YYYY-MM-DD HH:mm:ss");
-	console.log(startDate, endDate);
+	
 	con.query(
 		`SELECT 
 		obs_index,
@@ -698,11 +661,8 @@ app.get("/api/generate-report-one", (req, res) => {
 // function to calculate Relative Group Size For Each Group
 const calculateRelativeGroupSize = async (groupsList, count_total) => {
 	let relativeGroupSize = [];
-	//console.log(groupsList);
 	_.forEach(totalGroupList, (thisGroup) => {
 		let count = _.filter(groupsList, { group_name: thisGroup }).length;
-		//console.log(groupsList);
-		//console.log(count_total);
 		let percentage = (count / count_total) * 100;
 		relativeGroupSize.push({
 			group_name: thisGroup,
@@ -726,7 +686,6 @@ const calculateCSRateForEachGroup = async (
 			let csRateForEachGroup = [];
 			let currentCalculation = _.cloneDeep(relativeGroupSize);
 			_.forEach(totalGroupList, async (thisGroup, index) => {
-				//let robsonsQuery = `SELECT COUNT(*) as COUNT FROM robsonsdata WHERE date_of_birth >= '${dateRangeOptions.startDate}' AND date_of_birth <= '${dateRangeOptions.endDate}' AND group_name = '${thisGroup}' AND delivery='CS'`;
 				let robsonsQuery = `SELECT COUNT(*) as COUNT FROM robsonsdata WHERE group_name = '${thisGroup}' AND delivery='Cesarean'`;
 				con.query(robsonsQuery, async (error, result, fields) => {
 					if (error) {
@@ -739,7 +698,6 @@ const calculateCSRateForEachGroup = async (
 					}
 					let thisGroupCsCount = await result[0]["COUNT"];
 					let thisGroupCount = currentCalculation[index].count;
-					//console.log(thisGroupCsCount);
 					let CsRate =
 						thisGroupCsCount && thisGroupCount
 							? (thisGroupCsCount / thisGroupCount) * 100
@@ -772,7 +730,6 @@ const calculateRelativeCsRate = async (groupsList, res, CS_total) => {
 	try {
 		return new Promise((resolve, reject) => {
 			let RelativecsRate = [];
-			//let currentCalculation = _.cloneDeep(relativeGroupSize);
 			_.forEach(totalGroupList, async (thisGroup, index) => {
 				let robsonsQuery = `SELECT COUNT(*) as COUNT FROM robsonsdata WHERE delivery='Cesarean' AND group_name = '${thisGroup}'`;
 				con.query(robsonsQuery, async (error, result, fields) => {
@@ -845,7 +802,6 @@ const calculateAbsoluteCSRate = async (
 
 					AbsolutecsRate.push({
 						group_name: thisGroup,
-						//count: c,
 						AbsolutecsRate: AbsoluteCsRate,
 					});
 
@@ -889,8 +845,7 @@ const calculateCsRate = async (res) => {
 				}
 				let totalCsCount = result[0].length;
 				let totalcount = result[1].length;
-				//console.log(thisGroupCsCount);
-
+				
 				let CsRate =
 					totalCsCount && totalcount ? (totalCsCount / totalcount) * 100 : 0;
 				//console.log(CsRate);
@@ -914,11 +869,8 @@ const calculateCsRate = async (res) => {
 // function to calculate count of BarChart
 const calculateBarChart = async (groupsList1, count_total) => {
 	let BarChart = [];
-	console.log(groupsList1);
 	_.forEach(totalGroupList, (thisGroup) => {
 		let count = _.filter(groupsList1, { group_name: thisGroup }).length;
-		//console.log(groupsList);
-		console.log(count);
 		let percentage = (count / count_total) * 100;
 		BarChart.push({
 			group_name: thisGroup,
@@ -929,6 +881,8 @@ const calculateBarChart = async (groupsList1, count_total) => {
 
 	return BarChart;
 };
+
+//Generate Status of Cesarean Delivery
 app.get("/api/generate-status-init", async (req, res) => {
 	try {
 		let statusData = {};
@@ -947,7 +901,7 @@ app.get("/api/generate-status-init", async (req, res) => {
 			}
 			let groupsList = result[0];
 			let CS_total = result[1].length;
-			console.log(CS_total);
+		
 			if (_.isEmpty(groupsList)) {
 				res.status(400).send({ message: "No data Available" });
 				return;
@@ -959,18 +913,11 @@ app.get("/api/generate-status-init", async (req, res) => {
 				count_total
 			);
 
-			//console.log("284", relativeGroupSize);
 			const relativeGroupSizeData = relativeGroupSize.map((obj) =>
 				_.omit(obj, "count")
 			);
 
-			// CSRateforeach group
-			//let dateRangeOptions = { startDate: moment().subtract(7, 'days').format('YY-MM-DD'), endDate: moment().format('YY-MM-DD') };
-			// let dateRangeOptions = {
-			// 	startDate: moment(startDate).startOf("day").format("YYYY-MM-DD"),
-			// 	endDate: moment(endDate).endOf("day").format("YYYY-MM-DD"),
-			// };
-
+		
 			let csRateForEachGroup = await calculateCSRateForEachGroup(
 				groupsList,
 				//dateRangeOptions,
@@ -992,9 +939,6 @@ app.get("/api/generate-status-init", async (req, res) => {
 				res,
 				CS_total
 			);
-
-			//console.log(relativeCsRateData);
-			//merge  array
 
 			const mergedData = relativeGroupSizeData.map((relativeGroupSizeItem) => {
 				const csRateItem = csRateData.find(
@@ -1023,10 +967,7 @@ app.get("/api/generate-status-init", async (req, res) => {
 			}));
 			statusData["columns"] = columns;
 			statusData["data"] = mergedData;
-			// Calculate CS rate for Each group
-			// let dateRangeOptions = { startDate: moment().subtract(7, 'days').format('2023-05-02'), endDate: moment().format('2023-05-24') };
-
-			//console.log(statusData);
+			
 			res.status(200).send(statusData);
 		});
 	} catch (error) {
@@ -1265,13 +1206,11 @@ app.get("/api/barchart", async (req, res) => {
 					.send({ message: "Internal Server Error generate-status-init" });
 				return;
 			}
-			//let groupsList = result;
+			
 			let groupsList1 = result[0];
 			let groupsList2 = result[1];
 			let groupsList3 = result[2];
-			//console.log('jan',groupsList1);
-			//  console.log('apr',groupsList2);
-			//  console.log('jul',groupsList3);
+		
 			if (_.isEmpty(groupsList1, groupsList2, groupsList3)) {
 				res.status(400).send({ message: "No data Available" });
 				return;
@@ -1293,11 +1232,7 @@ app.get("/api/barchart", async (req, res) => {
 				count_total3
 			);
 
-			// let relativeGroupSize1 = await calculateBarChart(
-			// 	groupsList2,
-			// 	count_total
-			// );
-			// console.log("285", relativeGroupSize1);
+			
 			var relativeGroupSizeData1 = relativeGroupSize1.map((obj) =>
 				_.omit(obj, "BarChart")
 			);
@@ -1319,7 +1254,7 @@ app.get("/api/barchart", async (req, res) => {
 					"AbsolutecsRate",
 				])
 			);
-			console.log(CSrateData);
+			
 			res.status(200).send({
 				data1: relativeGroupSizeData1,
 				data2: relativeGroupSizeData2,
@@ -1334,6 +1269,8 @@ app.get("/api/barchart", async (req, res) => {
 		return;
 	}
 });
+
+
 
 /**
  * TODO:  Create a different database idea
