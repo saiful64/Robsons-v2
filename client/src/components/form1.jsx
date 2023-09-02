@@ -183,8 +183,8 @@ function ObsIndexForm() {
 					isClicked ? "hidden" : ""
 				}`}
 			>
-				<div className=' bg-gray-400 rounded-t-lg pr-20 pl-2 py-1'>
-					<h2 className='text-2xl relative font-bold text-center'>
+				<div className=' bg-gray-300 rounded-t-lg pr-20 pl-2 py-1'>
+					<h2 className='text-2xl relative text-gray-700 font-bold text-center'>
 						Robsons Classification
 					</h2>
 				</div>
@@ -347,10 +347,10 @@ function ObsIndexForm() {
 				</div>
 
 				{/* if date time picker is true then show the date time picker */}
-				<div className='mt-6 flex'>
+				<div className='mt-3 flex justify-start'>
 					{formData[formIndex]?.b1 && (
 						<div className='flex flex-col mb-4'>
-							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-full mb-4 rounded-md'>
+							<div className='flex max-w-sm text-left datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
 								Weight:
 								<input
 									type='number'
@@ -363,7 +363,7 @@ function ObsIndexForm() {
 									}}
 								/>
 							</div>
-							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-full mb-4 rounded-md'>
+							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
 								Date :
 								<DatePicker
 									dateFormat='YYYY-MM-DD'
@@ -386,7 +386,7 @@ function ObsIndexForm() {
 									}}
 								/>
 							</div>
-							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-full mb-4 rounded-md'>
+							<div className='flex max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
 								Time :
 								<Datetime
 									dateFormat={false}
@@ -413,10 +413,10 @@ function ObsIndexForm() {
 						</div>
 					)}
 				</div>
-				<div className='mt-6 flex'>
+				<div className='mt-0 flex justify-start'>
 					{formData[formIndex]?.b2 && (
 						<div className='flex flex-col mb-4'>
-							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-full mb-4 rounded-md'>
+							<div className='flex max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
 								Weight:
 								<input
 									type='number'
@@ -429,7 +429,7 @@ function ObsIndexForm() {
 									}}
 								/>
 							</div>
-							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-full mb-4 rounded-md'>
+							<div className='flex max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
 								Date :
 								<DatePicker
 									dateFormat='YYYY-MM-DD'
@@ -452,7 +452,7 @@ function ObsIndexForm() {
 									}}
 								/>
 							</div>
-							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-full mb-4 rounded-md'>
+							<div className='flex max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
 								Time :
 								<Datetime
 									dateFormat={false}
