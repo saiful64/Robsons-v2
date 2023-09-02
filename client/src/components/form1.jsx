@@ -37,6 +37,7 @@ function ObsIndexForm() {
 	const [textInputValue, setTextInputValue] = useState("");
 	const [b1Weight, setB1Weight] = useState("");
 	const [b2Weight, setB2Weight] = useState("");
+	const [isB2, setisB2] = useState(false);
 
 	useEffect(() => {
 		axios
@@ -63,9 +64,18 @@ function ObsIndexForm() {
 	};
 
 	const goToNextForm = () => {
+		console.log(isB2);
 		if (formIndex == 0) {
-			console.log("hii ");
 			checkPatientExists();
+		}
+		if (formData[formIndex]?.title == "fetus_type") {
+			if (selectedRadioButton == "twins") {
+				setisB2(true);
+			} else setisB2(false);
+		}
+		``;
+		if (formData[formIndex]?.title == "b1_gender" && !isB2) {
+			setFormIndex((prevForm) => prevForm + 1);
 		}
 		if (!isClicked) {
 			if (prelabour && formIndex == 19) {

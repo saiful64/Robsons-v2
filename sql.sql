@@ -19,6 +19,8 @@ ALTER TABLE robsonsdata
 CHANGE COLUMN date_of_birth b1_date_of_birth DATE;
 ALTER TABLE robsonsdata
 CHANGE COLUMN time_of_birth b1_time_of_birth TIME;
+ALTER TABLE robsonsdata
+ADD UNIQUE (patient_id);
 
 
 CREATE TABLE robsonsdata (
@@ -75,7 +77,6 @@ desc robsonsdata;
 select * from `groups`;
 select * from loginauth;
 select * from robsonsdata;
-SELECT COUNT(*) AS count FROM robsonsdata WHERE patient_id = 'JD';
 -- Insert row for a doctor
 INSERT INTO loginauth (user_name, password, role);
 VALUES ('d', 'd', 'doctor');
