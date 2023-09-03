@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { Line, Bar } from "react-chartjs-2";
 import API_BASE_URL from "./config";
 import axios from "axios";
+import "./ScrollbarContainer.css";
+//import ScrollbarContainer from './ScrollbarContainer';
 
 const MultiGraphComponent = () => {
 	const [data1, setData1] = useState([]);
@@ -148,7 +150,8 @@ const MultiGraphComponent = () => {
 	};
 
 	return (
-		<div className='container mx-auto px-4 p-4'>
+		
+		<div className='scroll-container container mx-auto px-4 p-4'>
 			<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
 				{/* First row */}
 				<div className='w-full  md:w-auto'>
@@ -183,6 +186,8 @@ const MultiGraphComponent = () => {
 				</div>
 			</div>
 		</div>
+		
+		
 	);
 };
 
