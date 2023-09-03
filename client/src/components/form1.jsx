@@ -73,6 +73,10 @@ function ObsIndexForm() {
 				setisB2(true);
 			} else setisB2(false);
 		}
+		if (formData[formIndex]?.title == "b1_gender" && !isB2) {
+			setFormIndex((prevForm) => prevForm + 1);
+			setPrevFormIndex(formIndex);
+		}
 
 		if (formData[formIndex]?.title == "labour") {
 			if (selectedRadioButton == "spontaneous") {
