@@ -15,6 +15,7 @@ import ProtectedRoute from "../src/components/requiredAuth";
 import "react-datetime/css/react-datetime.css";
 import "react-date-range/dist/styles.css"; // main css file for date-range
 import "react-date-range/dist/theme/default.css"; // theme css file date-range
+import PatientLog from "./components/PatientLog";
 function App() {
 	const [count, setCount] = useState("");
 
@@ -92,6 +93,14 @@ function App() {
 								element={
 									<ProtectedRoute>
 										<GraphContainer />
+									</ProtectedRoute>
+								}
+							/>
+							<Route
+								path='/patientlog'
+								element={
+									<ProtectedRoute>
+										<PatientLog />
 									</ProtectedRoute>
 								}
 							/>

@@ -206,7 +206,7 @@ function ObsIndexForm() {
 					</h3>
 				</div>
 
-				<div className='flex form-content  bg-white mb-4 flex-col justify-between pr-20 pl-2'>
+				<div className='flex form-content  bg-white mb flex-col justify-between pr-20 pl-2 max-h-80'>
 					{formData[formIndex]?.options.map((option, index) => (
 						<div key={index}>
 							<label
@@ -368,7 +368,7 @@ function ObsIndexForm() {
 									type='number'
 									className='border p-2 w-full rounded-md'
 									value={b1Weight}
-									placeholder='Enter Weight'
+									placeholder=' Enter Weight'
 									onChange={(e) => {
 										setB1Weight(e.target.value);
 										updateThisOption("b1_weight", e.target.value);
@@ -382,7 +382,7 @@ function ObsIndexForm() {
 									timeFormat={false}
 									value={b1DateOfBirth}
 									inputProps={{ placeholder: "Date of Birth" }}
-									placeholderText='Date of Birth'
+									placeholderText=' Date of Birth'
 									maxDate={new Date()}
 									onChange={(value) => {
 										const formattedDate = moment(value).format("YYYY-MM-DD");
@@ -404,7 +404,7 @@ function ObsIndexForm() {
 									dateFormat={false}
 									timeFormat='HH:mm' // Use uppercase 'A' for AM/PM
 									value={b1TimeOfBirth}
-									placeholderText='Time of Birth'
+									placeholderText=' Time of Birth'
 									inputProps={{ placeholder: "Time of Birth" }}
 									onChange={(value) => {
 										const formattedTime = moment(value, "HH:mm", true).format(
@@ -434,7 +434,7 @@ function ObsIndexForm() {
 									type='number'
 									className='border p-2 w-full rounded-md'
 									value={b2Weight}
-									placeholder='Enter Weight'
+									placeholder=' Enter Weight'
 									onChange={(e) => {
 										setB2Weight(e.target.value);
 										updateThisOption("b2_weight", e.target.value);
@@ -448,7 +448,7 @@ function ObsIndexForm() {
 									timeFormat={false}
 									value={b2DateOfBirth}
 									inputProps={{ placeholder: "Date of Birth" }}
-									placeholderText='Date of Birth'
+									placeholderText=' Date of Birth'
 									maxDate={new Date()}
 									onChange={(value) => {
 										const formattedDate = moment(value).format("YYYY-MM-DD");
@@ -470,7 +470,7 @@ function ObsIndexForm() {
 									dateFormat={false}
 									timeFormat='HH:mm' // Use uppercase 'A' for AM/PM
 									value={b2TimeOfBirth}
-									placeholderText='Time of Birth'
+									placeholderText=' Time of Birth'
 									inputProps={{ placeholder: "Time of Birth" }}
 									onChange={(value) => {
 										const formattedTime = moment(value, "HH:mm", true).format(

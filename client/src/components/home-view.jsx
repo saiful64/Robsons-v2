@@ -21,6 +21,9 @@ function HomeView() {
 	const dashboard = () => {
 		navigate("/dashboard");
 	};
+	const patientlog = () => {
+		navigate("/patientlog");
+	};
 	
 	const footerData = [
 		{ key: "mainText", displayText: "@ 2023 JIPMER, O & G  Dept." },
@@ -59,6 +62,12 @@ function HomeView() {
 									onClick={() => analysis()}
 								>
 									ANALYSIS
+								</button>
+								<button
+									className='bg-zinc-600 hover:bg-gray-600 text-white font-medium hover:font-bold hover:shadow-xl py-2 px-4 rounded m-2 mb-6'
+									onClick={() => patientlog()}
+								>
+									PATIENT LOG
 								</button>
 							</>
 						)}
