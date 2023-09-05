@@ -3,6 +3,9 @@ use robsonclassification;
 
 
 ALTER TABLE robsonsdata
+ADD UNIQUE (patient_id);
+
+ALTER TABLE robsonsdata
 ADD COLUMN B2Gender VARCHAR(255);
 ALTER TABLE robsonsdata
 ADD COLUMN B2Weight VARCHAR(255);
@@ -19,8 +22,6 @@ ALTER TABLE robsonsdata
 CHANGE COLUMN date_of_birth b1_date_of_birth DATE;
 ALTER TABLE robsonsdata
 CHANGE COLUMN time_of_birth b1_time_of_birth TIME;
-ALTER TABLE robsonsdata
-ADD UNIQUE (patient_id);
 
 
 CREATE TABLE robsonsdata (
@@ -77,6 +78,7 @@ desc robsonsdata;
 select * from `groups`;
 select * from loginauth;
 select * from robsonsdata;
+SELECT COUNT(*) AS count FROM robsonsdata WHERE patient_id = 'JD';
 -- Insert row for a doctor
 INSERT INTO loginauth (user_name, password, role);
 VALUES ('d', 'd', 'doctor');
@@ -86,6 +88,20 @@ INSERT INTO loginauth (user_name, password, role)
 VALUES ('s', 's', 'student');
 
 
+ALTER TABLE `groups`
+DROP COLUMN dataId;
+ALTER TABLE `groups`
+ADD COLUMN patient_id VARCHAR(20);
+
+ALTER TABLE `groups`
+ADD FOREIGN KEY (patient_id)
+REFERENCES robsonsdata (patient_id);
+
+
+ALTER TABLE `groups`
+ADD FOREIGN KEY (patient_id)
+REFERENCES robsonsdata (patient_id)
+ON DELETE CASCADE;
 
 
 
