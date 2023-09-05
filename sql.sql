@@ -103,9 +103,14 @@ ADD FOREIGN KEY (patient_id)
 REFERENCES robsonsdata (patient_id)
 ON DELETE CASCADE;
 
+ALTER TABLE `groups`
+ADD CONSTRAINT groups_ibfk_1
+FOREIGN KEY (patient_id)
+REFERENCES robsonsdata(patient_id)
+ON DELETE CASCADE;
 
-
-
+ALTER TABLE `groups`
+DROP FOREIGN KEY groups_ibfk_2;
 
 
 
