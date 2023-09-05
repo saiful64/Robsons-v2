@@ -103,7 +103,7 @@ function LoginAuthView(props) {
           </div>
           <div className="flex justify-center">
             <button
-              className="bg-[#393c41] hover:bg-[#cbd5e1] hover:text-black hover:shadow-md  text-white font-bold py-2 px-4 rounded-md"
+              className="bg-[#393c41] hover:bg-[#cbd5e1] hover:text-black hover:shadow-lg focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500  text-white font-bold py-2 px-4 rounded-md"
               type="submit"
             >
               Login

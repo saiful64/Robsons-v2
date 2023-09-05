@@ -195,13 +195,13 @@ function ObsIndexForm() {
 					isClicked ? "hidden" : ""
 				}`}
 			>
-				<div className=' bg-gray-300 rounded-t-lg pr-20 pl-2 py-1'>
-					<h2 className='text-2xl relative text-gray-700 font-bold text-center'>
+				<div className=' bg-gray-300 rounded-t-lg  pl-2 py-1'>
+					<h2 className='text-2xl relative  text-gray-700 font-bold text-center'>
 						Robsons Classification
 					</h2>
 				</div>
 				<div className='flex form-title mb-4 pr-20 pl-2'>
-					<h3 className='text-lg font-bold'>
+					<h3 className='text-lg font-semibold'>
 						{formData[formIndex]?.displayText}
 					</h3>
 				</div>
@@ -211,11 +211,15 @@ function ObsIndexForm() {
 						<div key={index}>
 							<label
 								key={index}
-								className='inline-flex hover:cursor-pointer hover:text-2xl items-center'
+								className={`inline-flex text-gray-600 hover:text-gray-900 hover:cursor-pointer hover:text-2xl items-center ${
+									option.displayText === selectedOptions[formData[formIndex]?.title]
+									  ? 'text-gray-900 text-xl' // If selected, make the text blue
+									  : '' // Otherwise, no additional class
+								  }`}
 							>
 								<input
 									type='radio'
-									className='form-radio hover:cursor-pointer'
+									className='form-radio hover:cursor-pointer '
 									name='radio'
 									value={option.value}
 									checked={
@@ -313,19 +317,19 @@ function ObsIndexForm() {
 								type='range'
 								min={0}
 								max={10}
-								className='border ml-7 border-gray-400 p-2 w-full rounded-md'
+								className='border hover:cursor-pointer ml-7 border-gray-400 p-2 w-full rounded-md'
 								value={apgar1}
 								onChange={(e) => {
 									setApgar1(e.target.value);
 									updateThisOption("apgar1", e.target.value);
 								}}
 							/>
-							<p className='m-4'>At 5 min: {apgar5}</p>
+							<p className='m-4 '>At 5 min: {apgar5}</p>
 							<input
 								type='range'
 								min={0}
 								max={10}
-								className='border ml-7 border-gray-400 p-2 w-full rounded-md'
+								className='border ml-7 hover:cursor-pointer border-gray-400 p-2 w-full rounded-md'
 								value={apgar5}
 								onChange={(e) => {
 									setApgar5(e.target.value);
