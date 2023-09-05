@@ -197,27 +197,31 @@ function ObsIndexForm() {
 					isClicked ? "hidden" : ""
 				}`}
 			>
-				<div className=' bg-gray-400 rounded-t-lg pr-20 pl-2 py-1'>
-					<h2 className='text-2xl relative font-bold text-center'>
+				<div className=' bg-gray-300 rounded-t-lg  pl-2 py-1'>
+					<h2 className='text-2xl relative  text-gray-700 font-bold text-center'>
 						Robsons Classification
 					</h2>
 				</div>
 				<div className='flex form-title mb-4 pr-20 pl-2'>
-					<h3 className='text-lg font-bold'>
+					<h3 className='text-lg font-semibold'>
 						{formData[formIndex]?.displayText}
 					</h3>
 				</div>
 
-				<div className='flex form-content  bg-white mb-4 flex-col justify-between pr-20 pl-2'>
+				<div className='flex form-content  bg-white mb flex-col justify-between pr-20 pl-2 max-h-80'>
 					{formData[formIndex]?.options.map((option, index) => (
 						<div key={index}>
 							<label
 								key={index}
-								className='inline-flex hover:cursor-pointer hover:text-2xl items-center'
+								className={`inline-flex text-gray-600 hover:text-gray-900 hover:cursor-pointer hover:text-2xl items-center ${
+									option.displayText === selectedOptions[formData[formIndex]?.title]
+									  ? 'text-gray-900 text-xl' // If selected, make the text blue
+									  : '' // Otherwise, no additional class
+								  }`}
 							>
 								<input
 									type='radio'
-									className='form-radio hover:cursor-pointer'
+									className='form-radio hover:cursor-pointer '
 									name='radio'
 									value={option.value}
 									checked={
@@ -315,19 +319,19 @@ function ObsIndexForm() {
 								type='range'
 								min={0}
 								max={10}
-								className='border ml-7 border-gray-400 p-2 w-full rounded-md'
+								className='border hover:cursor-pointer ml-7 border-gray-400 p-2 w-full rounded-md'
 								value={apgar1}
 								onChange={(e) => {
 									setApgar1(e.target.value);
 									updateThisOption("apgar1", e.target.value);
 								}}
 							/>
-							<p className='m-4'>At 5 min: {apgar5}</p>
+							<p className='m-4 '>At 5 min: {apgar5}</p>
 							<input
 								type='range'
 								min={0}
 								max={10}
-								className='border ml-7 border-gray-400 p-2 w-full rounded-md'
+								className='border ml-7 hover:cursor-pointer border-gray-400 p-2 w-full rounded-md'
 								value={apgar5}
 								onChange={(e) => {
 									setApgar5(e.target.value);
@@ -361,30 +365,30 @@ function ObsIndexForm() {
 				</div>
 
 				{/* if date time picker is true then show the date time picker */}
-				<div className='mt-6 flex'>
+				<div className='mt-3 flex justify-start'>
 					{formData[formIndex]?.b1 && (
 						<div className='flex flex-col mb-4'>
-							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-full mb-4 rounded-md'>
+							<div className='flex max-w-sm text-left datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
 								Weight:
 								<input
 									type='number'
 									className='border p-2 w-full rounded-md'
 									value={b1Weight}
-									placeholder='Enter Weight'
+									placeholder=' Enter Weight'
 									onChange={(e) => {
 										setB1Weight(e.target.value);
 										updateThisOption("b1_weight", e.target.value);
 									}}
 								/>
 							</div>
-							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-full mb-4 rounded-md'>
+							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
 								Date :
 								<DatePicker
 									dateFormat='YYYY-MM-DD'
 									timeFormat={false}
 									value={b1DateOfBirth}
 									inputProps={{ placeholder: "Date of Birth" }}
-									placeholderText='Date of Birth'
+									placeholderText=' Date of Birth'
 									maxDate={new Date()}
 									onChange={(value) => {
 										const formattedDate = moment(value).format("YYYY-MM-DD");
@@ -400,13 +404,13 @@ function ObsIndexForm() {
 									}}
 								/>
 							</div>
-							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-full mb-4 rounded-md'>
+							<div className='flex max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
 								Time :
 								<Datetime
 									dateFormat={false}
 									timeFormat='HH:mm' // Use uppercase 'A' for AM/PM
 									value={b1TimeOfBirth}
-									placeholderText='Time of Birth'
+									placeholderText=' Time of Birth'
 									inputProps={{ placeholder: "Time of Birth" }}
 									onChange={(value) => {
 										const formattedTime = moment(value, "HH:mm", true).format(
@@ -427,30 +431,30 @@ function ObsIndexForm() {
 						</div>
 					)}
 				</div>
-				<div className='mt-6 flex'>
+				<div className='mt-0 flex justify-start'>
 					{formData[formIndex]?.b2 && (
 						<div className='flex flex-col mb-4'>
-							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-full mb-4 rounded-md'>
+							<div className='flex max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
 								Weight:
 								<input
 									type='number'
 									className='border p-2 w-full rounded-md'
 									value={b2Weight}
-									placeholder='Enter Weight'
+									placeholder=' Enter Weight'
 									onChange={(e) => {
 										setB2Weight(e.target.value);
 										updateThisOption("b2_weight", e.target.value);
 									}}
 								/>
 							</div>
-							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-full mb-4 rounded-md'>
+							<div className='flex max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
 								Date :
 								<DatePicker
 									dateFormat='YYYY-MM-DD'
 									timeFormat={false}
 									value={b2DateOfBirth}
 									inputProps={{ placeholder: "Date of Birth" }}
-									placeholderText='Date of Birth'
+									placeholderText=' Date of Birth'
 									maxDate={new Date()}
 									onChange={(value) => {
 										const formattedDate = moment(value).format("YYYY-MM-DD");
@@ -466,13 +470,13 @@ function ObsIndexForm() {
 									}}
 								/>
 							</div>
-							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-full mb-4 rounded-md'>
+							<div className='flex max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
 								Time :
 								<Datetime
 									dateFormat={false}
 									timeFormat='HH:mm' // Use uppercase 'A' for AM/PM
 									value={b2TimeOfBirth}
-									placeholderText='Time of Birth'
+									placeholderText=' Time of Birth'
 									inputProps={{ placeholder: "Time of Birth" }}
 									onChange={(value) => {
 										const formattedTime = moment(value, "HH:mm", true).format(
