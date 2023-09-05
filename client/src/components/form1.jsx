@@ -130,6 +130,8 @@ function ObsIndexForm() {
 			if (exists) {
 				// Patient ID already exists, show a Toast warning
 				toast.warning("Patient ID already exists");
+				setFormIndex((prevForm) => prevForm - 1);
+				setPrevFormIndex(formIndex);
 			}
 		} catch (error) {
 			console.error("Error checking patient existence:", error);
@@ -389,7 +391,7 @@ function ObsIndexForm() {
 										if (moment(formattedDate, "YYYY-MM-DD", true).isValid()) {
 											setB1DateOfBirth(formattedDate);
 											updateThisOption(
-												formData[formIndex]?.b1_dateofBirth,
+												formData[formIndex]?.b1_dateOfBirth,
 												formattedDate
 											);
 										} else {
@@ -455,7 +457,7 @@ function ObsIndexForm() {
 										if (moment(formattedDate, "YYYY-MM-DD", true).isValid()) {
 											setB2DateOfBirth(formattedDate);
 											updateThisOption(
-												formData[formIndex]?.b2_dateofBirth,
+												formData[formIndex]?.b2_dateOfBirth,
 												formattedDate
 											);
 										} else {
