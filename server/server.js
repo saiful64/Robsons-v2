@@ -272,37 +272,37 @@ app.post("/submit-form", (req, res) => {
 		created_on,
 		review
 		) VALUES (
-		"${data.patient_id || null}",
-		"${data.obs_index || null}",
-		"${data.weeks || null}",
-		"${pog || null}",
-		"${actualPreviousCesarean || null}",
-		"${data.fetus_type || null}",
-		"${data.presentation_single || null}",
-		"${data.presentation_twin || null}",
+		${data.patient_id  ? `"${data.patient_id}"` : null},
+		${data.obs_index  ? `"${data.obs_index}"` : null},
+		${data.weeks ? `"${data.weeks}"` : null},
+		${pog  ? `"${pog}"` : null},
+		${actualPreviousCesarean ? `"${actualPreviousCesarean}"` : null},
+		${data.fetus_type ? `"${data.fetus_type}"` : null},
+		${data.presentation_single  ? `"${data.presentation_single}"` : null},
+		${data.presentation_twin  ? `"${data.presentation_twin}"` : null},
 		${data.labour ? `"${data.labour}"` : null},
 		${data.ripening ? `"${data.ripening}"` : null},
-		"${data.induced_augmented || null}",
+		${data.induced_augmented  ? `"${data.induced_augmented}"` : null},
 		${data.delivery ? `"${data.delivery}"` : null},
-		"${data.indication_ovd || null}",
-		"${data.indication_cesarean || null}",
-		"${data.stage || null}",
-		"${data.b1_gender || null}",
-		"${data.b1_weight || null}",
-		"${data.b2_gender || null}",
-		"${data.b2_weight || null}",
-		"${data.apgar1 || null}",
-		"${data.apgar5 || null}",
-		"${data.outcome || null}",
-		"${data.indication || null}",
-		"${data.final_outcome || null}",
-		"${data.indication_for_induction || null}",
+		${data.indication_ovd ? `"${data.indication_ovd}"` : null},
+		${data.indication_cesarean ? `"${data.indication_cesarean}"` : null},
+		${data.stage ? `"${data.stage}"` : null},
+		${data.b1_gender ? `"${data.b1_gender}"` : null},
+		${data.b1_weight ? `"${data.b1_weight}"` : null},
+		${data.b2_gender ? `"${data.b2_gender}"` : null},
+		${data.b2_weight ? `"${data.b2_weight}"` : null},
+		${data.apgar1 ? `"${data.apgar1}"` : null},
+		${data.apgar5 ? `"${data.apgar5}"` : null},
+		${data.outcome ? `"${data.outcome}"` : null},
+		${data.indication ? `"${data.indication}"` : null},
+		${data.final_outcome ? `"${data.final_outcome}"` : null},
+		${data.indication_for_induction ? `"${data.indication_for_induction}"` : null},
 		${data.b1_date_of_birth ? `"${data.b1_date_of_birth}"` : null},
 		${data.b1_time_of_birth ? `"${data.b1_time_of_birth}"` : null},
 		${data.b2_date_of_birth ? `"${data.b2_date_of_birth}"` : null},
 		${data.b2_time_of_birth ? `"${data.b2_time_of_birth}"` : null},
-		"${group || null}",
-		"${data.created_by || null}",
+		${group ? `"${group}"` : null},
+		${data.created_by ? `"${data.created_by}"` : null},
 		NOW(),
 		${data.review ? `"${data.review}"` : null}
 		);`;
@@ -443,9 +443,10 @@ app.get("/api/generate-report", (req, res) => {
 						? thisRobsonData.B1Weight
 						: "",
 					B2Gender: !_.isEmpty(thisRobsonData.B2Gender) ? thisRobsonData.B2Gender : "",
-					b2_date_of_birth: moment(thisRobsonData.b2_date_of_birth).format(
+					b2_date_of_birth: !_.isEmpty(thisRobsonData.b2_date_of_birth)
+					 ? moment(thisRobsonData.b2_date_of_birth).format(
 						"ddd D MMM YYYY"
-					),
+					) : "",
 					b2_time_of_birth: !_.isEmpty(thisRobsonData.b2_time_of_birth)
 						? thisRobsonData.b2_time_of_birth
 						: "",
@@ -580,7 +581,8 @@ app.get("/api/generate-report", (req, res) => {
 					width: 120, // <- width in pixels
 					cellFormat: function (value, row) {
 						// <- Renderer function, you can access also any row.property
-						return value === undefined ? "NA" : value;
+						console.log(value);
+						return value === null ? "NA" : value;
 					},
 				};
 			});
