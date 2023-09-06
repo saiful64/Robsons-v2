@@ -124,10 +124,6 @@ const PatientLog = () => {
 		toast.dismiss();
 	};
 
-	const handleViewClick = (patient) => {
-		toast.info(`Viewing patient with ID : ${patient.patient_id}`);
-	};
-
 	return (
 		<>
 			<ToastContainer />
