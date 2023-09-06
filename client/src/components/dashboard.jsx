@@ -3,7 +3,8 @@ import { Line, Bar } from "react-chartjs-2";
 import API_BASE_URL from "./config";
 import axios from "axios";
 import "./ScrollbarContainer.css";
-//import ScrollbarContainer from './ScrollbarContainer';
+import { useNavigate } from "react-router-dom";
+
 
 const MultiGraphComponent = () => {
 	const [data1, setData1] = useState([]);
@@ -11,6 +12,7 @@ const MultiGraphComponent = () => {
 	const [data3, setData3] = useState([]);
 	const [data4, setData4] = useState([]);
 	const [data5, setData5] = useState([]);
+	const navigate = useNavigate();
 	useEffect(() => {
 		const fetchCombinedData = async () => {
 			try {
@@ -148,7 +150,12 @@ const MultiGraphComponent = () => {
 			},
 		],
 	};
-
+	const goToHome = () => {
+		navigate("/home-view");
+	};
+	const leftMarginStyle = {
+		marginLeft: '80px', 
+	  };
 	return (
 		
 		<div className='scroll-container container mx-auto px-4 p-4 overflow-y-auto'>
@@ -156,8 +163,15 @@ const MultiGraphComponent = () => {
 				{/* First row */}
 				<div className='w-full  md:w-auto'>
 					<h2 className='text-sm font-bold mb-4'>
-						Total Deliveries and Caesarean Deliveries
+						Total Deliveries and Caesarean Deliveries 
+						<button
+							onClick={goToHome}
+							className='bg-blue-300 hover:cursor-pointer hover:bg-gray-400 font-bold px-2 py-1 rounded-md mr-2 ml-4'
+						>
+							Home
+						</button>
 					</h2>
+					
 					<div className='bg-white p-4 rounded-lg shadow-md'>
 						<Line data={chartData} options={chartOptions1} />
 					</div>

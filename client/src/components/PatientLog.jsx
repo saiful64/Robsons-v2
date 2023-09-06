@@ -32,6 +32,9 @@ const DeleteConfirmationDialog = ({ patient, onConfirm, onCancel }) => (
 	</div>
 );
 
+
+
+
 const PatientLog = () => {
 	const [patients, setPatients] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
