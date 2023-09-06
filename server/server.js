@@ -86,7 +86,7 @@ app.get("/api/check_id/:patientId", (req, res) => {
 
 app.get("/api/patients", (req, res) => {
 	// Query the database to fetch patient IDs from the robsonsdata table
-	con.query("SELECT patient_id FROM robsonsdata", (err, results) => {
+	con.query("SELECT patient_id,created_on FROM robsonsdata", (err, results) => {
 		if (err) {
 			console.error(err);
 			res.status(500).json({ error: "Internal Server Error" });

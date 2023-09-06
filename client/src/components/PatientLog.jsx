@@ -16,7 +16,14 @@ const PatientLog = () => {
 		fetch(`${API_BASE_URL}/api/patients`)
 			.then((response) => response.json())
 			.then((data) => {
-				setPatients(data);
+
+				const sortedPatients = data.sort((a, b) => {
+					const dateA = new Date(a.created_on);
+					const dateB = new Date(b.created_on);
+					return dateB - dateA;
+				});
+
+				setPatients(sortedPatients);
 			})
 			.catch((error) => {
 				console.error("Error fetching patient IDs:", error);
