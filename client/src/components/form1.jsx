@@ -214,11 +214,10 @@ function ObsIndexForm() {
 							<label
 								key={index}
 								className={`inline-flex text-gray-600 hover:text-gray-900 hover:cursor-pointer hover:text-2xl items-center ${
-									option.displayText ===
-									selectedOptions[formData[formIndex]?.title]
-										? "text-gray-900 text-xl" // If selected, make the text blue
-										: "" // Otherwise, no additional class
-								}`}
+									option.displayText === selectedOptions[formData[formIndex]?.title]
+									  ? 'text-gray-900 text-xl' // If selected, make the text blue
+									  : '' // Otherwise, no additional class
+								  }`}
 							>
 								<input
 									type='radio'
