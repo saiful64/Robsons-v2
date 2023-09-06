@@ -94,18 +94,13 @@ ALTER TABLE `groups`
 ADD COLUMN patient_id VARCHAR(20);
 
 ALTER TABLE `groups`
-ADD FOREIGN KEY (patient_id)
-REFERENCES robsonsdata (patient_id);
-
-
-ALTER TABLE `groups`
-ADD FOREIGN KEY (patient_id)
-REFERENCES robsonsdata (patient_id)
+ADD CONSTRAINT groups_ibfk_1
+FOREIGN KEY (patient_id)
+REFERENCES robsonsdata(patient_id)
 ON DELETE CASCADE;
 
-
-
-
+ALTER TABLE `groups`
+DROP FOREIGN KEY groups_ibfk_2;
 
 
 
