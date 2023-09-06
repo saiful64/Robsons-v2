@@ -17,27 +17,27 @@ function ObsIndexForm() {
 	const [selectedOptions, setSelectedOptions] = useState({});
 	const [weeks, setWeeks] = useState("");
 	const [patientId, setPatientId] = useState("");
-	const [textareaValue, setTextareaValue] = useState("");
+	const [textareaValue, setTextareaValue] = useState(null);
 	const [b1DateOfBirth, setB1DateOfBirth] = useState(null);
-	const [b1TimeOfBirth, setB1TimeOfBirth] = useState("");
+	const [b1TimeOfBirth, setB1TimeOfBirth] = useState(null);
 	const [b2DateOfBirth, setB2DateOfBirth] = useState(null);
-	const [b2TimeOfBirth, setB2TimeOfBirth] = useState("");
+	const [b2TimeOfBirth, setB2TimeOfBirth] = useState(null);
 	const [prevFormIndex, setPrevFormIndex] = useState(-1);
-	const [apgar1, setApgar1] = useState("");
-	const [apgar5, setApgar5] = useState("");
+	const [apgar1, setApgar1] = useState(null);
+	const [apgar5, setApgar5] = useState(null);
 	const [prelabour, setprelabour] = useState(false);
 	const [spontaneous, setspontaneous] = useState(false);
 	const auth = useAuth();
 	const [patientExists, setPatientExists] = useState(false);
 	const [selectedRadioButton, setSelectedRadioButton] = useState(null);
-	const [group, setgroup] = useState("");
+	const [group, setgroup] = useState(null);
 	const [formIndexStack, setFormIndexStack] = useState([]);
 	const [isClicked, setIsClicked] = useState(false);
 	const navigate = useNavigate();
 	const [showTextInput, setShowTextInput] = useState(false);
-	const [textInputValue, setTextInputValue] = useState("");
-	const [b1Weight, setB1Weight] = useState("");
-	const [b2Weight, setB2Weight] = useState("");
+	const [textInputValue, setTextInputValue] = useState(null);
+	const [b1Weight, setB1Weight] = useState(null);
+	const [b2Weight, setB2Weight] = useState(null);
 	const [isB2, setisB2] = useState(false);
 
 	useEffect(() => {
@@ -72,6 +72,13 @@ function ObsIndexForm() {
 			if (selectedRadioButton == "twins") {
 				setisB2(true);
 			} else setisB2(false);
+		}
+		if (formData[formIndex]?.title == "obs_index") {
+			console.log(selectedRadioButton);
+			if (selectedRadioButton == "primi") {
+				setFormIndex((prevForm) => prevForm + 1);
+				setPrevFormIndex(formIndex);
+			}
 		}
 		if (formData[formIndex]?.title == "b1_gender" && !isB2) {
 			setFormIndex((prevForm) => prevForm + 1);
@@ -214,10 +221,11 @@ function ObsIndexForm() {
 							<label
 								key={index}
 								className={`inline-flex text-gray-600 hover:text-gray-900 hover:cursor-pointer hover:text-2xl items-center ${
-									option.displayText === selectedOptions[formData[formIndex]?.title]
-									  ? 'text-gray-900 text-xl' // If selected, make the text blue
-									  : '' // Otherwise, no additional class
-								  }`}
+									option.displayText ===
+									selectedOptions[formData[formIndex]?.title]
+										? "text-gray-900 text-xl" // If selected, make the text blue
+										: "" // Otherwise, no additional class
+								}`}
 							>
 								<input
 									type='radio'
@@ -272,6 +280,7 @@ function ObsIndexForm() {
 											e.target.value
 										);
 									}}
+									zz
 									placeholder='Enter your text here...'
 								/>
 							</div>
