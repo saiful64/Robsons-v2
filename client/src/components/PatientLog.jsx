@@ -7,40 +7,39 @@ import { useNavigate } from 'react-router-dom';
 import PatientDetails from './PatientDetails';
 
 const PatientLog = () => {
-	const [patients, setPatients] = useState([]);
-	const [currentPage, setCurrentPage] = useState(1);
-	const [patientsPerPage] = useState(10);
-	const [patientToDelete, setPatientToDelete] = useState(null);
-	const navigate = useNavigate();
+  const [patients, setPatients] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [patientsPerPage] = useState(10);
+  const [patientToDelete, setPatientToDelete] = useState(null);
+  const [patientIdToView, setPatientIdToView] = useState(null);
+  const [isPatientDetailsVisible, setIsPatientDetailsVisible] = useState(false);
+  const navigate = useNavigate();
 
-	const fetchPatients = () => {
-		fetch(`${API_BASE_URL}/api/patients`)
-			.then((response) => response.json())
-			.then((data) => {
-
-				const sortedPatients = data.sort((a, b) => {
-					const dateA = new Date(a.created_on);
-					const dateB = new Date(b.created_on);
-					return dateB - dateA;
-				});
-
-				setPatients(sortedPatients);
-			})
-			.catch((error) => {
-				console.error("Error fetching patient IDs:", error);
-			});
-	};
+  const fetchPatients = () => {
+    axios.get(`${API_BASE_URL}/api/patients`)
+      .then((response) => {
+        const sortedPatients = response.data.sort((a, b) => {
+          const dateA = new Date(a.created_on);
+          const dateB = new Date(b.created_on);
+          return dateB - dateA;
+        });
+        setPatients(sortedPatients);
+      })
+      .catch((error) => {
+        console.error('Error fetching patient IDs:', error);
+      });
+  };
 
   useEffect(() => {
     fetchPatients();
   }, []);
 
-	const indexOfLastPatient = currentPage * patientsPerPage;
-	const indexOfFirstPatient = indexOfLastPatient - patientsPerPage;
-	const currentPatients = patients.slice(
-		indexOfFirstPatient,
-		indexOfLastPatient
-	);
+  const indexOfLastPatient = currentPage * patientsPerPage;
+  const indexOfFirstPatient = indexOfLastPatient - patientsPerPage;
+  const currentPatients = patients.slice(
+    indexOfFirstPatient,
+    indexOfLastPatient
+  );
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -56,9 +55,10 @@ const PatientLog = () => {
 
   const handleViewClick = (patient) => {
     setPatientIdToView(patient.patient_id);
-	  setIsPatientDetailsVisible(true);
+    setIsPatientDetailsVisible(true); // Show PatientDetails component
   };
 
+  // Define a function to close the PatientDetails component
   const closePatientDetails = () => {
     setIsPatientDetailsVisible(false);
     setPatientIdToView(null);
@@ -120,77 +120,81 @@ const PatientLog = () => {
       });
   };
 
-	const cancelDelete = () => {
-		toast.dismiss();
-	};
+  const cancelDelete = () => {
+    toast.dismiss();
+  };
 
-	return (
-		<>
-			<ToastContainer />
-			<div className='flex items-center justify-center h-screen'>
-				<div className='bg-white p-6 rounded-lg shadow-md w-96'>
-					<h1 className='text-3xl font-bold mb-4 text-center'>Patient Log</h1>
-					<table className='table-auto w-full'>
-						<thead>
-							<tr>
-								<th className='px-4 py-2'>Patient ID</th>
-								<th className='px-4 py-2'>Actions</th>
-							</tr>
-						</thead>
-						<tbody>
-							{currentPatients.map((patient) => (
-								<tr key={patient.patient_id}>
-									<td className='border px-4 py-2'>{patient.patient_id}</td>
-									<td className='border px-4 py-2 text-right'>
-										<button
-											className='bg-blue-500 hover:bg-blue-700 text-white font-bold px-2 py-1 rounded-md mr-2'
-											onClick={() => handleEditClick(patient)}
-										>
-											Edit
-										</button>
-										<button
-											className='bg-green-500 hover:bg-green-700 text-white font-bold px-2 py-1 rounded-md mr-2'
-											onClick={() => handleViewClick(patient)}
-										>
-											View
-										</button>
-										<button
-											className='bg-rose-500 hover:bg-rose-700 text-white font-bold px-2 py-1 rounded-md'
-											onClick={() => handleDeleteClick(patient)}
-										>
-											Delete
-										</button>
-									</td>
-								</tr>
-							))}
-						</tbody>
-					</table>
-					<div className='pagination text-center mt-4'>
-						<button
-							onClick={goHome}
-							className='bg-gray-300 hover:cursor-pointer hover:bg-gray-400 font-bold px-2 py-1 rounded-md mr-2'
-						>
-							Home
-						</button>
-						<button
-							onClick={() => paginate(currentPage - 1)}
-							disabled={currentPage === 1}
-							className='disabled:hidden bg-gray-300 hover:cursor-pointer hover:bg-gray-400 font-bold px-2 py-1 rounded-md mr-2'
-						>
-							Previous
-						</button>
-						<button
-							onClick={() => paginate(currentPage + 1)}
-							disabled={indexOfLastPatient >= patients.length}
-							className='bg-blue-500 hover:cursor-pointer hover:bg-blue-700 font-bold text-white px-2 py-1 rounded-md'
-						>
-							Next
-						</button>
-					</div>
-				</div>
-			</div>
-		</>
-	);
+  return (
+    <>
+      <ToastContainer />
+      <div className="flex items-center justify-center h-screen">
+        <div className="bg-white p-6 rounded-lg shadow-md w-96">
+          <h1 className="text-3xl font-bold mb-4 text-center">Patient Log</h1>
+          <table className="table-auto w-full">
+            <thead>
+              <tr>
+                <th className="px-4 py-2">Patient ID</th>
+                <th className="px-4 py-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentPatients.map((patient) => (
+                <tr key={patient.patient_id}>
+                  <td className="border px-4 py-2 hover:bg-slate-50">{patient.patient_id}</td>
+                  <td className="border px-4 py-2 text-right">
+                    <button
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-2 py-1 rounded-md mr-2"
+                      onClick={() => handleEditClick(patient)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="bg-green-500 hover:bg-green-700 text-white font-bold px-2 py-1 rounded-md mr-2"
+                      onClick={() => handleViewClick(patient)}
+                    >
+                      View
+                    </button>
+                    <button
+                      className="bg-rose-500 hover:bg-rose-700 text-white font-bold px-2 py-1 rounded-md"
+                      onClick={() => handleDeleteClick(patient)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="pagination text-center mt-4">
+            <button
+              onClick={goHome}
+              className="bg-gray-300 hover:cursor-pointer hover:bg-gray-400 font-bold px-2 py-1 rounded-md mr-2"
+            >
+              Home
+            </button>
+            <button
+              onClick={() => paginate(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="disabled:hidden bg-gray-300 hover:cursor-pointer hover:bg-gray-400 font-bold px-2 py-1 rounded-md mr-2"
+            >
+              Previous
+            </button>
+            <button
+              onClick={() => paginate(currentPage + 1)}
+              disabled={indexOfLastPatient >= patients.length}
+              className="bg-blue-500 hover:cursor-pointer hover:bg-blue-700 font-bold text-white px-2 py-1 rounded-md"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {isPatientDetailsVisible && (
+        <PatientDetails patientId={patientIdToView} onClose={closePatientDetails} />
+      )}
+    </>
+  );
 };
 
 export default PatientLog;

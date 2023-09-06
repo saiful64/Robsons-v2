@@ -151,7 +151,7 @@ const MultiGraphComponent = () => {
 
 	return (
 		
-		<div className='scroll-container container mx-auto px-4 p-4'>
+		<div className='scroll-container container mx-auto px-4 p-4 overflow-y-auto'>
 			<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
 				{/* First row */}
 				<div className='w-full  md:w-auto'>
