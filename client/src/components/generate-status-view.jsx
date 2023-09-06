@@ -4,10 +4,12 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useTable, useResizeColumns } from "react-table";
 import API_BASE_URL from "./config";
+import { useNavigate } from "react-router-dom";
 
 function GenerateStatus() {
   const [columns, setColumns] = useState([]);
   const [data, setData] = useState([]);
+  const navigate = useNavigate()
 
   useEffect(() => {
     axios
@@ -25,6 +27,9 @@ function GenerateStatus() {
       });
   }, []);
   
+  const goHome = () => {
+	navigate("/home-view");
+  };
 
   // Use useMemo to memoize the table instance to avoid unnecessary re-renders
 	const tableInstance = useTable({ data, columns }, useResizeColumns);
@@ -83,6 +88,12 @@ function GenerateStatus() {
               </table>
             </div>
           </div>
+		  <button
+        className="mt-4 text-center mb-4 px-4 py-2 bg-blue-500 hover:bg-blue-700 hover:cursor-pointer text-white rounded-md"
+        onClick={goHome}
+      >
+        Close
+      </button>
         </div>
       </div>
     </>

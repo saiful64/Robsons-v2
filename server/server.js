@@ -97,6 +97,27 @@ app.get("/api/patients", (req, res) => {
 	});
 });
 
+app.get('/api/patient-details/:patient_id', (req, res) => {
+  const { patient_id } = req.params;
+
+  const sql = 'SELECT * FROM robsonsdata WHERE patient_id = ?';
+
+  con.query(sql, [patient_id], (err, results) => {
+    if (err) {
+      console.error('Error retrieving patient details:', err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      if (results.length === 0) {
+        res.status(404).json({ error: 'Patient not found' });
+      } else {
+        res.json(results[0]); // Send the first row (assuming patient_id is unique)
+      }
+    }
+  });
+});
+
+
+
 app.delete("/api/patients/:id", (req, res) => {
 	const patientId = req.params.id;
 
