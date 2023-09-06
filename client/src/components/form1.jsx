@@ -377,11 +377,11 @@ function ObsIndexForm() {
 				<div className='mt-3 flex justify-start'>
 					{formData[formIndex]?.b1 && (
 						<div className='flex flex-col mb-4'>
-							<div className='flex max-w-sm text-left datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
-								Weight:
+							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
+								Weight (in kg) :
 								<input
 									type='number'
-									className='border p-2 w-full rounded-md'
+									className='border m-1 p-2 w-full rounded-md'
 									value={b1Weight}
 									placeholder=' Enter Weight'
 									onChange={(e) => {
@@ -393,11 +393,12 @@ function ObsIndexForm() {
 							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
 								Date :
 								<DatePicker
+									className='border m-2 p-2 w-full rounded-md'
 									dateFormat='YYYY-MM-DD'
 									timeFormat={false}
 									value={b1DateOfBirth}
 									inputProps={{ placeholder: "Date of Birth" }}
-									placeholderText=' Date of Birth'
+									placeholderText='Enter Date of Birth'
 									maxDate={new Date()}
 									onChange={(value) => {
 										const formattedDate = moment(value).format("YYYY-MM-DD");
@@ -413,14 +414,15 @@ function ObsIndexForm() {
 									}}
 								/>
 							</div>
-							<div className='flex max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
-								Time :
+							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
+								Time (in hrs) :
 								<Datetime
+									className='border m-1 p-2 w-full rounded-md'
 									dateFormat={false}
 									timeFormat='HH:mm' // Use uppercase 'A' for AM/PM
 									value={b1TimeOfBirth}
 									placeholderText=' Time of Birth'
-									inputProps={{ placeholder: "Time of Birth" }}
+									inputProps={{ placeholder: "Enter Time of Birth" }}
 									onChange={(value) => {
 										const formattedTime = moment(value, "HH:mm", true).format(
 											"HH:mm"
@@ -443,11 +445,11 @@ function ObsIndexForm() {
 				<div className='mt-0 flex justify-start'>
 					{formData[formIndex]?.b2 && (
 						<div className='flex flex-col mb-4'>
-							<div className='flex max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
+							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
 								Weight:
 								<input
 									type='number'
-									className='border p-2 w-full rounded-md'
+									className='border m-1 p-2 w-full rounded-md'
 									value={b2Weight}
 									placeholder=' Enter Weight'
 									onChange={(e) => {
@@ -456,14 +458,15 @@ function ObsIndexForm() {
 									}}
 								/>
 							</div>
-							<div className='flex max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
+							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
 								Date :
 								<DatePicker
+									className='border m-2 p-2 w-full rounded-md'
 									dateFormat='YYYY-MM-DD'
 									timeFormat={false}
 									value={b2DateOfBirth}
 									inputProps={{ placeholder: "Date of Birth" }}
-									placeholderText=' Date of Birth'
+									placeholderText='Enter Date of Birth'
 									maxDate={new Date()}
 									onChange={(value) => {
 										const formattedDate = moment(value).format("YYYY-MM-DD");
@@ -479,14 +482,15 @@ function ObsIndexForm() {
 									}}
 								/>
 							</div>
-							<div className='flex max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
+							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
 								Time :
 								<Datetime
+									className='border m-1 p-2 w-full rounded-md'
 									dateFormat={false}
 									timeFormat='HH:mm' // Use uppercase 'A' for AM/PM
 									value={b2TimeOfBirth}
 									placeholderText=' Time of Birth'
-									inputProps={{ placeholder: "Time of Birth" }}
+									inputProps={{ placeholder: "Enter Time of Birth" }}
 									onChange={(value) => {
 										const formattedTime = moment(value, "HH:mm", true).format(
 											"HH:mm"
