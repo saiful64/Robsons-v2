@@ -47,7 +47,7 @@ function GenerateReportView() {
 			})
 			.catch((error) => {
 				console.error(error);
-				toast.error("unexpected error occurred");
+				toast.error("No data available.");
 			});
 	};
 
@@ -75,19 +75,16 @@ function GenerateReportView() {
 					link.setAttribute("download", fileName); // set file name here
 					document.body.appendChild(link);
 					link.click();
-				} else {
-					console.log("No data found");
 				}
 			})
 			.catch((error) => {
-				console.error(error);
-				console.error(error.response);
-				//toast.error("unexpected error occurred");
+				toast.error("No data available.");
 			});
 	};
 
 	return (
 		<>
+		<ToastContainer/>
 			<div className='flex flex-col items-center justify-center h-screen'>
 				{
 					<div className='bg-white p-6 rounded-lg shadow-md  sm:w-96'>
