@@ -41,7 +41,7 @@ const PatientLog = () => {
 	};
 
 	const handleEditClick = (patient) => {
-		toast.success(`Editing patient with ID ${patient.patient_id}`);
+		toast.success(`Editing patient with ID : ${patient.patient_id}`);
 	};
 
 	const handleDeleteClick = (patient) => {
@@ -49,7 +49,8 @@ const PatientLog = () => {
 		toast.info(
 			<div className='text-center'>
 				<p className='mb-4'>
-					Are you sure you want to delete patient with ID {patient.patient_id}?
+					Are you sure you want to delete patient with ID : {patient.patient_id}
+					?
 				</p>
 				<button
 					className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-2'
@@ -75,7 +76,9 @@ const PatientLog = () => {
 			.delete(`${API_BASE_URL}/api/patients/${patient_id}`)
 			.then((response) => {
 				if (response.status === 200) {
-					toast.success(`Patient with ID ${patient_id} deleted successfully.`);
+					toast.success(
+						`Patient with ID : ${patient_id} deleted successfully.`
+					);
 					fetchPatients();
 				} else {
 					toast.error(`Error deleting patient with ID ${patient_id}.`);
@@ -94,6 +97,10 @@ const PatientLog = () => {
 
 	const cancelDelete = () => {
 		toast.dismiss();
+	};
+
+	const handleViewClick = (patient) => {
+		toast.info(`Viewing patient with ID : ${patient.patient_id}`);
 	};
 
 	return (
@@ -115,13 +122,19 @@ const PatientLog = () => {
 									<td className='border px-4 py-2'>{patient.patient_id}</td>
 									<td className='border px-4 py-2 text-right'>
 										<button
-											className='bg-blue-500 hover:bg-blue-700 text-white font-bold justify-end px-2 py-1 items-end rounded-md mr-2'
+											className='bg-blue-500 hover:bg-blue-700 text-white font-bold px-2 py-1 rounded-md mr-2'
 											onClick={() => handleEditClick(patient)}
 										>
 											Edit
 										</button>
 										<button
-											className='bg-rose-500 hover:bg-rose-700 text-white font-bold px-2 py-1 justify-end items-end rounded-md'
+											className='bg-green-500 hover:bg-green-700 text-white font-bold px-2 py-1 rounded-md mr-2'
+											onClick={() => handleViewClick(patient)}
+										>
+											View
+										</button>
+										<button
+											className='bg-rose-500 hover:bg-rose-700 text-white font-bold px-2 py-1 rounded-md'
 											onClick={() => handleDeleteClick(patient)}
 										>
 											Delete
