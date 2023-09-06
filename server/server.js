@@ -251,40 +251,41 @@ app.post("/submit-form", (req, res) => {
 		created_on,
 		review
 		) VALUES (
-		"${data.patient_id}",
-		"${data.obs_index}",
-		"${data.weeks}",
-		"${pog}",
-		"${actualPreviousCesarean}",
-		"${data.fetus_type}",
-		"${data.presentation_single}",
-		"${data.presentation_twin}",
-		${data.labour ? `"${data.labour}"` : "null"},
-		${data.ripening ? `"${data.ripening}"` : "null"},
-		"${data.induced_augmented}",
-		${data.delivery ? `"${data.delivery}"` : "null"},
-		"${data.indication_ovd}",
-		"${data.indication_cesarean}",
-		"${data.stage}",
-		"${data.b1_gender}",
-		"${data.b1_weight}",
-		"${data.b2_gender}",
-		"${data.b2_weight}",
-		"${data.apgar1}",
-		"${data.apgar5}",
-		"${data.outcome}",
-		"${data.indication}",
-		"${data.final_outcome}",
-		"${data.indication_for_induction}",
-		${data.b1_date_of_birth ? `"${data.b1_date_of_birth}"` : "null"},
-		${data.b1_time_of_birth ? `"${data.b1_time_of_birth}"` : "null"},
-		${data.b2_date_of_birth ? `"${data.b2_date_of_birth}"` : "null"},
-		${data.b2_time_of_birth ? `"${data.b2_time_of_birth}"` : "null"},
-		"${group}",
-		"${data.created_by}",
+		"${data.patient_id || null}",
+		"${data.obs_index || null}",
+		"${data.weeks || null}",
+		"${pog || null}",
+		"${actualPreviousCesarean || null}",
+		"${data.fetus_type || null}",
+		"${data.presentation_single || null}",
+		"${data.presentation_twin || null}",
+		${data.labour ? `"${data.labour}"` : null},
+		${data.ripening ? `"${data.ripening}"` : null},
+		"${data.induced_augmented || null}",
+		${data.delivery ? `"${data.delivery}"` : null},
+		"${data.indication_ovd || null}",
+		"${data.indication_cesarean || null}",
+		"${data.stage || null}",
+		"${data.b1_gender || null}",
+		"${data.b1_weight || null}",
+		"${data.b2_gender || null}",
+		"${data.b2_weight || null}",
+		"${data.apgar1 || null}",
+		"${data.apgar5 || null}",
+		"${data.outcome || null}",
+		"${data.indication || null}",
+		"${data.final_outcome || null}",
+		"${data.indication_for_induction || null}",
+		${data.b1_date_of_birth ? `"${data.b1_date_of_birth}"` : null},
+		${data.b1_time_of_birth ? `"${data.b1_time_of_birth}"` : null},
+		${data.b2_date_of_birth ? `"${data.b2_date_of_birth}"` : null},
+		${data.b2_time_of_birth ? `"${data.b2_time_of_birth}"` : null},
+		"${group || null}",
+		"${data.created_by || null}",
 		NOW(),
-		${data.review ? `"${data.review}"` : "null"}
+		${data.review ? `"${data.review}"` : null}
 		);`;
+
 	con.query(sql, (err, result) => {
 		if (err) {
 			console.error("Error while inserting data: ", err);
@@ -381,6 +382,9 @@ app.get("/api/generate-report", (req, res) => {
 			let santizedRobsonsDataList = [];
 			_.forEach(robsonsDataList, (thisRobsonData) => {
 				let tmpObject = {
+					patient_id: !_.isEmpty(thisRobsonData.patient_id)
+						? thisRobsonData.patient_id
+						: "",
 					obs_index: !_.isEmpty(thisRobsonData.obs_index)
 						? thisRobsonData.obs_index
 						: "",
@@ -407,17 +411,25 @@ app.get("/api/generate-report", (req, res) => {
 						: "",
 
 					Stage: !_.isEmpty(thisRobsonData.Stage) ? thisRobsonData.Stage : "",
-					BabyDetails: !_.isEmpty(thisRobsonData.BabyDetails)
-						? thisRobsonData.BabyDetails
-						: "",
-					date_of_birth: moment(thisRobsonData.date_of_birth).format(
+					B1Gender: !_.isEmpty(thisRobsonData.B1Gender) ? thisRobsonData.B1Gender : "",
+					b1_date_of_birth: moment(thisRobsonData.b1_date_of_birth).format(
 						"ddd D MMM YYYY"
 					),
-					time_of_birth: !_.isEmpty(thisRobsonData.time_of_birth)
-						? thisRobsonData.time_of_birth
+					b1_time_of_birth: !_.isEmpty(thisRobsonData.b1_time_of_birth)
+						? thisRobsonData.b1_time_of_birth
 						: "",
-					weight: !_.isEmpty(thisRobsonData.weight)
-						? thisRobsonData.weight
+					B1Weight: !_.isEmpty(thisRobsonData.B1Weight)
+						? thisRobsonData.B1Weight
+						: "",
+					B2Gender: !_.isEmpty(thisRobsonData.B2Gender) ? thisRobsonData.B2Gender : "",
+					b2_date_of_birth: moment(thisRobsonData.b2_date_of_birth).format(
+						"ddd D MMM YYYY"
+					),
+					b2_time_of_birth: !_.isEmpty(thisRobsonData.b2_time_of_birth)
+						? thisRobsonData.b2_time_of_birth
+						: "",
+					B2Weight: !_.isEmpty(thisRobsonData.B2Weight)
+						? thisRobsonData.B2Weight
 						: "",
 					apgar1: !_.isEmpty(thisRobsonData.apgar1)
 						? thisRobsonData.apgar1
@@ -468,6 +480,7 @@ app.get("/api/generate-report", (req, res) => {
 			});
 
 			let fieldNames = [
+				"Patient ID",
 				"Obs Index",
 				"Weeks",
 				"POG",
@@ -478,10 +491,14 @@ app.get("/api/generate-report", (req, res) => {
 				"Labour Type",
 				"Delivery",
 				"Stage",
-				"Gender",
-				"Date of Birth",
-				"Time of Birth",
-				"Weight",
+				"Baby 1 Gender",
+				"Baby 1 Date of Birth",
+				"Baby 1 Time of Birth",
+				"Baby 1 Weight",
+				"Baby 2 Gender",
+				"Baby 2 Date of Birth",
+				"Baby 2 Time of Birth",
+				"Baby 2 Weight",
 				"APGAR1",
 				"APGAR5",
 				"Outcome",
@@ -498,6 +515,7 @@ app.get("/api/generate-report", (req, res) => {
 				"Created On",
 			];
 			let fields = [
+				"patient_id",
 				"obs_index",
 				"weeks",
 				"pog",
@@ -508,10 +526,14 @@ app.get("/api/generate-report", (req, res) => {
 				"Labour",
 				"delivery",
 				"Stage",
-				"BabyDetails",
-				"date_of_birth",
-				"time_of_birth",
-				"weight",
+				"B1Gender",
+				"b1_date_of_birth",
+				"b1_time_of_birth",
+				"B1Weight",
+				"B2Gender",
+				"b2_date_of_birth",
+				"b2_time_of_birth",
+				"B2Weight",
 				"apgar1",
 				"apgar5",
 				"outcome",
@@ -568,6 +590,7 @@ app.get("/api/generate-report-one", (req, res) => {
 
 	con.query(
 		`SELECT 
+		patient_id,
 		obs_index,
 		weeks,
 		pog,
@@ -576,10 +599,14 @@ app.get("/api/generate-report-one", (req, res) => {
 		presentation_single,
 		presentation_twin,
 		Labour,
-		BabyDetails,
-		date_of_birth,
-		time_of_birth,
-		weight
+		B1Gender,
+		b1_date_of_birth,
+		b1_time_of_birth,
+		B1Weight,
+		B2Gender,
+		b2_date_of_birth,
+		b2_time_of_birth,
+		B2Weight
 	  FROM robsonsdata WHERE created_on BETWEEN '${startDate}' AND '${endDate}'`,
 		(error, robsonsDataList) => {
 			if (error) {
@@ -596,6 +623,9 @@ app.get("/api/generate-report-one", (req, res) => {
 			let santizedRobsonsDataList = [];
 			_.forEach(robsonsDataList, (thisRobsonData) => {
 				let tmpObject = {
+					patient_id: !_.isEmpty(thisRobsonData.patient_id)
+						? thisRobsonData.patient_id
+						: "",
 					obs_index: !_.isEmpty(thisRobsonData.obs_index)
 						? thisRobsonData.obs_index
 						: "",
@@ -617,23 +647,32 @@ app.get("/api/generate-report-one", (req, res) => {
 					Labour: !_.isEmpty(thisRobsonData.Labour)
 						? thisRobsonData.Labour
 						: "",
-					BabyDetails: !_.isEmpty(thisRobsonData.BabyDetails)
-						? thisRobsonData.BabyDetails
-						: "",
-					date_of_birth: moment(thisRobsonData.date_of_birth).format(
+					B1Gender: !_.isEmpty(thisRobsonData.B1Gender) ? thisRobsonData.B1Gender : "",
+					b1_date_of_birth: moment(thisRobsonData.b1_date_of_birth).format(
 						"ddd D MMM YYYY"
 					),
-					time_of_birth: !_.isEmpty(thisRobsonData.time_of_birth)
-						? thisRobsonData.time_of_birth
+					b1_time_of_birth: !_.isEmpty(thisRobsonData.b1_time_of_birth)
+						? thisRobsonData.b1_time_of_birth
 						: "",
-					weight: !_.isEmpty(thisRobsonData.weight)
-						? thisRobsonData.weight
+					B1Weight: !_.isEmpty(thisRobsonData.B1Weight)
+						? thisRobsonData.B1Weight
+						: "",
+					B2Gender: !_.isEmpty(thisRobsonData.B2Gender) ? thisRobsonData.B2Gender : "",
+					b2_date_of_birth: moment(thisRobsonData.b2_date_of_birth).format(
+						"ddd D MMM YYYY"
+					)? thisRobsonData.b2_date_of_birth : "",
+					b2_time_of_birth: !_.isEmpty(thisRobsonData.b2_time_of_birth)
+						? thisRobsonData.b2_time_of_birth
+						: "",
+					B2Weight: !_.isEmpty(thisRobsonData.B2Weight)
+						? thisRobsonData.B2Weight
 						: "",
 				};
 				santizedRobsonsDataList.push(tmpObject);
 			});
 
 			let fieldNames = [
+				"Patient ID",
 				"Obs Index",
 				"Weeks",
 				"POG",
@@ -642,12 +681,17 @@ app.get("/api/generate-report-one", (req, res) => {
 				"Presentation Single",
 				"Presentation Twin",
 				"Labour Type",
-				"Gender",
-				"Date of Birth",
-				"Time of Birth",
-				"Weight",
+				"Baby 1 Gender",
+				"Baby 1 Date of Birth",
+				"Baby 1 Time of Birth",
+				"Baby 1 Weight",
+				"Baby 2 Gender",
+				"Baby 2 Date of Birth",
+				"Baby 2 Time of Birth",
+				"Baby 2 Weight",
 			];
 			let fields = [
+				"patient_id",
 				"obs_index",
 				"weeks",
 				"pog",
@@ -656,10 +700,14 @@ app.get("/api/generate-report-one", (req, res) => {
 				"presentation_single",
 				"presentation_twin",
 				"Labour",
-				"BabyDetails",
-				"date_of_birth",
-				"time_of_birth",
-				"weight",
+				"B1Gender",
+				"b1_date_of_birth",
+				"b1_time_of_birth",
+				"B1Weight",
+				"B2Gender",
+				"b2_date_of_birth",
+				"b2_time_of_birth",
+				"B2Weight"
 			];
 			let groupSpecification = {};
 			_.forEach(fields, function (item, index) {
