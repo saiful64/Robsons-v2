@@ -175,19 +175,19 @@ const PatientLog = () => {
 									</td>
 									<td className='border px-4 py-2 text-right'>
 										<button
-											className='bg-blue-500 hover:bg-blue-700 text-white font-bold px-2 py-1 rounded-md mr-2'
+											className='bg-blue-500 hover:bg-blue-700 text-white   font-bold px-2 py-1 rounded-md mr-2'
 											onClick={() => handleEditClick(patient)}
 										>
 											Edit
 										</button>
 										<button
-											className='bg-green-500 hover:bg-green-700 text-white font-bold px-2 py-1 rounded-md mr-2'
+											className='bg-green-500 hover:bg-green-700 text-white  font-bold px-2 py-1 rounded-md mr-2'
 											onClick={() => handleViewClick(patient)}
 										>
 											View
 										</button>
 										<button
-											className='bg-rose-500 hover:bg-rose-700 text-white font-bold px-2 py-1 rounded-md'
+											className='bg-rose-500 hover:bg-rose-700 text-white  font-bold px-2 py-1 rounded-md'
 											onClick={() => handleDeleteClick(patient)}
 										>
 											Delete
@@ -200,21 +200,21 @@ const PatientLog = () => {
 					<div className='pagination text-center mt-4'>
 						<button
 							onClick={goHome}
-							className='bg-gray-300 hover:cursor-pointer hover:bg-gray-400 font-bold px-2 py-1 rounded-md mr-2'
+							className='bg-zinc-500 hover:bg-gray-300 hover:text-black text-white hover:cursor-pointer font-bold px-2 py-1 rounded-md mr-2'
 						>
 							Home
 						</button>
 						<button
 							onClick={() => paginate(currentPage - 1)}
 							disabled={currentPage === 1}
-							className='disabled:hidden bg-gray-300 hover:cursor-pointer hover:bg-gray-400 font-bold px-2 py-1 rounded-md mr-2'
+							className='disabled:hidden bg-zinc-600 hover:bg-gray-300 hover:text-black text-white hover:cursor-pointer font-bold px-2 py-1 rounded-md mr-2'
 						>
 							Previous
 						</button>
 						<button
 							onClick={() => paginate(currentPage + 1)}
 							disabled={indexOfLastPatient >= filteredPatients.length}
-							className='bg-blue-500 hover:cursor-pointer hover:bg-blue-700 font-bold text-white px-2 py-1 rounded-md'
+							className='bg-zinc-700 hover:bg-gray-300 hover:text-black hover:cursor-pointer font-bold text-white px-2 py-1 rounded-md'
 						>
 							Next
 						</button>

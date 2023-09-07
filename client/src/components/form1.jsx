@@ -446,7 +446,7 @@ function ObsIndexForm() {
 					{formData[formIndex]?.b2 && (
 						<div className='flex flex-col mb-4'>
 							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
-								Weight:
+								Weight (in kg) :
 								<input
 									type='number'
 									className='border m-1 p-2 w-full rounded-md'
@@ -483,7 +483,7 @@ function ObsIndexForm() {
 								/>
 							</div>
 							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
-								Time :
+								Time (in hrs) :
 								<Datetime
 									className='border m-1 p-2 w-full rounded-md'
 									dateFormat={false}

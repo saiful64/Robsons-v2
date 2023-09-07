@@ -17,6 +17,11 @@ function GenerateReportView() {
 			key: "selection",
 		},
 	]);
+	
+	const goHome = () => {
+		navigate("/home-view")
+	}
+
 	const generateReport = () => {
 		axios({
 			url: `${API_BASE_URL}/api/generate-report`,
@@ -103,16 +108,22 @@ function GenerateReportView() {
 						</div>
 						<div className='flex flex-col justify-center mt-5'>
 							<button
-								className='bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded m-2'
+								className='bg-zinc-300 hover:bg-gray-300 hover:text-black text-gray-600 font-bold py-2 px-4 rounded m-2'
 								onClick={() => generateReport()}
 							>
 								GENERATE ALL DATA
 							</button>
 							<button
-								className='bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded m-2'
+								className='bg-zinc-400 hover:bg-gray-300 hover:text-black text-white font-bold py-2 px-4 rounded m-2'
 								onClick={() => generateReportOne()}
 							>
 								GENERATE SPECIFIC DATA
+							</button>
+							<button
+								className='bg-zinc-600 hover:bg-gray-300 hover:text-black text-white font-bold py-2 px-4 rounded m-2'
+								onClick={goHome}
+							>
+								HOME
 							</button>
 						</div>
 					</div>
