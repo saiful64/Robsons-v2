@@ -159,17 +159,12 @@ const MultiGraphComponent = () => {
 	return (
 		
 		<div className='scroll-container container mx-auto px-4 p-4 overflow-y-auto'>
-			<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+			<div className='grid grid-cols-1 md:grid-cols-2 gap-4 text-center'>
 				{/* First row */}
 				<div className='w-full  md:w-auto'>
 					<h2 className='text-sm font-bold mb-4'>
 						Total Deliveries and Caesarean Deliveries 
-						<button
-							onClick={goToHome}
-							className='bg-blue-300 hover:cursor-pointer hover:bg-gray-400 font-bold px-2 py-1 rounded-md mr-2 ml-4'
-						>
-							Home
-						</button>
+						
 					</h2>
 					
 					<div className='bg-white p-4 rounded-lg shadow-md'>
@@ -198,6 +193,17 @@ const MultiGraphComponent = () => {
 						<Line data={lineChartData4} />
 					</div>
 				</div>
+				
+				
+				
+			</div>
+			<div className="mt-4 flex justify-center items-center">
+			<button
+							onClick={goToHome}
+							className='bg-zinc-600 hover:bg-gray-300 hover:text-black text-white font-semibold te px-4 py-1 rounded-lg mr-2 ml-4'
+						>
+							Home
+						</button>
 			</div>
 		</div>
 		

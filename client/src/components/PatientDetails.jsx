@@ -32,8 +32,8 @@ const PatientDetails = ({ patientId, onClose }) => {
   };
 
   return (
-    <div className="fixed top-0 left-0  flex justify-center items-center w-full h-screen bg-gray-600 bg-opacity-50">
-    <div className="bg-white p-4  rounded-xl shadow-md text-center max-w-screen-sm h-3/4  relative">
+    <div className="fixed top-0 left-0 flex justify-center items-center w-full h-screen bg-gray-600 bg-opacity-50">
+  <div className="bg-white p-4 rounded-xl shadow-md text-center h-3/4  relative sm:w-96 lg:w-auto">
     <div className="max-h-full mb-4 overflow-y-auto">
       <h1 className="text-2xl font-bold mb-4">Patient Details</h1>
       <table className="table-auto">
@@ -46,7 +46,7 @@ const PatientDetails = ({ patientId, onClose }) => {
         <tbody>
           {Object.entries(patientDetails).map(([columnName, columnValue]) => (
             <tr key={columnName}>
-              <td className="border hover:bg-slate-50 px-4 py-2">{columnName}</td>
+              <td className="border hover:bg-slate-50 font-semibold px-4 py-2">{columnName.toUpperCase()}</td>
               <td className="border hover:bg-slate-50 px-4 py-2">{columnValue}</td>
             </tr>
           ))}
@@ -55,7 +55,7 @@ const PatientDetails = ({ patientId, onClose }) => {
       
     </div>
     <button
-        className="mt-4  mb-4 px-4 py-2 bg-blue-500 hover:bg-blue-700 hover:cursor-pointer text-white rounded-md"
+        className="mt-4  mb-4 px-4 py-2 bg-zinc-700 hover:bg-gray-300 hover:text-black hover:cursor-pointer text-white rounded-md"
         onClick={closeDetails}
       >
         Close

@@ -41,7 +41,7 @@ function GenerateStatus() {
     <>
 	<ToastContainer />
       <div className='flex flex-col items-center justify-center h-screen'>
-        <div className={"bg-white p-6 rounded-lg shadow-md w-full"}>
+        <div className={"bg-white p-6 rounded-lg shadow-md w-full text-center"}>
           <h1 className='text-3xl font-bold mb-4 text-center'>
             Data Tabularization
           </h1>
@@ -89,7 +89,7 @@ function GenerateStatus() {
             </div>
           </div>
 		  <button
-        className="mt-4 text-center mb-4 px-4 py-2 bg-blue-500 hover:bg-blue-700 hover:cursor-pointer text-white rounded-md"
+        className="mt-4 text-center mb-4 px-4 py-2 bg-zinc-700 hover:bg-gray-300 hover:text-black text-white font-semibold hover:cursor-pointer rounded-md"
         onClick={goHome}
       >
         Home
