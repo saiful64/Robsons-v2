@@ -55,7 +55,7 @@ function GenerateStatus() {
 											{headerGroup.headers.map((column) => (
 												<th
 													{...column.getHeaderProps()}
-													className='py-3 px-6 text-left'
+													className='py-3 px-6 text-center'
 												>
 													{column.render("Header")}
 												</th>
@@ -75,7 +75,7 @@ function GenerateStatus() {
 													return (
 														<td
 															{...cell.getCellProps()}
-															className='py-3 px-6 text-left whitespace-nowrap'
+															className='py-3 px-6 text-center whitespace-nowrap'
 														>
 															{cell.render("Cell")}
 														</td>
@@ -92,7 +92,7 @@ function GenerateStatus() {
         className="mt-4 text-center mb-4 px-4 py-2 bg-blue-500 hover:bg-blue-700 hover:cursor-pointer text-white rounded-md"
         onClick={goHome}
       >
-        Close
+        Home
       </button>
         </div>
       </div>

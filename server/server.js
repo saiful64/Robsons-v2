@@ -288,9 +288,9 @@ app.post("/submit-form", (req, res) => {
 		${data.indication_cesarean ? `"${data.indication_cesarean}"` : null},
 		${data.stage ? `"${data.stage}"` : null},
 		${data.b1_gender ? `"${data.b1_gender}"` : null},
-		${data.b1_weight ? `"${data.b1_weight}"` : null},
+		${data.b1_weight ? `"${data.b1_weight} kg"` : null},
 		${data.b2_gender ? `"${data.b2_gender}"` : null},
-		${data.b2_weight ? `"${data.b2_weight}"` : null},
+		${data.b2_weight ? `"${data.b2_weight} kg"` : null},
 		${data.apgar1 ? `"${data.apgar1}"` : null},
 		${data.apgar5 ? `"${data.apgar5}"` : null},
 		${data.outcome ? `"${data.outcome}"` : null},
@@ -775,7 +775,7 @@ const calculateRelativeGroupSize = async (groupsList, count_total) => {
 		relativeGroupSize.push({
 			group_name: thisGroup,
 			count: count,
-			relativeGroupSize: percentage,
+			relativeGroupSize: percentage.toFixed(2),
 		});
 	});
 
@@ -815,7 +815,7 @@ const calculateCSRateForEachGroup = async (
 					csRateForEachGroup.push({
 						group_name: thisGroup,
 						count: c,
-						csRateForEachGroup: d,
+						csRateForEachGroup: d.toFixed(2),
 					});
 
 					if (csRateForEachGroup.length === totalGroupList.length) {
@@ -861,7 +861,7 @@ const calculateRelativeCsRate = async (groupsList, res, CS_total) => {
 
 					RelativecsRate.push({
 						group_name: thisGroup,
-						RelativecsRate: d,
+						RelativecsRate: d.toFixed(2),
 					});
 
 					if (RelativecsRate.length === totalGroupList.length) {
@@ -910,7 +910,7 @@ const calculateAbsoluteCSRate = async (
 
 					AbsolutecsRate.push({
 						group_name: thisGroup,
-						AbsolutecsRate: AbsoluteCsRate,
+						AbsolutecsRate: AbsoluteCsRate.toFixed(2),
 					});
 
 					if (AbsolutecsRate.length === totalGroupList.length) {
