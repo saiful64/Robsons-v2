@@ -100,7 +100,7 @@ app.get("/api/patients", (req, res) => {
 app.get('/api/patient-details/:patient_id', (req, res) => {
   const { patient_id } = req.params;
 
-  const sql = 'SELECT * FROM robsonsdata WHERE patient_id = ?';
+  const sql = 'SELECT patient_id,obs_index,weeks,pog,previous_cesarean,fetus_type,presentation_single,presentation_twin,Labour,ripening,induced_augmented,delivery,indication_ovd,indication_caesarean,Stage,B1Gender,B1Weight,B2Gender,B2Weight,apgar1,apgar5,outcome,indication,final_outcome,indication_for_induction,b1_date_of_birth,b1_time_of_birth,b2_date_of_birth,b2_time_of_birth,group_name,created_by,created_on,review AS PatientId,OBSIndex, Weeks, POG, PreviousCesarean, FetusType, PresentationSingle, PresentationTwin, Labour, Ripening, Induced  Augmented, Delivery, IndicationOVD, IndicationCesarean, Stage, B1Gender, B1Weight, B2Gender, B2Weight, Apgar1, Apgar5, Outcome, Indication, FinalOutcome, IndicationforInduction, B1DOB, B1TOB, B2DOB, B2TOB, Group, CreatedBy, CreatedOn, Review FROM robsonsdata WHERE patient_id = ?';
 
   con.query(sql, [patient_id], (err, results) => {
     if (err) {

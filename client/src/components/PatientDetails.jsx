@@ -46,7 +46,7 @@ const PatientDetails = ({ patientId, onClose }) => {
         <tbody>
           {Object.entries(patientDetails).map(([columnName, columnValue]) => (
             <tr key={columnName}>
-              <td className="border hover:bg-slate-50 px-4 py-2">{columnName}</td>
+              <td className="border hover:bg-slate-50 font-semibold px-4 py-2">{columnName.toUpperCase()}</td>
               <td className="border hover:bg-slate-50 px-4 py-2">{columnValue}</td>
             </tr>
           ))}
