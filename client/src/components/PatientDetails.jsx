@@ -32,8 +32,8 @@ const PatientDetails = ({ patientId, onClose }) => {
   };
 
   return (
-    <div className="fixed top-0 left-0  flex justify-center items-center w-full h-screen bg-gray-600 bg-opacity-50">
-    <div className="bg-white p-4  rounded-xl shadow-md text-center w-96 h-3/4  relative">
+    <div className="fixed top-0 left-0 flex justify-center items-center w-full h-screen bg-gray-600 bg-opacity-50">
+  <div className="bg-white p-4 rounded-xl shadow-md text-center h-3/4  relative sm:w-96 lg:w-auto">
     <div className="max-h-full mb-4 overflow-y-auto">
       <h1 className="text-2xl font-bold mb-4">Patient Details</h1>
       <table className="table-auto">
