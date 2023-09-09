@@ -25,8 +25,6 @@ function ObsIndexForm() {
 	const [prevFormIndex, setPrevFormIndex] = useState(-1);
 	const [apgar1, setApgar1] = useState(null);
 	const [apgar5, setApgar5] = useState(null);
-	const [prelabour, setprelabour] = useState(false);
-	const [spontaneous, setspontaneous] = useState(false);
 	const auth = useAuth();
 	const [patientExists, setPatientExists] = useState(false);
 	const [selectedRadioButton, setSelectedRadioButton] = useState(null);
@@ -38,7 +36,6 @@ function ObsIndexForm() {
 	const [textInputValue, setTextInputValue] = useState(null);
 	const [b1Weight, setB1Weight] = useState(null);
 	const [b2Weight, setB2Weight] = useState(null);
-	const [isB2, setisB2] = useState(false);
 
 	useEffect(() => {
 		axios
@@ -65,41 +62,37 @@ function ObsIndexForm() {
 	};
 
 	const goToNextForm = () => {
+		console.log(selectedOptions.fetus_type);
 		if (formIndex == 0) {
 			checkPatientExists();
 		}
-		if (formData[formIndex]?.title == "fetus_type") {
-			if (selectedRadioButton == "twins") {
-				setisB2(true);
-			} else setisB2(false);
-		}
-		if (formData[formIndex]?.title == "obs_index") {
-			console.log(selectedRadioButton);
-			if (selectedRadioButton == "primi") {
-				setFormIndex((prevForm) => prevForm + 1);
-				setPrevFormIndex(formIndex);
-			}
-		}
-		if (formData[formIndex]?.title == "b1_gender" && !isB2) {
+		if (
+			formData[formIndex]?.title == "obs_index" &&
+			selectedOptions.obs_index == "Primi"
+		) {
 			setFormIndex((prevForm) => prevForm + 1);
 			setPrevFormIndex(formIndex);
 		}
-
-		if (formData[formIndex]?.title == "labour") {
-			if (selectedRadioButton == "spontaneous") {
-				setspontaneous(true);
-			} else setspontaneous(false);
-		}
-		if (formData[formIndex]?.title == "final_outcome" && spontaneous) {
+		if (
+			formData[formIndex]?.title == "b1_gender" &&
+			selectedOptions.fetus_type == "Single"
+		) {
 			setFormIndex((prevForm) => prevForm + 1);
 			setPrevFormIndex(formIndex);
 		}
-
+		if (
+			formData[formIndex]?.title == "final_outcome" &&
+			selectedOptions.labour == "spontaneous"
+		) {
+			setFormIndex((prevForm) => prevForm + 1);
+			setPrevFormIndex(formIndex);
+		}
+		console.log(selectedOptions.labour);
+		if (selectedOptions.labour == "Pre Labour" && formIndex == 19) {
+			setFormIndex((prevForm) => prevForm + 1);
+			setPrevFormIndex(formIndex);
+		}
 		if (!isClicked) {
-			if (prelabour && formIndex == 19) {
-				setFormIndex((prevForm) => prevForm + 1);
-				setPrevFormIndex(formIndex);
-			}
 			const conditions = formData[formIndex]?.conditions;
 			if (conditions) {
 				let foundMatch = false;
@@ -238,24 +231,11 @@ function ObsIndexForm() {
 									}
 									onChange={(event) => {
 										setSelectedRadioButton(event.target.value);
-										if (formData[formIndex]?.title === "labour") {
-											if (event.target.value === "pre_labour") {
-												setprelabour(true);
-											} else {
-												setprelabour(false);
-											}
-										}
 										if (formData[formIndex]?.title === "indication_cesarean") {
 											if (event.target.value === "others") {
 												setShowTextInput(true);
 											} else setShowTextInput(false);
 										}
-										updateThisOption(
-											formData[formIndex]?.title,
-											option.displayText
-										);
-									}}
-									onClick={() => {
 										updateThisOption(
 											formData[formIndex]?.title,
 											option.displayText
@@ -446,7 +426,7 @@ function ObsIndexForm() {
 					{formData[formIndex]?.b2 && (
 						<div className='flex flex-col mb-4'>
 							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
-								Weight (in kg) :
+								Weight:
 								<input
 									type='number'
 									className='border m-1 p-2 w-full rounded-md'
@@ -483,7 +463,7 @@ function ObsIndexForm() {
 								/>
 							</div>
 							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
-								Time (in hrs) :
+								Time :
 								<Datetime
 									className='border m-1 p-2 w-full rounded-md'
 									dateFormat={false}
