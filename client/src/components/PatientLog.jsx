@@ -32,9 +32,6 @@ const DeleteConfirmationDialog = ({ patient, onConfirm, onCancel }) => (
 	</div>
 );
 
-
-
-
 const PatientLog = () => {
 	const [patients, setPatients] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
@@ -72,7 +69,9 @@ const PatientLog = () => {
 
 	const filteredPatients = patients
 		.filter((patient) =>
-			patient.patient_id.toLowerCase().includes(searchQuery.toLowerCase())
+			(patient.patient_id || "")
+				.toLowerCase()
+				.includes(searchQuery.toLowerCase())
 		)
 		.sort((a, b) => {
 			const dateA = new Date(a.created_on);

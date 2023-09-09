@@ -65,6 +65,10 @@ function ObsIndexForm() {
 		console.log(selectedOptions.fetus_type);
 		if (formIndex == 0) {
 			checkPatientExists();
+			if (patientId == "") {
+				toast.error("Please enter the ID");
+				return;
+			}
 		}
 		if (
 			formData[formIndex]?.title == "obs_index" &&
