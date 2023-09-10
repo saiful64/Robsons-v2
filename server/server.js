@@ -55,7 +55,10 @@ con.connect((err) => {
 	else console.log("connection failed" + JSON.stringify(err));
 });
 
-const query11 = util.promisify(con.query).bind(con);
+//const query11 = util.promisify(con.query).bind(con);
+
+let department = null;
+
 app.get("/api/form-data", (req, res) => {
 	res.status(200).send(formData);
 });
@@ -63,8 +66,7 @@ app.get("/api/form-data", (req, res) => {
 app.get("/api/check_id/:patientId", (req, res) => {
 	const { patientId } = req.params;
 
-	const query =
-		"SELECT COUNT(*) AS count FROM robsonsdata WHERE patient_id = ?";
+	const query = `SELECT COUNT(*) AS count FROM robsonsdata WHERE patient_id = ?`;
 
 	con.query(query, [patientId], (err, results) => {
 		if (err) {
@@ -86,37 +88,40 @@ app.get("/api/check_id/:patientId", (req, res) => {
 
 app.get("/api/patients", (req, res) => {
 	// Query the database to fetch patient IDs from the robsonsdata table
-	con.query("SELECT patient_id,created_on FROM robsonsdata", (err, results) => {
-		if (err) {
-			console.error(err);
-			res.status(500).json({ error: "Internal Server Error" });
-			return;
+	con.query(
+		"SELECT patient_id,created_on FROM robsonsdata WHERE department = ?",
+		[department],
+		(err, results) => {
+			if (err) {
+				console.error(err);
+				res.status(500).json({ error: "Internal Server Error" });
+				return;
+			}
+			// Send the patient IDs as JSON
+			res.json(results);
 		}
-		// Send the patient IDs as JSON
-		res.json(results);
+	);
+});
+
+app.get("/api/patient-details/:patient_id", (req, res) => {
+	const { patient_id } = req.params;
+
+	const sql =
+		"SELECT patient_id,obs_index,weeks,pog,previous_cesarean,fetus_type,presentation_single,presentation_twin,Labour,ripening,induced_augmented,delivery,indication_ovd,indication_caesarean,Stage,B1Gender,B1Weight,B2Gender,B2Weight,apgar1,apgar5,outcome,indication,final_outcome,indication_for_induction,b1_date_of_birth,b1_time_of_birth,b2_date_of_birth,b2_time_of_birth,group_name,created_by,created_on,review FROM robsonsdata WHERE patient_id = ?";
+
+	con.query(sql, [patient_id], (err, results) => {
+		if (err) {
+			console.error("Error retrieving patient details:", err);
+			res.status(500).json({ error: "Internal Server Error" });
+		} else {
+			if (results.length === 0) {
+				res.status(404).json({ error: "Patient not found" });
+			} else {
+				res.json(results[0]); // Send the first row (assuming patient_id is unique)
+			}
+		}
 	});
 });
-
-app.get('/api/patient-details/:patient_id', (req, res) => {
-  const { patient_id } = req.params;
-
-  const sql = 'SELECT patient_id,obs_index,weeks,pog,previous_cesarean,fetus_type,presentation_single,presentation_twin,Labour,ripening,induced_augmented,delivery,indication_ovd,indication_caesarean,Stage,B1Gender,B1Weight,B2Gender,B2Weight,apgar1,apgar5,outcome,indication,final_outcome,indication_for_induction,b1_date_of_birth,b1_time_of_birth,b2_date_of_birth,b2_time_of_birth,group_name,created_by,created_on,review FROM robsonsdata WHERE patient_id = ?';
-
-  con.query(sql, [patient_id], (err, results) => {
-    if (err) {
-      console.error('Error retrieving patient details:', err);
-      res.status(500).json({ error: 'Internal Server Error' });
-    } else {
-      if (results.length === 0) {
-        res.status(404).json({ error: 'Patient not found' });
-      } else {
-        res.json(results[0]); // Send the first row (assuming patient_id is unique)
-      }
-    }
-  });
-});
-
-
 
 app.delete("/api/patients/:id", (req, res) => {
 	const patientId = req.params.id;
@@ -146,20 +151,18 @@ app.delete("/api/patients/:id", (req, res) => {
 
 app.post("/submit-form", (req, res) => {
 	let data = req.body;
-
 	let actualPreviousCesarean = req.body.previous_cesarean;
 
 	data.previous_cesarean =
 		Number(data.previous_cesarean) > 0 ? "true" : "false";
 
 	let pog;
-	if (data.weeks <= 36) {
+	if (data.weeks < 36) {
 		pog = "<36";
 	} else {
 		pog = ">36";
 	}
 	let group;
-	console.log(pog === ">36");
 
 	if (
 		data.obs_index === "Primi" &&
@@ -270,19 +273,20 @@ app.post("/submit-form", (req, res) => {
 		group_name,
 		created_by,
 		created_on,
-		review
+		review,
+		department
 		) VALUES (
-		${data.patient_id  ? `"${data.patient_id}"` : null},
-		${data.obs_index  ? `"${data.obs_index}"` : null},
+		${data.patient_id ? `"${data.patient_id}"` : null},
+		${data.obs_index ? `"${data.obs_index}"` : null},
 		${data.weeks ? `"${data.weeks}"` : null},
-		${pog  ? `"${pog}"` : null},
+		${pog ? `"${pog}"` : null},
 		${actualPreviousCesarean ? `"${actualPreviousCesarean}"` : null},
 		${data.fetus_type ? `"${data.fetus_type}"` : null},
-		${data.presentation_single  ? `"${data.presentation_single}"` : null},
-		${data.presentation_twin  ? `"${data.presentation_twin}"` : null},
+		${data.presentation_single ? `"${data.presentation_single}"` : null},
+		${data.presentation_twin ? `"${data.presentation_twin}"` : null},
 		${data.labour ? `"${data.labour}"` : null},
 		${data.ripening ? `"${data.ripening}"` : null},
-		${data.induced_augmented  ? `"${data.induced_augmented}"` : null},
+		${data.induced_augmented ? `"${data.induced_augmented}"` : null},
 		${data.delivery ? `"${data.delivery}"` : null},
 		${data.indication_ovd ? `"${data.indication_ovd}"` : null},
 		${data.indication_cesarean ? `"${data.indication_cesarean}"` : null},
@@ -304,7 +308,8 @@ app.post("/submit-form", (req, res) => {
 		${group ? `"${group}"` : null},
 		${data.created_by ? `"${data.created_by}"` : null},
 		NOW(),
-		${data.review ? `"${data.review}"` : null}
+		${data.review ? `"${data.review}"` : null},
+		${department ? `"${department}"` : null}
 		);`;
 
 	con.query(sql, (err, result) => {
@@ -315,7 +320,6 @@ app.post("/submit-form", (req, res) => {
 		}
 		let robsonsId = data.patient_id;
 
-		console.log(data.patient_id);
 		const groupQuery = `INSERT INTO \`groups\` (group_name, created_by, created_on, patient_id) VALUES ("${group}", "${data.created_by}", NOW(), "${robsonsId}")`;
 		con.query(groupQuery, (err, result) => {
 			if (err) {
@@ -336,7 +340,6 @@ app.post("/submit-form", (req, res) => {
 });
 
 app.post("/api/update-status", (req, res) => {
-	// console.log(req.body)
 	let formId = req.body.formId;
 	let indicationForInduction = req.body.indicationForInduction;
 	let sql = `UPDATE robsonsdata SET indication_for_induction = '${indicationForInduction}' WHERE id = ${formId}`;
@@ -351,9 +354,7 @@ app.post("/api/update-status", (req, res) => {
 	});
 });
 
-// function for checking User Authentication and send back role
 app.post("/auth-login", (req, res) => {
-	// console.log(req.body)
 	const { username, password } = req.body;
 
 	// query the database to get the user with the matching username and password
@@ -374,7 +375,8 @@ app.post("/auth-login", (req, res) => {
 
 			// if a matching user is found, extract the role from the database and send it back as a response
 			const role = results[0].role;
-			// console.log(role)
+			department = results[0].department;
+			console.log(department);
 			res.send(role);
 		}
 	);
@@ -432,7 +434,9 @@ app.get("/api/generate-report", (req, res) => {
 						: "",
 
 					Stage: !_.isEmpty(thisRobsonData.Stage) ? thisRobsonData.Stage : "",
-					B1Gender: !_.isEmpty(thisRobsonData.B1Gender) ? thisRobsonData.B1Gender : "",
+					B1Gender: !_.isEmpty(thisRobsonData.B1Gender)
+						? thisRobsonData.B1Gender
+						: "",
 					b1_date_of_birth: moment(thisRobsonData.b1_date_of_birth).format(
 						"ddd D MMM YYYY"
 					),
@@ -442,11 +446,12 @@ app.get("/api/generate-report", (req, res) => {
 					B1Weight: !_.isEmpty(thisRobsonData.B1Weight)
 						? thisRobsonData.B1Weight
 						: "",
-					B2Gender: !_.isEmpty(thisRobsonData.B2Gender) ? thisRobsonData.B2Gender : "",
+					B2Gender: !_.isEmpty(thisRobsonData.B2Gender)
+						? thisRobsonData.B2Gender
+						: "",
 					b2_date_of_birth: !_.isEmpty(thisRobsonData.b2_date_of_birth)
-					 ? moment(thisRobsonData.b2_date_of_birth).format(
-						"ddd D MMM YYYY"
-					) : "",
+						? moment(thisRobsonData.b2_date_of_birth).format("ddd D MMM YYYY")
+						: "",
 					b2_time_of_birth: !_.isEmpty(thisRobsonData.b2_time_of_birth)
 						? thisRobsonData.b2_time_of_birth
 						: "",
@@ -670,7 +675,9 @@ app.get("/api/generate-report-one", (req, res) => {
 					Labour: !_.isEmpty(thisRobsonData.Labour)
 						? thisRobsonData.Labour
 						: "",
-					B1Gender: !_.isEmpty(thisRobsonData.B1Gender) ? thisRobsonData.B1Gender : "",
+					B1Gender: !_.isEmpty(thisRobsonData.B1Gender)
+						? thisRobsonData.B1Gender
+						: "",
 					b1_date_of_birth: moment(thisRobsonData.b1_date_of_birth).format(
 						"ddd D MMM YYYY"
 					),
@@ -680,10 +687,14 @@ app.get("/api/generate-report-one", (req, res) => {
 					B1Weight: !_.isEmpty(thisRobsonData.B1Weight)
 						? thisRobsonData.B1Weight
 						: "",
-					B2Gender: !_.isEmpty(thisRobsonData.B2Gender) ? thisRobsonData.B2Gender : "",
+					B2Gender: !_.isEmpty(thisRobsonData.B2Gender)
+						? thisRobsonData.B2Gender
+						: "",
 					b2_date_of_birth: moment(thisRobsonData.b2_date_of_birth).format(
 						"ddd D MMM YYYY"
-					)? thisRobsonData.b2_date_of_birth : "",
+					)
+						? thisRobsonData.b2_date_of_birth
+						: "",
 					b2_time_of_birth: !_.isEmpty(thisRobsonData.b2_time_of_birth)
 						? thisRobsonData.b2_time_of_birth
 						: "",
@@ -730,7 +741,7 @@ app.get("/api/generate-report-one", (req, res) => {
 				"B2Gender",
 				"b2_date_of_birth",
 				"b2_time_of_birth",
-				"B2Weight"
+				"B2Weight",
 			];
 			let groupSpecification = {};
 			_.forEach(fields, function (item, index) {
