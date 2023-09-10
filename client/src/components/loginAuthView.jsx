@@ -62,20 +62,21 @@ function LoginAuthView(props) {
   return (
     <div className="flex flex-col justify-center items-center h-screen overflow-hidden">
       <ToastContainer />
-      <div className="bg-white p-6 rounded-lg shadow-lg">
-        <h1 className="text-center hover:cursor-pointer  font-bold text-3xl mb-6">
-          Login
+      <div className="bg-white w-1/5 p-6 rounded-lg drop-shadow-2xl">
+        <h1 className="text-gray-900 font-space opacity-100 text-center hover:cursor-pointer  font-bold text-3xl mb-4">
+          Welcome Back! 👋
         </h1>
+        <p className="mb-6 mt-0 text-center">Log in to your account</p>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
-              className="block font-bold text-gray-700 mb-2"
+              className="block font-bold text-gray-800 mb-2"
               htmlFor="username"
             >
               Username
             </label>
             <input
-              className="border border-gray-400 p-2 w-full rounded-md"
+              className="border border-gray-400 p-2 mb-2 w-full rounded-md"
               type="text"
               id="username"
               value={username}
@@ -84,13 +85,13 @@ function LoginAuthView(props) {
           </div>
           <div className="mb-4 relative">
             <label
-              className="block font-bold text-gray-700 mb-2"
+              className="block font-bold  text-gray-800 mb-2"
               htmlFor="password"
             >
               Password
             </label>
             <input
-              className="border border-gray-400 p-2 w-full rounded-md"
+              className="border  border-gray-400 p-2 w-full rounded-md"
               type={isPasswordVisible ? "text" : "password"}
               id="password"
               value={password}
@@ -102,12 +103,15 @@ function LoginAuthView(props) {
             </div>
           </div>
           <div className="flex justify-center">
-            <button
-              className="bg-[#393c41] hover:bg-[#cbd5e1] hover:text-black hover:shadow-lg focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500  text-white font-bold py-2 px-4 rounded-md"
-              type="submit"
-            >
-              Login
-            </button>
+            
+            <button type="submit" className="relative inline-block mb-4 text-lg group">
+  <span className="relative z-10 block px-5 py-3 overflow-hidden font-medium leading-tight text-gray-800 transition-colors duration-300 ease-out border-2 border-gray-900 rounded-lg group-hover:text-white">
+    <span className="absolute inset-0 w-full h-full px-5 py-3 rounded-lg bg-gray-50"></span>
+    <span className="absolute left-0 w-full h-80  transition-all duration-300 origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-gray-900 group-hover:-rotate-180 ease"></span>
+    <span className="relative z-10">Login</span>
+  </span>
+  <span className="absolute bottom-0 right-0 w-full h-12 -mb-1 -mr-1 transition-all duration-200 ease-linear bg-gray-900 rounded-lg group-hover:mb-0 group-hover:mr-0" data-rounded="rounded-lg"></span>
+</button>
           </div>
         </form>
       </div>

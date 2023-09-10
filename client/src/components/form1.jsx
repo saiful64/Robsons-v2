@@ -65,6 +65,10 @@ function ObsIndexForm() {
 		console.log(selectedOptions.fetus_type);
 		if (formIndex == 0) {
 			checkPatientExists();
+			if (patientId == "") {
+				toast.error("Please enter Patient ID");
+				return;
+			}
 		}
 		if (
 			formData[formIndex]?.title == "obs_index" &&
@@ -490,12 +494,13 @@ function ObsIndexForm() {
 						</div>
 					)}
 				</div>
+				<hr className="h-px my-2 border-100 w-80 rounded-md"/>
 				{/* navigation buttons */}
-				<div className='mt-6 flex rounded-b-lg bg-gray-400'>
+				<div className='mt-6 py-2 flex rounded-b-lg bg-white '>
 					{!formData[formIndex]?.showPrevious && (
 						<button
 							onClick={goHome}
-							className=' text-white  hover:text-gray-800  rounded-bl-lg font-bold py-2 px-4  mr-auto'
+							className=' bg-zinc-700 hover:bg-gray-300 hover:text-black text-white  rounded-bl-lg font-bold py-2 px-4  ml-2'
 						>
 							Home
 						</button>
@@ -503,7 +508,7 @@ function ObsIndexForm() {
 					{formData[formIndex]?.showPrevious && (
 						<button
 							onClick={goToPreviousForm}
-							className=' text-white  hover:text-gray-800  rounded-bl-lg font-bold py-2 px-4  mr-auto'
+							className='text-white hover:bg-gray-300 hover:text-gray-800 bg-gray-500  rounded-bl-lg font-bold py-2 px-4  ml-2'
 						>
 							Previous
 						</button>
@@ -512,7 +517,7 @@ function ObsIndexForm() {
 						<button
 							onClick={goToNextForm}
 							onKeyDown={handleKeyDown}
-							className=' text-white hover:text-gray-800  rounded-br-lg font-bold py-2 px-4  ml-auto'
+							className='text-white hover:bg-gray-300 hover:text-gray-800 bg-gray-500   rounded-br-lg font-bold py-2 px-4  mr-2'
 						>
 							Next
 						</button>
@@ -521,7 +526,7 @@ function ObsIndexForm() {
 						<button
 							onClick={submitForms}
 							// onKeyDown={handleKeyDownForSubmit}
-							className=' text-white hover:bg-gray-300 hover:text-gray-800 bg-gray-500  rounded-br-lg font-bold py-2 px-4  ml-auto'
+							className=' text-white hover:bg-gray-300 hover:text-gray-800 bg-gray-500  rounded-br-lg font-bold py-2 px-4  ml-2'
 						>
 							Submit
 						</button>
