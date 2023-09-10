@@ -197,7 +197,7 @@ function ObsIndexForm() {
 					isClicked ? "hidden" : ""
 				}`}
 			>
-				<div className=' bg-gray-300 rounded-t-lg  pl-2 py-1'>
+				<div className=' bg-gray-300 rounded-t-lg  pl-2 py-3'>
 					<h2 className='text-2xl relative  text-gray-700 font-bold text-center'>
 						Robsons Classification
 					</h2>
