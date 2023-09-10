@@ -62,7 +62,7 @@ function LoginAuthView(props) {
   return (
     <div className="flex flex-col justify-center items-center h-screen overflow-hidden">
       <ToastContainer />
-      <div className="bg-white w-1/5 p-6 rounded-lg drop-shadow-2xl">
+      <div className="bg-white lg:w-1/5 sm:w-96 p-6 rounded-lg drop-shadow-2xl">
         <h1 className="text-gray-900 font-space opacity-100 text-center hover:cursor-pointer  font-bold text-3xl mb-4">
           Welcome Back! 👋
         </h1>

@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./index.html", "./src/**/*.{js,jsx}","./src/components/*.{jsx}"],
+  content: ["./index.html", "./src/**/*.{js,jsx}","./src/components/*.jsx"],
   mode: "jit",
   theme: {
     extend: {
@@ -14,6 +14,8 @@ module.exports = {
         poppins: ["Poppins", "sans-serif"],
         roboto: ["Roboto", "sans-serif"],
         space: ["Space Grotesk", "sans-serif"],
+        proza: ['Proza Libre', 'sans-serif'],
+        kalam: ['Kalam', 'cursive'],
       },
     },
     screens: {

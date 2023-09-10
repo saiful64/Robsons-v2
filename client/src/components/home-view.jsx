@@ -32,9 +32,9 @@ function HomeView() {
 	return (
 		<>
 			<div className='flex flex-col items-center justify-center h-screen'>
-				<div className='bg-white p-7 rounded-lg  shadow-2xl ring-1 ring-gray-900/5  sm:w-96'>
-					<h1 className='text-3xl text-gray-900 font-bold mb-8 text-center'>
-						{auth.user === "student" ? "Welcome Student" : "Welcome Doctor"}
+				<div className='bg-white p-7 rounded-lg  shadow-2xl ring-1 ring-gray-900/5 md:w-5/12 lg:w-1/4 sm:w-96'>
+					<h1 className='text-3xl font-bold mb-8 text-center'>
+						{auth.user === "student" ? <div className="bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 bg-clip-text bg-transparent"><h1>Welcome<span className=""> Student</span></h1></div> : <div className="font-kalam "><h1>Welcome, <span className="bg-gradient-to-br  from-indigo-400 via-indigo-400 to-cyan-400 bg-clip-text text-transparent">Doctor!</span> 👋</h1></div>}
 					</h1>
 					<div className='flex flex-col justify-center'>
 						

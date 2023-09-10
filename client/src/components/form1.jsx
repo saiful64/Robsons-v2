@@ -197,58 +197,56 @@ function ObsIndexForm() {
 			<ToastContainer />
 			{isClicked && <Modal group={group} />}
 			<div
-				className={` bg-white shadow-lg rounded-lg ${
+				className={` bg-white shadow-lg rounded-lg sm:w-96 ${
 					isClicked ? "hidden" : ""
 				}`}
 			>
-				<div className=' bg-gray-300 rounded-t-lg  pl-2 py-3'>
-					<h2 className='text-2xl relative  text-gray-700 font-bold text-center'>
+				<div className=' bg-gradient-to-r from-indigo-100 to-black rounded-t-lg  pl-2 py-3'>
+					<h2 className='font-space text-2xl relative  text-gray-50 opacity-80 hover:opacity-100 font-bold text-center'>
 						Robsons Classification
 					</h2>
 				</div>
-				<div className='flex form-title mb-4 pr-20 pl-2'>
-					<h3 className='text-lg font-semibold'>
+				<div className='flex form-title mb-4 mt-2 ml-4'>
+					<h3 className='text-lg text-gray-900 font-semibold'>
 						{formData[formIndex]?.displayText}
 					</h3>
 				</div>
 
-				<div className='flex form-content  bg-white mb flex-col justify-between pr-20 pl-2 max-h-80'>
+				<div className='flex form-content  bg-white mb flex-col justify-center items-center text-center max-h-80 overflow-auto'>
 					{formData[formIndex]?.options.map((option, index) => (
-						<div key={index}>
-							<label
-								key={index}
-								className={`inline-flex text-gray-600 hover:text-gray-900 hover:cursor-pointer hover:text-2xl items-center ${
-									option.displayText ===
-									selectedOptions[formData[formIndex]?.title]
-										? "text-gray-900 text-xl" // If selected, make the text blue
-										: "" // Otherwise, no additional class
-								}`}
-							>
-								<input
-									type='radio'
-									className='form-radio hover:cursor-pointer '
-									name='radio'
-									value={option.value}
-									checked={
-										option.displayText ===
-										selectedOptions[formData[formIndex]?.title]
-									}
-									onChange={(event) => {
-										setSelectedRadioButton(event.target.value);
-										if (formData[formIndex]?.title === "indication_cesarean") {
-											if (event.target.value === "others") {
-												setShowTextInput(true);
-											} else setShowTextInput(false);
-										}
-										updateThisOption(
-											formData[formIndex]?.title,
-											option.displayText
-										);
-									}}
-								/>
-								<span className='ml-2'>{option.displayText}</span>
-							</label>
-						</div>
+						<div key={index} className="mb-2">
+						<label
+						  key={index}
+						  className={`inline-flex px-4 py-2 font-semibold rounded-md w-full drop-shadow-lg hover:shadow-2xl bg-gradient-to-r from-gray-400  to-gray-900 hover:cursor-pointer text-white ${
+							option.displayText === selectedOptions[formData[formIndex]?.title]
+							  ? "opacity: 100" 
+							  : "opacity: 50" 
+						  }` }
+						  style={{ minWidth: '100px', minHeight: '2px',display: 'flex',
+						  alignItems: 'center',
+						  justifyContent: 'center',	 }}>
+						  <input
+							type="radio"
+							className="form-radio sr-only"
+							name="radio"
+							value={option.value}
+							checked={option.displayText === selectedOptions[formData[formIndex]?.title]}
+							onChange={(event) => {
+							  setSelectedRadioButton(event.target.value);
+							  if (formData[formIndex]?.title === "indication_cesarean") {
+								if (event.target.value === "others") {
+								  setShowTextInput(true);
+								} else {
+								  setShowTextInput(false);
+								}
+							  }
+							  updateThisOption(formData[formIndex]?.title, option.displayText);
+							}}
+						  />
+						  <span>{option.displayText}</span>
+						</label>
+					  </div>
+					  
 					))}
 					{showTextInput &&
 						formData[formIndex]?.title == "indication_cesarean" && (
@@ -270,13 +268,13 @@ function ObsIndexForm() {
 							</div>
 						)}
 				</div>
-				<div className='mt-6 flex'>
+				<div className='mt-6 justify-center items-center flex'>
 					{formData[formIndex]?.type == "id" && (
 						<div className='flex flex-col mb-4'>
 							{/* <label className="mb-1">{option.displayText}</label> */}
 							<input
 								type='text'
-								className='border ml-7 border-gray-400 p-2 w-full rounded-md'
+								className='border shadow-md focus:shadow-xl border-gray-400 p-2 w-full rounded-md'
 								value={patientId}
 								placeholder={"Enter Patient Id"}
 								onChange={(e) => {
@@ -494,13 +492,15 @@ function ObsIndexForm() {
 						</div>
 					)}
 				</div>
-				<hr className="h-px my-2 border-100 w-80 rounded-md"/>
+				<div className="flex justify-center items-center">
+  <hr className="h-px my-0 border-100 w-80 rounded-md" />
+</div>
 				{/* navigation buttons */}
-				<div className='mt-6 py-2 flex rounded-b-lg bg-white '>
+				<div className='mt-2 mb-2 py-2 flex rounded-b-lg bg-white '>
 					{!formData[formIndex]?.showPrevious && (
 						<button
 							onClick={goHome}
-							className=' bg-zinc-700 hover:bg-gray-300 hover:text-black text-white  rounded-bl-lg font-bold py-2 px-4  ml-2'
+							className=' bg-zinc-100 hover:bg-zinc-300 hover:text-white text-gray-900  rounded-md font-bold py-2 px-4 ml-4 mr-auto'
 						>
 							Home
 						</button>
@@ -508,16 +508,17 @@ function ObsIndexForm() {
 					{formData[formIndex]?.showPrevious && (
 						<button
 							onClick={goToPreviousForm}
-							className='text-white hover:bg-gray-300 hover:text-gray-800 bg-gray-500  rounded-bl-lg font-bold py-2 px-4  ml-2'
+							className='text-white hover:bg-gray-300 hover:text-gray-800 bg-gray-500  rounded-md font-bold py-2 px-4 ml-4 mr-auto'
 						>
 							Previous
 						</button>
 					)}
 					{formData[formIndex]?.showNext && (
+						
 						<button
 							onClick={goToNextForm}
 							onKeyDown={handleKeyDown}
-							className='text-white hover:bg-gray-300 hover:text-gray-800 bg-gray-500   rounded-br-lg font-bold py-2 px-4  mr-2'
+							className='text-white text-right hover:bg-gray-300 hover:text-gray-800 bg-gray-500 rounded-md font-bold py-2 px-4 mr-4 ml-auto'
 						>
 							Next
 						</button>
@@ -526,7 +527,7 @@ function ObsIndexForm() {
 						<button
 							onClick={submitForms}
 							// onKeyDown={handleKeyDownForSubmit}
-							className=' text-white hover:bg-gray-300 hover:text-gray-800 bg-gray-500  rounded-br-lg font-bold py-2 px-4  ml-2'
+							className=' text-white hover:bg-gray-300 hover:text-gray-800 bg-gray-500  rounded-md font-bold py-2 px-4 mr-4 ml-auto'
 						>
 							Submit
 						</button>
