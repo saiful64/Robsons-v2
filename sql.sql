@@ -102,7 +102,10 @@ ON DELETE CASCADE;
 ALTER TABLE `groups`
 DROP FOREIGN KEY groups_ibfk_2;
 
-
+ALTER TABLE `groups`
+ADD COLUMN department VARCHAR(20);
+ALTER TABLE robsonsdata
+ADD COLUMN department VARCHAR(20);
 
 
 
