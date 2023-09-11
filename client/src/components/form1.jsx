@@ -197,7 +197,7 @@ function ObsIndexForm() {
 			<ToastContainer />
 			{isClicked && <Modal group={group} />}
 			<div
-				className={` bg-white shadow-lg rounded-lg sm:w-96 ${
+				className={` bg-white shadow-2xl rounded-lg sm:w-96 ${
 					isClicked ? "hidden" : ""
 				}`}
 			>
@@ -212,15 +212,15 @@ function ObsIndexForm() {
 					</h3>
 				</div>
 
-				<div className='flex form-content  bg-white mb flex-col justify-center items-center text-center max-h-80 overflow-auto'>
+				<div className='flex form-content mb-0 flex-col justify-center items-center  max-h-80 overflow-auto'>
 					{formData[formIndex]?.options.map((option, index) => (
 						<div key={index} className="mb-2">
 						<label
 						  key={index}
-						  className={`inline-flex px-4 py-2 font-semibold rounded-md w-full drop-shadow-lg hover:shadow-2xl bg-gradient-to-r from-gray-400  to-gray-900 hover:cursor-pointer text-white ${
+						  className={`inline-flex border-dashed border-2 border-black px-4 py-2 font-semibold rounded-md w-full  hover:shadow-2xl hover:border-2 hover:bg-slate-900 hover:text-white bg-slate-100 hover:cursor-pointer text-gray-900 ${
 							option.displayText === selectedOptions[formData[formIndex]?.title]
-							  ? "opacity: 100" 
-							  : "opacity: 50" 
+							  ? "bg-slate-900 text-white" 
+							  : "" 
 						  }` }
 						  style={{ minWidth: '100px', minHeight: '2px',display: 'flex',
 						  alignItems: 'center',
@@ -285,13 +285,13 @@ function ObsIndexForm() {
 						</div>
 					)}
 				</div>
-				<div className='mt-6 flex'>
+				<div className='mt-6 flex flex-col justify-center items-center'>
 					{formData[formIndex]?.type == "weeks" && (
 						<div className='flex flex-col mb-4'>
 							{/* <label className="mb-1">{option.displayText}</label> */}
 							<input
 								type='number'
-								className='border ml-7 border-gray-400 p-2 w-full rounded-md'
+								className='border shadow-lg bg-transparent  border-gray-400 p-2 w-full rounded-md'
 								value={weeks}
 								placeholder={"Enter Weeks"}
 								onChange={(e) => {
@@ -332,7 +332,7 @@ function ObsIndexForm() {
 						</div>
 					)}
 				</div>
-				<div className='m-6 py-3 px-0 w-80 relative justify-center'>
+				<div className='mt-2 py-3 px-0 w-80 relative justify-center'>
 					{formData[formIndex]?.type == "textarea" && (
 						<div className='flex h-max flex-col mb-4 '>
 							<label htmlFor='message' className='mb-1 ml-1 text-sm font-bold'>
@@ -508,7 +508,7 @@ function ObsIndexForm() {
 					{formData[formIndex]?.showPrevious && (
 						<button
 							onClick={goToPreviousForm}
-							className='text-white hover:bg-gray-300 hover:text-gray-800 bg-gray-500  rounded-md font-bold py-2 px-4 ml-4 mr-auto'
+							className='bg-zinc-100 hover:bg-zinc-300 hover:text-white text-gray-900  rounded-md font-bold py-2 px-4 ml-4 mr-auto'
 						>
 							Previous
 						</button>
