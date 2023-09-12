@@ -8,6 +8,7 @@ import ObsIndexForm from "../src/components/form1";
 import GenerateExcelSheet from "../src/components/generate-report-view";
 import GenerateStatus from "../src/components/generate-status-view";
 import LineChartComponent from "../src/components/lineChart";
+import UploadXlsx from "../src/components/uploadXlsx";
 import GraphContainer from "./components/dashboard";
 import MyChartComponent from "./components/barchart";
 import { AuthProvider } from "../src/components/auth";
@@ -94,6 +95,14 @@ function App() {
 								element={
 									<ProtectedRoute>
 										<GraphContainer />
+									</ProtectedRoute>
+								}
+							/>
+							<Route
+								path='/upload-xlsx'
+								element={
+									<ProtectedRoute>
+										<UploadXlsx />
 									</ProtectedRoute>
 								}
 							/>

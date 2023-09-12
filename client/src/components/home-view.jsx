@@ -24,6 +24,9 @@ function HomeView() {
 	const patientlog = () => {
 		navigate("/patientlog");
 	};
+	const uploadXlsx = () => {
+		navigate("/upload-xlsx");
+	};
 	
 	const footerData = [
 		{ key: "mainText", displayText: "@ 2023 JIPMER, O & G  Dept." },
@@ -62,6 +65,12 @@ function HomeView() {
 									onClick={() => analysis()}
 								>
 									ANALYSIS
+								</button>
+								<button
+									className='bg-zinc-600 hover:bg-gray-300 hover:text-black text-white font-medium hover:font-bold hover:shadow-xl py-2 px-4 rounded m-2 mb-6'
+									onClick={() => uploadXlsx()}
+								>
+									UPLOAD EXCEL FILE
 								</button>
 								<button
 									className='bg-zinc-600 hover:bg-gray-300 hover:text-black text-white font-medium hover:font-bold hover:shadow-xl py-2 px-4 rounded m-2 mb-6'
