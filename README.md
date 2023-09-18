@@ -15,10 +15,7 @@
 
 
 ## Add your IP addresses
-* client -> vite.config.js -> host -> < your_ip >
 * client -> src -> components -> -> config.js  ->  < your_ip >
-* server -> server.js -> const API_BASE_URL = " <  your ip  >"
-* 
 
 
 ## Add this to your database
