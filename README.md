@@ -15,7 +15,7 @@
 
 
 ## Add your IP addresses
-* client -> src -> components -> -> config.js  ->  < your_ip >
+* client -> src -> components -> -> config.js  ->  < your_ip >:<server_port>
 
 
 ## Add this to your database
