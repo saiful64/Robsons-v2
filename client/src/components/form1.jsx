@@ -212,19 +212,25 @@ function ObsIndexForm() {
 					</h3>
 				</div>
 
-				<div className='flex form-content mb-0 flex-col justify-center items-center  max-h-80 overflow-auto'>
+				<div className='flex form-content mb-0 flex-col justify-center items-center  max-h-80 '>
+					<div style={{ maxHeight: 'calc(100% - 40px)', overflowY: 'auto' }}>
 					{formData[formIndex]?.options.map((option, index) => (
-						<div key={index} className="mb-2">
+						<div key={index} className="mb-2 ">
 						<label
 						  key={index}
-						  className={`inline-flex border-dashed border-2 border-black px-4 py-2 font-semibold rounded-md w-full  hover:shadow-2xl hover:border-2 hover:bg-slate-900 hover:text-white bg-slate-100 hover:cursor-pointer text-gray-900 ${
+						  className={`inline-flex text-center border-dashed border-2 border-black px-4 py-2 font-semibold rounded-md w-full  hover:shadow-2xl hover:border-2 hover:bg-slate-900 hover:text-white bg-slate-100 hover:cursor-pointer text-gray-900 ${
 							option.displayText === selectedOptions[formData[formIndex]?.title]
 							  ? "bg-slate-900 text-white" 
 							  : "" 
 						  }` }
-						  style={{ minWidth: '100px', minHeight: '2px',display: 'flex',
-						  alignItems: 'center',
-						  justifyContent: 'center',	 }}>
+						  style={{
+							minWidth: '100px',
+							width: '200px',
+							minHeight: '40px', 
+							display: 'flex',
+							alignItems: 'center',
+							justifyContent: 'center',
+						  }}>
 						  <input
 							type="radio"
 							className="form-radio sr-only"
@@ -245,31 +251,31 @@ function ObsIndexForm() {
 						  />
 						  <span>{option.displayText}</span>
 						</label>
-					  </div>
+					</div>
 					  
 					))}
-					{showTextInput &&
-						formData[formIndex]?.title == "indication_cesarean" && (
-							<div>
-								<input
-									type='text'
-									className='border ml-7 border-gray-400 p-2 w-full rounded-md'
-									value={textInputValue}
-									onChange={(e) => {
-										setTextInputValue(e.target.value);
-										updateThisOption(
-											formData[formIndex]?.title,
-											e.target.value
-										);
-									}}
-									zz
-									placeholder='Enter your text here...'
-								/>
-							</div>
-						)}
+					</div>
+					
 				</div>
-				<div className='mt-6 justify-center items-center flex'>
+				<div className="flex justify-center items-center">
+  {showTextInput && formData[formIndex]?.title === "indication_cesarean" && (
+    <div className="w-64 mt-6">
+      <input
+        type="text"
+        className="border shadow-md hover:shadow-xl border-gray-400 p-2 w-full rounded-md"
+        value={textInputValue}
+        onChange={(e) => {
+          setTextInputValue(e.target.value);
+          updateThisOption(formData[formIndex]?.title, e.target.value);
+        }}
+        placeholder="Enter your text here..."
+      />
+    </div>
+  )}
+</div>
+
 					{formData[formIndex]?.type == "id" && (
+						<div className='mt-6 justify-center items-center flex'>
 						<div className='flex flex-col mb-4'>
 							{/* <label className="mb-1">{option.displayText}</label> */}
 							<input
@@ -283,8 +289,9 @@ function ObsIndexForm() {
 								}}
 							/>
 						</div>
+						</div>
 					)}
-				</div>
+				
 				<div className='mt-6 flex flex-col justify-center items-center'>
 					{formData[formIndex]?.type == "weeks" && (
 						<div className='flex flex-col mb-4'>
@@ -332,15 +339,15 @@ function ObsIndexForm() {
 						</div>
 					)}
 				</div>
-				<div className='mt-2 py-3 px-0 w-80 relative justify-center'>
+				<div className='mt-2 py-3 px-0 w-80 items-center relative justify-center'>
 					{formData[formIndex]?.type == "textarea" && (
-						<div className='flex h-max flex-col mb-4 '>
-							<label htmlFor='message' className='mb-1 ml-1 text-sm font-bold'>
+						<div className='flex h-max justify-center items-center text-center flex-col mb-4 '>
+							<label htmlFor='message' className='mb-2 text-sm font-bold'>
 								Enter your message:
 							</label>
 							<textarea
 								id='message'
-								className='border h-28 rounded-lg form-textarea p-2 block text-sm text-gray-700 mb-2 border-black'
+								className='border h-28 w-80 rounded-lg  form-textarea p-2 block text-sm text-gray-700 mb-2 border-black'
 								placeholder='Enter your text here...'
 								value={textareaValue}
 								onChange={(event) => {
@@ -356,26 +363,26 @@ function ObsIndexForm() {
 				</div>
 
 				{/* if date time picker is true then show the date time picker */}
-				<div className='mt-3 flex justify-start'>
+				<div className='flex justify-center items-center'>
 					{formData[formIndex]?.b1 && (
 						<div className='flex flex-col mb-4'>
-							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
+							<div className='relative max-w-sm datetime-box text-center p-2 w-80 mb-2 rounded-md'>
 								Weight (in kg) :
 								<input
 									type='number'
-									className='border m-1 p-2 w-full rounded-md'
+									className='border border-gray-500 m-1 p-2 w-full rounded-md'
 									value={b1Weight}
-									placeholder=' Enter Weight'
+									placeholder='    Enter Weight'
 									onChange={(e) => {
 										setB1Weight(e.target.value);
 										updateThisOption("b1_weight", e.target.value);
 									}}
 								/>
 							</div>
-							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
+							<div className='relative  max-w-sm datetime-box text-center p-2 w-80 mb-2 rounded-md'>
 								Date :
 								<DatePicker
-									className='border m-2 p-2 w-full rounded-md'
+									className='border  border-gray-500 m-1 px-6 py-2 w-full rounded-md'
 									dateFormat='YYYY-MM-DD'
 									timeFormat={false}
 									value={b1DateOfBirth}
@@ -396,10 +403,10 @@ function ObsIndexForm() {
 									}}
 								/>
 							</div>
-							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
+							<div className='relative max-w-sm datetime-box text-center p-2 w-80 mb-2 rounded-md'>
 								Time (in hrs) :
 								<Datetime
-									className='border m-1 p-2 w-full rounded-md'
+									className='border border-gray-500 m-1 p-2 w-full rounded-md'
 									dateFormat={false}
 									timeFormat='HH:mm' // Use uppercase 'A' for AM/PM
 									value={b1TimeOfBirth}
@@ -424,14 +431,14 @@ function ObsIndexForm() {
 						</div>
 					)}
 				</div>
-				<div className='mt-0 flex justify-start'>
+				<div className='mt-0 flex justify-center items-center'>
 					{formData[formIndex]?.b2 && (
 						<div className='flex flex-col mb-4'>
-							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
-								Weight:
+							<div className='relative text-center max-w-sm datetime-box  p-2 w-80 mb-2 rounded-md'>
+								Weight (in kg):
 								<input
 									type='number'
-									className='border m-1 p-2 w-full rounded-md'
+									className='border border-gray-500 m-1 p-2 w-full rounded-md'
 									value={b2Weight}
 									placeholder=' Enter Weight'
 									onChange={(e) => {
@@ -440,10 +447,10 @@ function ObsIndexForm() {
 									}}
 								/>
 							</div>
-							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
+							<div className='relative text-center max-w-sm datetime-box  p-2 w-80 mb-2 rounded-md'>
 								Date :
 								<DatePicker
-									className='border m-2 p-2 w-full rounded-md'
+									className='border border-gray-500 m-2 p-2 w-full rounded-md'
 									dateFormat='YYYY-MM-DD'
 									timeFormat={false}
 									value={b2DateOfBirth}
@@ -464,10 +471,10 @@ function ObsIndexForm() {
 									}}
 								/>
 							</div>
-							<div className='relative max-w-sm datetime-box border ml-7 border-gray-400 p-2 w-80 mb-4 rounded-md'>
-								Time :
+							<div className='relative max-w-sm text-center datetime-box  p-2 w-80 mb-2 rounded-md'>
+								Time (in hrs) :
 								<Datetime
-									className='border m-1 p-2 w-full rounded-md'
+									className='border border-gray-500 m-1 p-2 w-full rounded-md'
 									dateFormat={false}
 									timeFormat='HH:mm' // Use uppercase 'A' for AM/PM
 									value={b2TimeOfBirth}
