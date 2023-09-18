@@ -24,6 +24,9 @@ function HomeView() {
 	const patientlog = () => {
 		navigate("/patientlog");
 	};
+	const uploadXlsx = () => {
+		navigate("/upload-xlsx");
+	};
 	
 	const footerData = [
 		{ key: "mainText", displayText: "@ 2023 JIPMER, O & G  Dept." },
@@ -49,45 +52,36 @@ function HomeView() {
 </button>
 						{auth.user === "doctor" && (
 							<>
-								
-								
-								<button onClick={() => dashboard()} className="relative mb-4 inline-block text-lg group">
-  <span className="relative z-10 block px-5 py-3 overflow-hidden font-medium leading-tight text-gray-800 transition-colors duration-300 ease-out border-2 border-gray-900 rounded-lg group-hover:text-white">
-    <span className="absolute inset-0 w-full h-full px-5 py-3 rounded-lg bg-gray-50"></span>
-    <span className="absolute left-0 w-full h-80  transition-all duration-300 origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-gray-900 group-hover:-rotate-180 ease"></span>
-    <span className="relative z-10">DASHBOARD</span>
-  </span>
-  <span className="absolute bottom-0 right-0 w-full h-12 -mb-1 -mr-1 transition-all duration-200 ease-linear bg-gray-900 rounded-lg group-hover:mb-0 group-hover:mr-0" data-rounded="rounded-lg"></span>
-</button>
-
-								
-								<button onClick={() => recorderdata()} className="relative mb-4 inline-block text-lg group">
-  <span className="relative z-10 block px-5 py-3 overflow-hidden font-medium leading-tight text-gray-800 transition-colors duration-300 ease-out border-2 border-gray-900 rounded-lg group-hover:text-white">
-    <span className="absolute inset-0 w-full h-full px-5 py-3 rounded-lg bg-gray-50"></span>
-    <span className="absolute left-0 w-full h-80  transition-all duration-300 origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-gray-900 group-hover:-rotate-180 ease"></span>
-    <span className="relative z-10">RECODED DATA</span>
-  </span>
-  <span className="absolute bottom-0 right-0 w-full h-12 -mb-1 -mr-1 transition-all duration-200 ease-linear bg-gray-900 rounded-lg group-hover:mb-0 group-hover:mr-0" data-rounded="rounded-lg"></span>
-</button>
-
-								<button onClick={() => analysis()} className="relative mb-4 inline-block text-lg group">
-  <span className="relative z-10 block px-5 py-3 overflow-hidden font-medium leading-tight text-gray-800 transition-colors duration-300 ease-out border-2 border-gray-900 rounded-lg group-hover:text-white">
-    <span className="absolute inset-0 w-full h-full px-5 py-3 rounded-lg bg-gray-50"></span>
-    <span className="absolute left-0 w-full h-80  transition-all duration-300 origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-gray-900 group-hover:-rotate-180 ease"></span>
-    <span className="relative z-10">ANALYSIS</span>
-  </span>
-  <span className="absolute bottom-0 right-0 w-full h-12 -mb-1 -mr-1 transition-all duration-200 ease-linear bg-gray-900 rounded-lg group-hover:mb-0 group-hover:mr-0" data-rounded="rounded-lg"></span>
-</button>
-								
-								<button onClick={() => patientlog()} className="relative inline-block mb-4 text-lg group">
-  <span className="relative z-10 block px-5 py-3 overflow-hidden font-medium leading-tight text-gray-800 transition-colors duration-300 ease-out border-2 border-gray-900 rounded-lg group-hover:text-white">
-    <span className="absolute inset-0 w-full h-full px-5 py-3 rounded-lg bg-gray-50"></span>
-    <span className="absolute left-0 w-full h-80  transition-all duration-300 origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-gray-900 group-hover:-rotate-180 ease"></span>
-    <span className="relative z-10">Patient Log</span>
-  </span>
-  <span className="absolute bottom-0 right-0 w-full h-12 -mb-1 -mr-1 transition-all duration-200 ease-linear bg-gray-900 rounded-lg group-hover:mb-0 group-hover:mr-0" data-rounded="rounded-lg"></span>
-</button>
-
+								<button
+									className='bg-zinc-400 hover:bg-gray-300 hover:text-black text-white font-medium hover:font-bold hover:shadow-xl py-2 px-4 rounded m-2 mb-6'
+									onClick={() => dashboard()}
+								>
+									DASHBOARD
+								</button>
+								<button
+									className='bg-zinc-500 hover:bg-gray-300 hover:text-black text-white font-medium hover:font-bold hover:shadow-xl py-2 px-4 rounded m-2 mb-6'
+									onClick={() => recorderdata()}
+								>
+									RECORDED DATA
+								</button>
+								<button
+									className='bg-zinc-600 hover:bg-gray-300 hover:text-black text-white font-medium hover:font-bold hover:shadow-xl py-2 px-4 rounded m-2 mb-6'
+									onClick={() => analysis()}
+								>
+									ANALYSIS
+								</button>
+								<button
+									className='bg-zinc-600 hover:bg-gray-300 hover:text-black text-white font-medium hover:font-bold hover:shadow-xl py-2 px-4 rounded m-2 mb-6'
+									onClick={() => uploadXlsx()}
+								>
+									UPLOAD EXCEL FILE
+								</button>
+								<button
+									className='bg-zinc-600 hover:bg-gray-300 hover:text-black text-white font-medium hover:font-bold hover:shadow-xl py-2 px-4 rounded m-2 mb-6'
+									onClick={() => patientlog()}
+								>
+									PATIENT LOG
+								</button>
 							</>
 						)}
 						

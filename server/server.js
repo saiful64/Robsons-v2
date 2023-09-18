@@ -10,6 +10,12 @@ import excel from "node-excel-export";
 import styles from "./constants/constants.js";
 import util from "util";
 import { log } from "console";
+import multer from 'multer';
+import xlsx from 'xlsx';
+
+
+const storage = multer.memoryStorage(); // Store the file in memory
+const upload = multer({ storage: storage });
 
 const app = express();
 const totalGroupList = [
@@ -1386,6 +1392,37 @@ app.get("/api/barchart", async (req, res) => {
 		return;
 	}
 });
+
+// Configure multer for Xsx file uploads
+
+app.post('/api/upload', upload.single('file'), (req, res) => {
+	// Access the uploaded file in req.file.buffer
+	const fileBuffer = req.file.buffer;
+  
+	// Process the XLSX file using the 'xlsx' library
+	const workbook = xlsx.read(fileBuffer, { type: 'buffer' });
+  
+	// Assuming the XLSX file has a single worksheet
+	const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+  
+	// Convert worksheet data to JSON
+	const data = xlsx.utils.sheet_to_json(worksheet);
+  
+	// Insert data into the database
+	const sql = 'INSERT INTO robsonsdata (obs_index, weeks,previous_cesarean) VALUES ?';
+	const values = data.map((row) => Object.values(row));
+  
+	con.query(sql, [values], (err, result) => {
+	  if (err) {
+		console.error('Error inserting data into the database:', err);
+		res.status(500).send('Internal Server Error');
+	  } else {
+		console.log('Data inserted into the database');
+		res.status(200).send('File uploaded and data inserted');
+	  }
+	});
+  });
+  
 
 /**
  * TODO:  Create a different database idea
