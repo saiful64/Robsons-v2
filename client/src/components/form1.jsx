@@ -62,7 +62,6 @@ function ObsIndexForm() {
 	};
 
 	const goToNextForm = () => {
-		console.log(selectedOptions.fetus_type);
 		if (formIndex == 0) {
 			checkPatientExists();
 			if (patientId == "") {
@@ -93,10 +92,17 @@ function ObsIndexForm() {
 		}
 
 		if (formData[formIndex]?.title == "indication_ovd") {
-			setFormIndex((prevForm) => prevForm + 2 );
+			setFormIndex((prevForm) => prevForm + 2);
 			setPrevFormIndex(formIndex);
 		}
-		console.log(selectedOptions.labour);
+		if (formData[formIndex]?.title === "delivery") {
+			if (selectedOptions["delivery"] === undefined) {
+				console.log("Delivery option is not selected");
+				toast.warning("Select any one");
+				return;
+			}
+		}
+
 		if (selectedOptions.labour == "Pre Labour" && formIndex == 19) {
 			setFormIndex((prevForm) => prevForm + 1);
 			setPrevFormIndex(formIndex);
