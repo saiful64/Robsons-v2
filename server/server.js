@@ -63,6 +63,33 @@ con.connect((err) => {
 
 //const query11 = util.promisify(con.query).bind(con);
 
+
+//FOR IP ADDRESS
+app.get("/get-client-ip", (req, res) => {
+	const fullIpAddress = req.ip;
+
+	const ipv4Address = fullIpAddress.includes("::ffff:")
+		? fullIpAddress.split("::ffff:")[1]
+		: fullIpAddress;
+
+	res.send(`Client IPv4 Address: ${ipv4Address}`);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 let department = null;
 
 app.get("/api/form-data", (req, res) => {

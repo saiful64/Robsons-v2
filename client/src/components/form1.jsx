@@ -91,6 +91,11 @@ function ObsIndexForm() {
 			setFormIndex((prevForm) => prevForm + 1);
 			setPrevFormIndex(formIndex);
 		}
+
+		if (formData[formIndex]?.title == "indication_ovd") {
+			setFormIndex((prevForm) => prevForm + 2 );
+			setPrevFormIndex(formIndex);
+		}
 		console.log(selectedOptions.labour);
 		if (selectedOptions.labour == "Pre Labour" && formIndex == 19) {
 			setFormIndex((prevForm) => prevForm + 1);
@@ -213,69 +218,81 @@ function ObsIndexForm() {
 				</div>
 
 				<div className='flex form-content mb-0 flex-col justify-center items-center  max-h-80 '>
-					<div style={{ maxHeight: 'calc(100% - 40px)', overflowY: 'auto' }}>
-					{formData[formIndex]?.options.map((option, index) => (
-						<div key={index} className="mb-2 ">
-						<label
-						  key={index}
-						  className={`inline-flex text-center border-dashed border-2 border-black px-4 py-2 font-semibold rounded-md w-full  hover:shadow-2xl hover:border-2 hover:bg-slate-900 hover:text-white bg-slate-100 hover:cursor-pointer text-gray-900 ${
-							option.displayText === selectedOptions[formData[formIndex]?.title]
-							  ? "bg-slate-900 text-white" 
-							  : "" 
-						  }` }
-						  style={{
-							minWidth: '100px',
-							width: '200px',
-							minHeight: '40px', 
-							display: 'flex',
-							alignItems: 'center',
-							justifyContent: 'center',
-						  }}>
-						  <input
-							type="radio"
-							className="form-radio sr-only"
-							name="radio"
-							value={option.value}
-							checked={option.displayText === selectedOptions[formData[formIndex]?.title]}
-							onChange={(event) => {
-							  setSelectedRadioButton(event.target.value);
-							  if (formData[formIndex]?.title === "indication_cesarean") {
-								if (event.target.value === "others") {
-								  setShowTextInput(true);
-								} else {
-								  setShowTextInput(false);
-								}
-							  }
-							  updateThisOption(formData[formIndex]?.title, option.displayText);
-							}}
-						  />
-						  <span>{option.displayText}</span>
-						</label>
+					<div style={{ maxHeight: "calc(100% - 40px)", overflowY: "auto" }}>
+						{formData[formIndex]?.options.map((option, index) => (
+							<div key={index} className='mb-2 '>
+								<label
+									key={index}
+									className={`inline-flex text-center border-dashed border-2 border-black px-4 py-2 font-semibold rounded-md w-full  hover:shadow-2xl hover:border-2 hover:bg-slate-900 hover:text-white bg-slate-100 hover:cursor-pointer text-gray-900 ${
+										option.displayText ===
+										selectedOptions[formData[formIndex]?.title]
+											? "bg-slate-900 text-white"
+											: ""
+									}`}
+									style={{
+										minWidth: "100px",
+										width: "200px",
+										minHeight: "40px",
+										display: "flex",
+										alignItems: "center",
+										justifyContent: "center",
+									}}
+								>
+									<input
+										type='radio'
+										className='form-radio sr-only'
+										name='radio'
+										value={option.value}
+										checked={
+											option.displayText ===
+											selectedOptions[formData[formIndex]?.title]
+										}
+										onChange={(event) => {
+											setSelectedRadioButton(event.target.value);
+											if (
+												formData[formIndex]?.title === "indication_cesarean"
+											) {
+												if (event.target.value === "others") {
+													setShowTextInput(true);
+												} else {
+													setShowTextInput(false);
+												}
+											}
+											updateThisOption(
+												formData[formIndex]?.title,
+												option.displayText
+											);
+										}}
+									/>
+									<span>{option.displayText}</span>
+								</label>
+							</div>
+						))}
 					</div>
-					  
-					))}
-					</div>
-					
 				</div>
-				<div className="flex justify-center items-center">
-  {showTextInput && formData[formIndex]?.title === "indication_cesarean" && (
-    <div className="w-64 mt-6">
-      <input
-        type="text"
-        className="border shadow-md hover:shadow-xl border-gray-400 p-2 w-full rounded-md"
-        value={textInputValue}
-        onChange={(e) => {
-          setTextInputValue(e.target.value);
-          updateThisOption(formData[formIndex]?.title, e.target.value);
-        }}
-        placeholder="Enter your text here..."
-      />
-    </div>
-  )}
-</div>
+				<div className='flex justify-center items-center'>
+					{showTextInput &&
+						formData[formIndex]?.title === "indication_cesarean" && (
+							<div className='w-64 mt-6'>
+								<input
+									type='text'
+									className='border shadow-md hover:shadow-xl border-gray-400 p-2 w-full rounded-md'
+									value={textInputValue}
+									onChange={(e) => {
+										setTextInputValue(e.target.value);
+										updateThisOption(
+											formData[formIndex]?.title,
+											e.target.value
+										);
+									}}
+									placeholder='Enter your text here...'
+								/>
+							</div>
+						)}
+				</div>
 
-					{formData[formIndex]?.type == "id" && (
-						<div className='mt-6 justify-center items-center flex'>
+				{formData[formIndex]?.type == "id" && (
+					<div className='mt-6 justify-center items-center flex'>
 						<div className='flex flex-col mb-4'>
 							{/* <label className="mb-1">{option.displayText}</label> */}
 							<input
@@ -289,9 +306,9 @@ function ObsIndexForm() {
 								}}
 							/>
 						</div>
-						</div>
-					)}
-				
+					</div>
+				)}
+
 				<div className='mt-6 flex flex-col justify-center items-center'>
 					{formData[formIndex]?.type == "weeks" && (
 						<div className='flex flex-col mb-4'>
@@ -499,9 +516,9 @@ function ObsIndexForm() {
 						</div>
 					)}
 				</div>
-				<div className="flex justify-center items-center">
-  <hr className="h-px my-0 border-100 w-80 rounded-md" />
-</div>
+				<div className='flex justify-center items-center'>
+					<hr className='h-px my-0 border-100 w-80 rounded-md' />
+				</div>
 				{/* navigation buttons */}
 				<div className='mt-2 mb-2 py-2 flex rounded-b-lg bg-white '>
 					{!formData[formIndex]?.showPrevious && (
@@ -521,7 +538,6 @@ function ObsIndexForm() {
 						</button>
 					)}
 					{formData[formIndex]?.showNext && (
-						
 						<button
 							onClick={goToNextForm}
 							onKeyDown={handleKeyDown}

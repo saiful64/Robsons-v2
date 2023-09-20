@@ -3,7 +3,7 @@ import axios from 'axios';
 import API_BASE_URL from "./config";
 
 function UploadXlsx() {
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState(null);z
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
