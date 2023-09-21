@@ -95,13 +95,14 @@ function ObsIndexForm() {
 			setFormIndex((prevForm) => prevForm + 2);
 			setPrevFormIndex(formIndex);
 		}
-		if (formData[formIndex]?.title === "delivery") {
-			if (selectedOptions["delivery"] === undefined) {
-				console.log("Delivery option is not selected");
-				toast.warning("Select any one");
-				return;
-			}
-		}
+if (formData[formIndex]?.title === "delivery") {
+	if (selectedOptions["delivery"] === undefined) {
+		console.log("Delivery option is not selected");
+		toast.warning("Select any one");
+		return;
+	}
+}
+
 
 		if (selectedOptions.labour == "Pre Labour" && formIndex == 19) {
 			setFormIndex((prevForm) => prevForm + 1);
