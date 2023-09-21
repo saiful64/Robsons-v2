@@ -63,11 +63,11 @@ function ObsIndexForm() {
 
 	const goToNextForm = () => {
 		if (formIndex == 0) {
-			checkPatientExists();
-			if (patientId == "") {
+			if (selectedOptions["patient_id"] === undefined) {
 				toast.error("Please enter Patient ID");
 				return;
 			}
+			checkPatientExists();
 		}
 		if (
 			formData[formIndex]?.title == "obs_index" &&
