@@ -95,14 +95,13 @@ function ObsIndexForm() {
 			setFormIndex((prevForm) => prevForm + 2);
 			setPrevFormIndex(formIndex);
 		}
-if (formData[formIndex]?.title === "delivery") {
-	if (selectedOptions["delivery"] === undefined) {
-		console.log("Delivery option is not selected");
-		toast.warning("Select any one");
-		return;
-	}
-}
-
+		if (formData[formIndex]?.title === "delivery") {
+			if (selectedOptions["delivery"] === undefined) {
+				console.log("Delivery option is not selected");
+				toast.warning("Select any one");
+				return;
+			}
+		}
 
 		if (selectedOptions.labour == "Pre Labour" && formIndex == 19) {
 			setFormIndex((prevForm) => prevForm + 1);
@@ -204,6 +203,16 @@ if (formData[formIndex]?.title === "delivery") {
 			});
 	};
 
+	const clearSelection = () => {
+		const currentFormTitle = formData[formIndex]?.title;
+		setSelectedOptions((prevOptions) => {
+			const updatedOptions = { ...prevOptions };
+			delete updatedOptions[currentFormTitle]; 
+			return updatedOptions;
+		});
+		setSelectedRadioButton(null); 
+	};
+
 	return (
 		<div className='flex flex-col items-center justify-center h-screen'>
 			<ToastContainer />
@@ -222,6 +231,14 @@ if (formData[formIndex]?.title === "delivery") {
 					<h3 className='text-lg text-gray-900 font-semibold'>
 						{formData[formIndex]?.displayText}
 					</h3>
+				</div>
+				<div className='flex justify-end pr-4 pt-2'>
+					<button
+						onClick={clearSelection}
+						className='bg-gradient-to-r from-red-200 to-red-400 hover:bg-gradient-to-r hover:from-red-200  hover:text-red-900 hover:to-red-400 text-red-800  rounded-md font-bold py-2 px-4'
+					>
+						Clear
+					</button>
 				</div>
 
 				<div className='flex form-content mb-0 flex-col justify-center items-center  max-h-80 '>
@@ -363,26 +380,28 @@ if (formData[formIndex]?.title === "delivery") {
 						</div>
 					)}
 				</div>
-				<div className=" py-3 px-4 w-80 items-center relative justify-center">
-  {formData[formIndex]?.type === "textarea" && (
-    <div className="flex flex-col mb-4">
-      <label htmlFor="message" className="mb-2 text-sm font-bold">
-        Enter your message:
-      </label>
-      <textarea
-        id="message"
-        className="border h-28 w-full rounded-lg resize-none p-2 block text-sm text-gray-700 mb-2 border-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="Enter your text here..."
-        value={textareaValue}
-        onChange={(event) => {
-          setTextareaValue(event.target.value);
-          updateThisOption(formData[formIndex]?.title, event.target.value);
-        }}
-      ></textarea>
-    </div>
-  )}
-</div>
-
+				<div className=' py-3 px-4 w-80 items-center relative justify-center'>
+					{formData[formIndex]?.type === "textarea" && (
+						<div className='flex flex-col mb-4'>
+							<label htmlFor='message' className='mb-2 text-sm font-bold'>
+								Enter your message:
+							</label>
+							<textarea
+								id='message'
+								className='border h-28 w-full rounded-lg resize-none p-2 block text-sm text-gray-700 mb-2 border-black focus:outline-none focus:ring-2 focus:ring-blue-500'
+								placeholder='Enter your text here...'
+								value={textareaValue}
+								onChange={(event) => {
+									setTextareaValue(event.target.value);
+									updateThisOption(
+										formData[formIndex]?.title,
+										event.target.value
+									);
+								}}
+							></textarea>
+						</div>
+					)}
+				</div>
 
 				{/* if date time picker is true then show the date time picker */}
 				<div className='flex justify-center items-center'>
