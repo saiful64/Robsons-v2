@@ -229,10 +229,10 @@ function ObsIndexForm() {
 							<div key={index} className='mb-2 '>
 								<label
 									key={index}
-									className={`inline-flex text-center border-dashed border-2 border-black px-4 py-2 font-semibold rounded-md w-full  hover:shadow-2xl hover:border-2 hover:bg-slate-900 hover:text-white bg-slate-100 hover:cursor-pointer text-gray-900 ${
+									className={`inline-flex text-center border-dashed border-2 border-black px-4 py-2 font-semibold rounded-md w-full  hover:shadow-2xl hover:border-2 hover:bg-gradient-to-br hover:from-gray-900 hover:to-gray-600  hover:text-white bg-slate-100 hover:cursor-pointer text-gray-900 ${
 										option.displayText ===
 										selectedOptions[formData[formIndex]?.title]
-											? "bg-slate-900 text-white"
+											? "bg-gradient-to-r from-blue-700 via-blue-800 to-gray-900 text-white"
 											: ""
 									}`}
 									style={{
@@ -362,28 +362,26 @@ function ObsIndexForm() {
 						</div>
 					)}
 				</div>
-				<div className='mt-2 py-3 px-0 w-80 items-center relative justify-center'>
-					{formData[formIndex]?.type == "textarea" && (
-						<div className='flex h-max justify-center items-center text-center flex-col mb-4 '>
-							<label htmlFor='message' className='mb-2 text-sm font-bold'>
-								Enter your message:
-							</label>
-							<textarea
-								id='message'
-								className='border h-28 w-80 rounded-lg  form-textarea p-2 block text-sm text-gray-700 mb-2 border-black'
-								placeholder='Enter your text here...'
-								value={textareaValue}
-								onChange={(event) => {
-									setTextareaValue(event.target.value);
-									updateThisOption(
-										formData[formIndex]?.title,
-										event.target.value
-									);
-								}}
-							></textarea>
-						</div>
-					)}
-				</div>
+				<div className=" py-3 px-4 w-80 items-center relative justify-center">
+  {formData[formIndex]?.type === "textarea" && (
+    <div className="flex flex-col mb-4">
+      <label htmlFor="message" className="mb-2 text-sm font-bold">
+        Enter your message:
+      </label>
+      <textarea
+        id="message"
+        className="border h-28 w-full rounded-lg resize-none p-2 block text-sm text-gray-700 mb-2 border-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Enter your text here..."
+        value={textareaValue}
+        onChange={(event) => {
+          setTextareaValue(event.target.value);
+          updateThisOption(formData[formIndex]?.title, event.target.value);
+        }}
+      ></textarea>
+    </div>
+  )}
+</div>
+
 
 				{/* if date time picker is true then show the date time picker */}
 				<div className='flex justify-center items-center'>
@@ -530,7 +528,7 @@ function ObsIndexForm() {
 					{!formData[formIndex]?.showPrevious && (
 						<button
 							onClick={goHome}
-							className=' bg-zinc-100 hover:bg-zinc-300 hover:text-white text-gray-900  rounded-md font-bold py-2 px-4 ml-4 mr-auto'
+							className='bg-gradient-to-r from-gray-200 via-gray-400 to-gray-600 hover:bg-gradient-to-r hover:from-gray-200  hover:text-gray-900 hover:to-gray-400 text-gray-800  rounded-md font-bold py-2 px-4 ml-4 mr-auto'
 						>
 							Home
 						</button>
@@ -538,7 +536,7 @@ function ObsIndexForm() {
 					{formData[formIndex]?.showPrevious && (
 						<button
 							onClick={goToPreviousForm}
-							className='bg-zinc-100 hover:bg-zinc-300 hover:text-white text-gray-900  rounded-md font-bold py-2 px-4 ml-4 mr-auto'
+							className='bg-gradient-to-r from-gray-200 via-gray-400 to-gray-600 hover:bg-gradient-to-r hover:from-gray-200  hover:text-gray-900 hover:to-gray-400 text-gray-800  rounded-md font-bold py-2 px-4 ml-4 mr-auto'
 						>
 							Previous
 						</button>
@@ -547,7 +545,7 @@ function ObsIndexForm() {
 						<button
 							onClick={goToNextForm}
 							onKeyDown={handleKeyDown}
-							className='text-white text-right hover:bg-gray-300 hover:text-gray-800 bg-gray-500 rounded-md font-bold py-2 px-4 mr-4 ml-auto'
+							className='bg-gradient-to-r from-gray-900 to-gray-600 hover:bg-gradient-to-r hover:from-gray-600 hover:to-gray-900 hover:text-white text-gray-200 rounded-md font-bold py-2 px-4 mr-4 ml-auto'
 						>
 							Next
 						</button>
@@ -556,7 +554,7 @@ function ObsIndexForm() {
 						<button
 							onClick={submitForms}
 							// onKeyDown={handleKeyDownForSubmit}
-							className=' text-white hover:bg-gray-300 hover:text-gray-800 bg-gray-500  rounded-md font-bold py-2 px-4 mr-4 ml-auto'
+							className='bg-gradient-to-r from-gray-900 to-gray-600 hover:bg-gradient-to-r hover:from-gray-600 hover:to-gray-900 hover:text-white text-gray-200 rounded-md font-bold py-2 px-4 mr-4 ml-auto'
 						>
 							Submit
 						</button>

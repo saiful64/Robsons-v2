@@ -63,8 +63,8 @@ function LoginAuthView(props) {
     <div className="flex flex-col justify-center items-center h-screen overflow-hidden">
       <ToastContainer />
       <div className="bg-white lg:w-1/4 sm:w-96 p-6 rounded-lg drop-shadow-2xl">
-        <h1 className="text-gray-900 font-space opacity-100 text-center hover:cursor-pointer  font-bold text-3xl mb-4">
-          Welcome Back! 👋
+        <h1 className="text-gray-900  opacity-100 font-space text-center hover:cursor-pointer  font-bold text-3xl mb-4">
+          Welcome <span className="bg-gradient-to-br from-blue-500  to-pink-500 bg-clip-text text-transparent">Back!</span> 👋
         </h1>
         <p className="mb-6 mt-0 text-center">Log in to your account</p>
         <form onSubmit={handleSubmit}>
