@@ -69,41 +69,71 @@ function ObsIndexForm() {
 			}
 			checkPatientExists();
 		}
-
 		if (formData[formIndex]?.title === "obs_index") {
-			if (selectedOptions.obs_index.obs_index == "Primi") {
+			if (selectedOptions.obs_index == "Primi") {
+				setFormIndex((prevForm) => prevForm + 1);
+				setPrevFormIndex(formIndex);
+				selectedOptions.previous_cesarean = undefined;
+			}
+		}
+
+		if (
+			(formData[formIndex]?.title === "weeks" &&
+				selectedOptions["weeks"] === undefined) ||
+			selectedOptions["weeks"] === ""
+		) {
+			toast.warning("Please enter weeks");
+			return;
+		}
+
+		if (formData[formIndex]?.title === "fetus_type") {
+			if (selectedOptions.fetus_type == "Single") {
+				selectedOptions.presentation_twin = undefined;
+			} else if (selectedOptions.fetus_type == "Twins") {
+				selectedOptions.presentation_single = undefined;
+				setFormIndex((prevForm) => prevForm + 1);
+				setPrevFormIndex(formIndex);
+			}
+		}
+		if (formData[formIndex]?.title === "presentation_single") {
+			setFormIndex((prevForm) => prevForm + 1);
+			setPrevFormIndex(formIndex);
+		}
+
+		if (formData[formIndex]?.title == "labour") {
+			if (selectedOptions.labour == "Spontaneous") {
+				selectedOptions.ripening = undefined;
+				setFormIndex((prevForm) => prevForm + 1);
+				setPrevFormIndex(formIndex);
+			} else if (selectedOptions.labour == "Pre Labour") {
+				selectedOptions.ripening = undefined;
+				selectedOptions.induced_augmented = undefined;
 				setFormIndex((prevForm) => prevForm + 2);
 				setPrevFormIndex(formIndex);
 			}
 		}
 
-		if (formData[formIndex]?.title === "fetus_type") {
-			console.log(selectedOptions.fetus_type);
-			if (selectedOptions.fetus_type == "Single") {
-				selectedOptions.presentation_twin = undefined;
-				console.log(selectedOptions.presentation_single);
-			} else if (selectedOptions.fetus_type == "Twins") {
-				selectedOptions.presentation_single = undefined;
+		if (formData[formIndex]?.title == "delivery") {
+			if (selectedOptions.delivery == "SVD") {
+				selectedOptions.indication_ovd = undefined;
+				selectedOptions.indication_cesarean = undefined;
+				selectedOptions.stage = undefined;
+				setFormIndex((prevForm) => prevForm + 4);
+				setPrevFormIndex(formIndex);
+			} else if (selectedOptions.delivery == "Cesarean") {
+				selectedOptions.indication_ovd = undefined;
 				setFormIndex((prevForm) => prevForm + 1);
 				setPrevFormIndex(formIndex);
-				console.log(selectedOptions.presentation_twin);
+			} else {
+				selectedOptions.indication_cesarean = undefined;
+				selectedOptions.stage = undefined;
 			}
 		}
-
-		if (
-			formData[formIndex]?.title === "weeks" &&
-			selectedOptions["weeks"] === undefined
-		) {
-			toast.warning("Please enter weeks");
-			return;
-		}
-		if (
-			formData[formIndex]?.title == "obs_index" &&
-			selectedOptions.obs_index == "Primi"
-		) {
-			setFormIndex((prevForm) => prevForm + 1);
+		if (formData[formIndex]?.title == "indication_ovd") {
+			setFormIndex((prevForm) => prevForm + 2);
 			setPrevFormIndex(formIndex);
 		}
+
 		if (
 			formData[formIndex]?.title == "b1_gender" &&
 			selectedOptions.fetus_type == "Single"
@@ -113,16 +143,12 @@ function ObsIndexForm() {
 		}
 		if (
 			formData[formIndex]?.title == "final_outcome" &&
-			selectedOptions.labour == "spontaneous"
+			selectedOptions.labour == "Spontaneous"
 		) {
 			setFormIndex((prevForm) => prevForm + 1);
 			setPrevFormIndex(formIndex);
 		}
 
-		if (formData[formIndex]?.title == "indication_ovd") {
-			setFormIndex((prevForm) => prevForm + 2);
-			setPrevFormIndex(formIndex);
-		}
 		if (
 			(formData[formIndex]?.title === "obs_index" &&
 				selectedOptions["obs_index"] === undefined) ||
