@@ -17,13 +17,7 @@
 				{ "value": "multi", "displayText": "Multi" }
 			],
 			"showPrevious": true,
-			"showNext": true,
-			"conditions": [
-				{
-					"option": "primi",
-					"target": "weeks"
-				}
-			]
+			"showNext": true
 		},
 
 		{

@@ -69,6 +69,34 @@ function ObsIndexForm() {
 			}
 			checkPatientExists();
 		}
+
+		if (formData[formIndex]?.title === "obs_index") {
+			if (selectedOptions.obs_index.obs_index == "Primi") {
+				setFormIndex((prevForm) => prevForm + 2);
+				setPrevFormIndex(formIndex);
+			}
+		}
+
+		if (formData[formIndex]?.title === "fetus_type") {
+			console.log(selectedOptions.fetus_type);
+			if (selectedOptions.fetus_type == "Single") {
+				selectedOptions.presentation_twin = undefined;
+				console.log(selectedOptions.presentation_single);
+			} else if (selectedOptions.fetus_type == "Twins") {
+				selectedOptions.presentation_single = undefined;
+				setFormIndex((prevForm) => prevForm + 1);
+				setPrevFormIndex(formIndex);
+				console.log(selectedOptions.presentation_twin);
+			}
+		}
+
+		if (
+			formData[formIndex]?.title === "weeks" &&
+			selectedOptions["weeks"] === undefined
+		) {
+			toast.warning("Please enter weeks");
+			return;
+		}
 		if (
 			formData[formIndex]?.title == "obs_index" &&
 			selectedOptions.obs_index == "Primi"
@@ -95,12 +123,22 @@ function ObsIndexForm() {
 			setFormIndex((prevForm) => prevForm + 2);
 			setPrevFormIndex(formIndex);
 		}
-		if (formData[formIndex]?.title === "delivery") {
-			if (selectedOptions["delivery"] === undefined) {
-				console.log("Delivery option is not selected");
-				toast.warning("Select any one");
-				return;
-			}
+		if (
+			(formData[formIndex]?.title === "obs_index" &&
+				selectedOptions["obs_index"] === undefined) ||
+			(formData[formIndex]?.title === "fetus_type" &&
+				selectedOptions["fetus_type"] === undefined) ||
+			(formData[formIndex]?.title === "presentation_single" &&
+				selectedOptions["presentation_single"] === undefined) ||
+			(formData[formIndex]?.title === "presentation_twin" &&
+				selectedOptions["presentation_twin"] === undefined) ||
+			(formData[formIndex]?.title === "labour" &&
+				selectedOptions["labour"] === undefined) ||
+			(formData[formIndex]?.title === "delivery" &&
+				selectedOptions["delivery"] === undefined)
+		) {
+			toast.warning("Select any one");
+			return;
 		}
 
 		if (selectedOptions.labour == "Pre Labour" && formIndex == 19) {
@@ -207,10 +245,10 @@ function ObsIndexForm() {
 		const currentFormTitle = formData[formIndex]?.title;
 		setSelectedOptions((prevOptions) => {
 			const updatedOptions = { ...prevOptions };
-			delete updatedOptions[currentFormTitle]; 
+			delete updatedOptions[currentFormTitle];
 			return updatedOptions;
 		});
-		setSelectedRadioButton(null); 
+		setSelectedRadioButton(null);
 	};
 
 	return (
