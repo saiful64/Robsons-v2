@@ -72,22 +72,44 @@ function ObsIndexForm() {
 			}
 			checkPatientExists();
 		}
-		// if (formData[formIndex]?.title === "b1_gender") {
-		// 	if (
-		// 		selectedOptions["b1_weight"] === undefined ||
-		// 		selectedOptions["b1_weight"] === "" ||
-		// 		selectedOptions["b1_gender"] === undefined ||
-		// 		selectedOptions["b1_date_of_birth"] === undefined ||
-		// 		selectedOptions["b1_date_of_birth"] === "" ||
-		// 		selectedOptions["b1_time_of_birth"] === undefined ||
-		// 		selectedOptions["b1_time_of_birth"] === ""
-		// 	) {
-		// 		console.log(selectedOptions["b1_weight"]);
-		// 		console.log(selectedOptions["b1_time_of_birth"]);
-		// 		toast.warning("Enter all details");
-		// 		return;
-		// 	}
-		// }
+		if (formData[formIndex]?.title === "b1_gender") {
+			if (
+				selectedOptions["b1_weight"] === undefined ||
+				selectedOptions["b1_weight"] === "" ||
+				selectedOptions["b1_gender"] === undefined ||
+				selectedOptions["b1_date_of_birth"] === undefined ||
+				selectedOptions["b1_date_of_birth"] === "" ||
+				selectedOptions["b1_time_of_birth"] === undefined
+			) {
+				toast.warning("Enter all details");
+				return;
+			}
+			if (b1TimeOfBirth === "") {
+				toast.warning(
+					"Enter time format correctly or select from the time picker"
+				);
+				return;
+			}
+		}
+		if (formData[formIndex]?.title === "b2_gender") {
+			if (
+				selectedOptions["b2_weight"] === undefined ||
+				selectedOptions["b2_weight"] === "" ||
+				selectedOptions["b2_gender"] === undefined ||
+				selectedOptions["b2_date_of_birth"] === undefined ||
+				selectedOptions["b2_date_of_birth"] === "" ||
+				selectedOptions["b2_time_of_birth"] === undefined
+			) {
+				toast.warning("Enter all details");
+				return;
+			}
+			if (b2TimeOfBirth === "") {
+				toast.warning(
+					"Enter time format correctly or select from the time picker"
+				);
+				return;
+			}
+		}
 		if (formData[formIndex]?.title === "obs_index") {
 			if (selectedOptions.obs_index == "Primi") {
 				setFormIndex((prevForm) => prevForm + 1);
