@@ -63,12 +63,31 @@ function ObsIndexForm() {
 
 	const goToNextForm = () => {
 		if (formIndex == 0) {
-			if (selectedOptions["patient_id"] === undefined) {
+			if (
+				selectedOptions["patient_id"] === undefined ||
+				selectedOptions["patient_id"] === ""
+			) {
 				toast.error("Please enter Patient ID");
 				return;
 			}
 			checkPatientExists();
 		}
+		// if (formData[formIndex]?.title === "b1_gender") {
+		// 	if (
+		// 		selectedOptions["b1_weight"] === undefined ||
+		// 		selectedOptions["b1_weight"] === "" ||
+		// 		selectedOptions["b1_gender"] === undefined ||
+		// 		selectedOptions["b1_date_of_birth"] === undefined ||
+		// 		selectedOptions["b1_date_of_birth"] === "" ||
+		// 		selectedOptions["b1_time_of_birth"] === undefined ||
+		// 		selectedOptions["b1_time_of_birth"] === ""
+		// 	) {
+		// 		console.log(selectedOptions["b1_weight"]);
+		// 		console.log(selectedOptions["b1_time_of_birth"]);
+		// 		toast.warning("Enter all details");
+		// 		return;
+		// 	}
+		// }
 		if (formData[formIndex]?.title === "obs_index") {
 			if (selectedOptions.obs_index == "Primi") {
 				setFormIndex((prevForm) => prevForm + 1);
