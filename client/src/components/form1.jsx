@@ -323,7 +323,7 @@ add
 			<ToastContainer />
 			{isClicked && <Modal group={group} />}
 			<div
-				className={` bg-white shadow-2xl rounded-lg w-96 ${
+				className={` bg-white shadow-2xl rounded-lg sm:w-96 ${
 					isClicked ? "hidden" : ""
 				}`}
 			>
@@ -337,62 +337,68 @@ add
 						{formData[formIndex]?.displayText}
 					</h3>
 				</div>
-				
+				<div className='flex justify-end pr-4 pt-2'>
+					<button
+						onClick={clearSelection}
+						className='bg-gradient-to-r from-red-200 to-red-400 hover:bg-gradient-to-r hover:from-red-200  hover:text-red-900 hover:to-red-400 text-red-800  rounded-md font-bold py-2 px-4'
+					>
+						Clear
+					</button>
+				</div>
 
-				<div className='flex form-content mb-0 flex-col justify-center items-center max-h-80'>
-    <div style={{ maxHeight: "calc(100% - 40px)", overflowY: "auto" }}>
-        {formData[formIndex]?.options.map((option, index) => (
-            <div key={index} className='mb-2'>
-                <label
-                    key={index}
-                    className={`inline-flex text-center border-dashed border-2 border-black px-4 py-2 font-semibold rounded-md w-full  hover:shadow-2xl hover:border-2 hover:bg-gradient-to-br hover:from-gray-900 hover:to-gray-600  hover:text-white bg-slate-100 hover:cursor-pointer text-gray-900 ${
-                        option.displayText ===
-                        selectedOptions[formData[formIndex]?.title]
-                            ? "bg-gradient-to-r from-blue-700 via-blue-800 to-gray-900 text-white"
-                            : ""
-                    }`}
-                    style={{
-                        minWidth: "100px",
-                        width: "200px",
-                        minHeight: "40px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                    }}
-                >
-                    <input
-                        type='radio'
-                        className='opacity-0 absolute h-0 w-0'
-                        name='radio'
-                        value={option.value}
-                        checked={
-                            option.displayText ===
-                            selectedOptions[formData[formIndex]?.title]
-                        }
-                        onChange={(event) => {
-                            setSelectedRadioButton(event.target.value);
-                            if (
-                                formData[formIndex]?.title === "indication_cesarean"
-                            ) {
-                                if (event.target.value === "others") {
-                                    setShowTextInput(true);
-                                } else {
-                                    setShowTextInput(false);
-                                }
-                            }
-                            updateThisOption(
-                                formData[formIndex]?.title,
-                                option.displayText
-                            );
-                        }}
-                    />
-                    <span>{option.displayText}</span>
-                </label>
-            </div>
-        ))}
-    </div>
-</div>
-
+				<div className='flex form-content mb-0 flex-col justify-center items-center  max-h-80 '>
+					<div style={{ maxHeight: "calc(100% - 40px)", overflowY: "auto" }}>
+						{formData[formIndex]?.options.map((option, index) => (
+							<div key={index} className='mb-2 '>
+								<label
+									key={index}
+									className={`inline-flex text-center border-dashed border-2 border-black px-4 py-2 font-semibold rounded-md w-full  hover:shadow-2xl hover:border-2 hover:bg-gradient-to-br hover:from-gray-900 hover:to-gray-600  hover:text-white bg-slate-100 hover:cursor-pointer text-gray-900 ${
+										option.displayText ===
+										selectedOptions[formData[formIndex]?.title]
+											? "bg-gradient-to-r from-blue-700 via-blue-800 to-gray-900 text-white"
+											: ""
+									}`}
+									style={{
+										minWidth: "100px",
+										width: "200px",
+										minHeight: "40px",
+										display: "flex",
+										alignItems: "center",
+										justifyContent: "center",
+									}}
+								>
+									<input
+										type='radio'
+										className='form-radio sr-only'
+										name='radio'
+										value={option.value}
+										checked={
+											option.displayText ===
+											selectedOptions[formData[formIndex]?.title]
+										}
+										onChange={(event) => {
+											setSelectedRadioButton(event.target.value);
+											if (
+												formData[formIndex]?.title === "indication_cesarean"
+											) {
+												if (event.target.value === "others") {
+													setShowTextInput(true);
+												} else {
+													setShowTextInput(false);
+												}
+											}
+											updateThisOption(
+												formData[formIndex]?.title,
+												option.displayText
+											);
+										}}
+									/>
+									<span>{option.displayText}</span>
+								</label>
+							</div>
+						))}
+					</div>
+				</div>
 				<div className='flex justify-center items-center'>
 					{showTextInput &&
 						formData[formIndex]?.title === "indication_cesarean" && (
@@ -503,153 +509,142 @@ add
 				</div>
 
 				{/* if date time picker is true then show the date time picker */}
-				<div className='flex justify-center items-center flex-wrap'>
-  {formData[formIndex]?.b1 && (
-    <div className='flex flex-col mb-4'>
-      <div className='flex items-center mb-2'>
-        <label htmlFor='dateOfBirth' className='mr-2'>
-          Date:
-        </label>
-        <DatePicker
-          id='dateOfBirth'
-          className='border ml-4 border-gray-500 px-2 py-1 rounded-md'
-          dateFormat='YYYY-MM-DD'
-          timeFormat={false}
-          value={b1DateOfBirth}
-          inputProps={{ placeholder: 'YYYY-MM-DD' }}
-          placeholderText='Enter Date of Birth'
-          maxDate={new Date()}
-          onChange={(value) => {
-            const formattedDate = moment(value).format('YYYY-MM-DD');
-            if (moment(formattedDate, 'YYYY-MM-DD', true).isValid()) {
-              setB1DateOfBirth(formattedDate);
-              updateThisOption(formData[formIndex]?.b1_dateOfBirth, formattedDate);
-            } else {
-              setB1DateOfBirth('');
-            }
-          }}
-        />
-      </div>
-      <div className='flex items-center mb-2'>
-        <label htmlFor='timeOfBirth' className='mr-2'>
-          Time:  
-        </label>
-        <Datetime
-          id='timeOfBirth'
-          className='border ml-4 border-gray-500 px-2 py-1 rounded-md'
-          dateFormat={false}
-          timeFormat='HH:mm'
-          value={b1TimeOfBirth}
-          placeholderText='HH:mm'
-          inputProps={{ placeholder: 'Enter Time in hrs' }}
-          onChange={(value) => {
-            const formattedTime = moment(value, 'HH:mm', true).format('HH:mm');
-            if (moment(formattedTime, 'HH:mm', true).isValid()) {
-              setB1TimeOfBirth(formattedTime);
-              updateThisOption(formData[formIndex]?.b1_timeOfBirth, formattedTime);
-            } else {
-              setB1TimeOfBirth('');
-            }
-          }}
-        />
-      </div>
-      <div className='flex items-center mb-2'>
-        <label htmlFor='weight' className='mr-2'>
-          Weight:
-        </label>
-        <div className='flex'>
-          <input
-            id='weight'
-            type='number'
-            className='border border-gray-500 px-2 py-1 rounded-md'
-            value={b1Weight}
-            placeholder='Enter Weight in kg'
-            onChange={(e) => {
-              setB1Weight(e.target.value);
-              updateThisOption('b1_weight', e.target.value);
-            }}
-          />
-          
-        </div>
-      </div>
-    </div>
-  )}
-</div>
-
-
-
-<div className='flex justify-center items-center flex-wrap'>
-  {formData[formIndex]?.b2 && (
-    <div className='flex flex-col mb-4'>
-      <div className='flex items-center mb-2'>
-        <label htmlFor='dateOfBirth' className='mr-2'>
-          Date:
-        </label>
-        <DatePicker
-          id='dateOfBirth'
-          className='border ml-4 border-gray-500 px-2 py-1 rounded-md'
-          dateFormat='YYYY-MM-DD'
-          timeFormat={false}
-          value={b2DateOfBirth}
-          inputProps={{ placeholder: 'YYYY-MM-DD' }}
-          placeholderText='Enter Date of Birth'
-          maxDate={new Date()}
-          onChange={(value) => {
-            const formattedDate = moment(value).format('YYYY-MM-DD');
-            if (moment(formattedDate, 'YYYY-MM-DD', true).isValid()) {
-              setB2DateOfBirth(formattedDate);
-              updateThisOption(formData[formIndex]?.b2_dateOfBirth, formattedDate);
-            } else {
-              setB2DateOfBirth('');
-            }
-          }}
-        />
-      </div>
-      <div className='flex items-center mb-2'>
-        <label htmlFor='timeOfBirth' className='mr-2'>
-          Time:  
-        </label>
-        <Datetime
-          id='timeOfBirth'
-          className='border ml-4 border-gray-500 px-2 py-1 rounded-md'
-          dateFormat={false}
-          timeFormat='HH:mm'
-          value={b2TimeOfBirth}
-          placeholderText='HH:mm'
-          inputProps={{ placeholder: 'Enter Time in hrs' }}
-          onChange={(value) => {
-            const formattedTime = moment(value, 'HH:mm', true).format('HH:mm');
-            if (moment(formattedTime, 'HH:mm', true).isValid()) {
-              setB2TimeOfBirth(formattedTime);
-              updateThisOption(formData[formIndex]?.b2_timeOfBirth, formattedTime);
-            } else {
-              setB2TimeOfBirth('');
-            }
-          }}
-        />
-      </div>
-      <div className='flex items-center mb-2'>
-        <label htmlFor='weight' className='mr-2'>
-          Weight:
-        </label>
-        <div className='flex'>
-          <input
-            id='weight'
-            type='number'
-            className='border border-gray-500 px-2 py-1 rounded-md'
-            value={b2Weight}
-            placeholder='Enter Weight in kg'
-            onChange={(e) => {
-              setB2Weight(e.target.value);
-              updateThisOption('b1_weight', e.target.value);
-            }}
-          />
-          
-        </div>
-      </div>
-    </div>
-  )}
-</div>
+				<div className='flex justify-center items-center'>
+					{formData[formIndex]?.b1 && (
+						<div className='flex flex-col mb-4'>
+							<div className='relative max-w-sm datetime-box text-center p-2 w-80 mb-2 rounded-md'>
+								Weight (in kg) :
+								<input
+									type='number'
+									className='border border-gray-500 m-1 p-2 w-full rounded-md'
+									value={b1Weight}
+									placeholder='    Enter Weight'
+									onChange={(e) => {
+										setB1Weight(e.target.value);
+										updateThisOption("b1_weight", e.target.value);
+									}}
+								/>
+							</div>
+							<div className='relative  max-w-sm datetime-box text-center p-2 w-80 mb-2 rounded-md'>
+								Date :
+								<DatePicker
+									className='border  border-gray-500 m-1 px-6 py-2 w-full rounded-md'
+									dateFormat='YYYY-MM-DD'
+									timeFormat={false}
+									value={b1DateOfBirth}
+									inputProps={{ placeholder: "Date of Birth" }}
+									placeholderText='Enter Date of Birth'
+									maxDate={new Date()}
+									onChange={(value) => {
+										const formattedDate = moment(value).format("YYYY-MM-DD");
+										if (moment(formattedDate, "YYYY-MM-DD", true).isValid()) {
+											setB1DateOfBirth(formattedDate);
+											updateThisOption(
+												formData[formIndex]?.b1_dateOfBirth,
+												formattedDate
+											);
+										} else {
+											setB1DateOfBirth("");
+										}
+									}}
+								/>
+							</div>
+							<div className='relative max-w-sm datetime-box text-center p-2 w-80 mb-2 rounded-md'>
+								Time (in hrs) :
+								<Datetime
+									className='border border-gray-500 m-1 p-2 w-full rounded-md'
+									dateFormat={false}
+									timeFormat='HH:mm' // Use uppercase 'A' for AM/PM
+									value={b1TimeOfBirth}
+									placeholderText=' Time of Birth'
+									inputProps={{ placeholder: "Enter Time of Birth" }}
+									onChange={(value) => {
+										const formattedTime = moment(value, "HH:mm", true).format(
+											"HH:mm"
+										);
+										if (moment(formattedTime, "HH:mm", true).isValid()) {
+											setB1TimeOfBirth(formattedTime);
+											updateThisOption(
+												formData[formIndex]?.b1_timeOfBirth,
+												formattedTime
+											);
+										} else {
+											setB1TimeOfBirth(""); // Set to an empty string or a default value
+										}
+									}}
+								/>
+							</div>
+						</div>
+					)}
+				</div>
+				<div className='mt-0 flex justify-center items-center'>
+					{formData[formIndex]?.b2 && (
+						<div className='flex flex-col mb-4'>
+							<div className='relative text-center max-w-sm datetime-box  p-2 w-80 mb-2 rounded-md'>
+								Weight (in kg):
+								<input
+									type='number'
+									className='border border-gray-500 m-1 p-2 w-full rounded-md'
+									value={b2Weight}
+									placeholder=' Enter Weight'
+									onChange={(e) => {
+										setB2Weight(e.target.value);
+										updateThisOption("b2_weight", e.target.value);
+									}}
+								/>
+							</div>
+							<div className='relative text-center max-w-sm datetime-box  p-2 w-80 mb-2 rounded-md'>
+								Date :
+								<DatePicker
+									className='border border-gray-500 m-2 p-2 w-full rounded-md'
+									dateFormat='YYYY-MM-DD'
+									timeFormat={false}
+									value={b2DateOfBirth}
+									inputProps={{ placeholder: "Date of Birth" }}
+									placeholderText='Enter Date of Birth'
+									maxDate={new Date()}
+									onChange={(value) => {
+										const formattedDate = moment(value).format("YYYY-MM-DD");
+										if (moment(formattedDate, "YYYY-MM-DD", true).isValid()) {
+											setB2DateOfBirth(formattedDate);
+											updateThisOption(
+												formData[formIndex]?.b2_dateOfBirth,
+												formattedDate
+											);
+										} else {
+											setB2DateOfBirth("");
+										}
+									}}
+								/>
+							</div>
+							<div className='relative max-w-sm text-center datetime-box  p-2 w-80 mb-2 rounded-md'>
+								Time (in hrs) :
+								<Datetime
+									className='border border-gray-500 m-1 p-2 w-full rounded-md'
+									dateFormat={false}
+									timeFormat='HH:mm' // Use uppercase 'A' for AM/PM
+									value={b2TimeOfBirth}
+									placeholderText=' Time of Birth'
+									inputProps={{ placeholder: "Enter Time of Birth" }}
+									onChange={(value) => {
+										const formattedTime = moment(value, "HH:mm", true).format(
+											"HH:mm"
+										);
+										if (moment(formattedTime, "HH:mm", true).isValid()) {
+											setB2TimeOfBirth(formattedTime);
+											updateThisOption(
+												formData[formIndex]?.b2_timeOfBirth,
+												formattedTime
+											);
+										} else {
+											setB2TimeOfBirth(""); // Set to an empty string or a default value
+										}
+									}}
+								/>
+							</div>
+						</div>
+					)}
+				</div>
 				<div className='flex justify-center items-center'>
 					<hr className='h-px my-0 border-100 w-80 rounded-md' />
 				</div>
@@ -671,16 +666,6 @@ add
 							Previous
 						</button>
 					)}
-					{formData[formIndex]?.type !== "id" && ( // Add this condition
-        <div className=''>
-            <button
-                onClick={clearSelection}
-                className='bg-gradient-to-r from-red-200 to-red-400 hover:bg-gradient-to-r hover:from-red-200  hover:text-red-900 hover:to-red-400 text-red-800  rounded-md font-bold py-2 px-4'
-            >
-                Clear
-            </button>
-        </div>
-    )}
 					{formData[formIndex]?.showNext && (
 						<button
 							onClick={goToNextForm}
