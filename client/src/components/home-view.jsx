@@ -7,7 +7,12 @@ function HomeView() {
 	const auth = useAuth();
 
 	const buttons = [
-		{ text: "CLASSIFY", action: () => navigate("/forms") },
+		...(auth.user !== "department"
+			? [{ text: "CLASSIFY", action: () => navigate("/forms") }]
+			: []),
+		...(auth.user === "department"
+			? [{ text: "ROBSON", action: () => navigate("/robson") }]
+			: []),
 		...(auth.user === "doctor"
 			? [
 					{ text: "DASHBOARD", action: () => navigate("/dashboard") },
@@ -38,11 +43,9 @@ function HomeView() {
 			<div className='flex flex-col items-center justify-center h-screen'>
 				<div className='bg-white p-7 rounded-lg shadow-2xl ring-1 ring-gray-900/5 md:w-5/12 lg:w-1/4 sm:w-96'>
 					<h1 className='text-3xl font-bold mb-8 text-center'>
-						{auth.user === "student" ? (
+						{auth.user === "student" || auth.user === "department" ? (
 							<div className='bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 bg-clip-text bg-transparent'>
-								<h1>
-									Welcome<span className=''> Student</span>
-								</h1>
+								<h1>Welcome</h1>
 							</div>
 						) : (
 							<div className='font-kalam'>

@@ -38,6 +38,9 @@ function LoginAuthView(props) {
 				} else if (response.data === "doctor") {
 					auth.login("doctor");
 					navigate("/home-view");
+				} else if (response.data === "department") {
+					auth.login("department");
+					navigate("/home-view");
 				} else {
 					alert("Invalid Credentials");
 				}
