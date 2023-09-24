@@ -3,9 +3,11 @@ import { useNavigate } from "react-router-dom";
 
 const Modal = ({ group }) => {
 	const navigate = useNavigate();
+
 	const handleClick = () => {
 		navigate("/home-view");
 	};
+
 	return (
 		<div className='relative mx-auto p-5 border w-96 shadow-lg rounded-md bg-white'>
 			<div className='mt-3 text-center'>

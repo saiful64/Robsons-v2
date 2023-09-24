@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import moment from "moment";
 import { Chart, registerables } from "chart.js";
 import API_BASE_URL from "./config";
 
@@ -8,18 +7,44 @@ Chart.register(...registerables);
 
 const MyChartComponent = () => {
 	const chartRef = useRef(null);
-	const [data1, setData1] = useState([]);
-	const [data2, setData2] = useState([]);
-	const [data3, setData3] = useState([]);
+	const [chartInstance, setChartInstance] = useState(null);
+	const [chartData, setChartData] = useState({
+		labels: [],
+		datasets: [],
+	});
 
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
 				const response = await axios.get(`${API_BASE_URL}/api/barchart`);
-				setData1(response.data.data1);
-				setData2(response.data.data2);
-				setData3(response.data.data3);
-				console.log(response.data);
+				const { data1, data2, data3 } = response.data;
+
+				setChartData({
+					labels: data1.map((item) => item.group_name),
+					datasets: [
+						{
+							label: "Jan-Mar",
+							data: data1.map((item) => item.count),
+							backgroundColor: "rgba(75, 192, 192, 0.6)",
+							borderColor: "rgba(75, 192, 192, 1)",
+							borderWidth: 1,
+						},
+						{
+							label: "Apr-Aug",
+							data: data2.map((item) => item.count),
+							backgroundColor: "rgba(255, 0, 0, 0.6)",
+							borderColor: "rgba(255, 99, 132, 1)",
+							borderWidth: 1,
+						},
+						{
+							label: "Sep-Dec",
+							data: data3.map((item) => item.count),
+							backgroundColor: "rgba(0,255,0, 0.6)",
+							borderColor: "rgba(54, 162, 235, 1)",
+							borderWidth: 1,
+						},
+					],
+				});
 			} catch (error) {
 				console.error(error);
 			}
@@ -29,61 +54,28 @@ const MyChartComponent = () => {
 	}, []);
 
 	useEffect(() => {
-		if (data1.length > 0) {
-			destroyChartInstance();
-			createChartInstance();
-		}
-	}, [data1]);
-
-	const destroyChartInstance = () => {
 		if (chartRef.current) {
-			const chartInstance = Chart.getChart(chartRef.current);
 			if (chartInstance) {
 				chartInstance.destroy();
 			}
-		}
-	};
 
-	const createChartInstance = () => {
-		const ctx = chartRef.current.getContext("2d");
-		new Chart(ctx, {
-			type: "bar",
-			data: {
-				labels: data1.map((item) => item.group_name),
-				datasets: [
-					{
-						label: "Jan-Mar",
-						data: data1.map((item) => item.count),
-						backgroundColor: "rgba(75, 192, 192, 0.6)",
-						borderColor: "rgba(75, 192, 192, 1)",
-						borderWidth: 1,
-					},
-					{
-						label: "Apr-Aug",
-						data: data2.map((item) => item.count),
-						backgroundColor: "rgba(255, 0, 0, 0.6)",
-						borderColor: "rgba(255, 99, 132, 1)",
-						borderWidth: 1,
-					},
-					{
-						label: "Sep-Dec",
-						data: data3.map((item) => item.count),
-						backgroundColor: "rgba(0,255,0, 0.6)",
-						borderColor: "rgba(54, 162, 235, 1)",
-						borderWidth: 1,
-					},
-				],
-			},
-			options: {
-				responsive: true,
-				scales: {
-					y: {
-						beginAtZero: true,
+			const ctx = chartRef.current.getContext("2d");
+			const newChartInstance = new Chart(ctx, {
+				type: "bar",
+				data: chartData,
+				options: {
+					responsive: true,
+					scales: {
+						y: {
+							beginAtZero: true,
+						},
 					},
 				},
-			},
-		});
-	};
+			});
+
+			setChartInstance(newChartInstance);
+		}
+	}, [chartData]);
 
 	return (
 		<div className='container mx-auto my-4 p-4 bg-white rounded-lg shadow-lg'>

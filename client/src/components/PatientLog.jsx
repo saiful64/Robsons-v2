@@ -5,35 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import API_BASE_URL from "./config";
 import { useNavigate } from "react-router-dom";
 import PatientDetails from "./PatientDetails";
-
-const DeleteConfirmationDialog = ({ patient, onConfirm, onCancel }) => (
-	<div
-		className='fixed top-0 left-0 flex justify-center items-center w-full h-full bg-gray-600 bg-opacity-50'
-		onClick={(e) => e.stopPropagation()}
-	>
-		<div className='bg-white p-4 rounded-lg w-80 shadow-md text-center'>
-			<p className='mb-4'>
-				Are you sure you want to delete patient with{" "}
-				<span className='font-extrabold'>ID: {patient.patient_id}?</span>
-			</p>
-			<button
-				className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-2'
-				onClick={() => onConfirm(patient.patient_id)}
-			>
-				Delete
-			</button>
-			<button
-				className='bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded'
-				onClick={onCancel}
-			>
-				Cancel
-			</button>
-		</div>
-	</div>
-);
-
-
-
+import DeleteConfirmationDialog from "./DeleteConfirmationDialog";
 
 const PatientLog = () => {
 	const [patients, setPatients] = useState([]);
@@ -43,7 +15,7 @@ const PatientLog = () => {
 	const [patientIdToView, setPatientIdToView] = useState(null);
 	const [isPatientDetailsVisible, setIsPatientDetailsVisible] = useState(false);
 	const [isDeleteConfirmationVisible, setIsDeleteConfirmationVisible] =
-		useState(false); // Define isDeleteConfirmationVisible state
+		useState(false);
 	const [searchQuery, setSearchQuery] = useState("");
 	const navigate = useNavigate();
 
@@ -70,26 +42,14 @@ const PatientLog = () => {
 	const indexOfLastPatient = currentPage * patientsPerPage;
 	const indexOfFirstPatient = indexOfLastPatient - patientsPerPage;
 
-	const filteredPatients = patients
-		.filter((patient) =>
-			(patient.patient_id || "").toLowerCase().includes(searchQuery.toLowerCase())
-		)
-		.sort((a, b) => {
-			const dateA = new Date(a.created_on);
-			const dateB = new Date(b.created_on);
-			return dateB - dateA;
-		});
+	const filteredPatients = patients.filter((patient) =>
+		(patient.patient_id || "").toLowerCase().includes(searchQuery.toLowerCase())
+	);
 
 	const currentPatients = filteredPatients.slice(
 		indexOfFirstPatient,
 		indexOfLastPatient
 	);
-
-	const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-	const goHome = () => {
-		navigate("/home-view");
-	};
 
 	const handleEditClick = (patient) => {
 		toast.success(`Editing patient with ID : ${patient.patient_id}`, {
@@ -143,6 +103,10 @@ const PatientLog = () => {
 	const handleSearchChange = (event) => {
 		setSearchQuery(event.target.value);
 		setCurrentPage(1);
+	};
+
+	const navigateHome = () => {
+		navigate("/home-view");
 	};
 
 	return (
@@ -199,20 +163,20 @@ const PatientLog = () => {
 					</table>
 					<div className='pagination text-center mt-4'>
 						<button
-							onClick={goHome}
+							onClick={navigateHome}
 							className='bg-zinc-500 hover:bg-gray-300 hover:text-black text-white hover:cursor-pointer font-bold px-2 py-1 rounded-md mr-2'
 						>
 							Home
 						</button>
 						<button
-							onClick={() => paginate(currentPage - 1)}
+							onClick={() => setCurrentPage(currentPage - 1)}
 							disabled={currentPage === 1}
 							className='disabled:hidden bg-zinc-600 hover:bg-gray-300 hover:text-black text-white hover:cursor-pointer font-bold px-2 py-1 rounded-md mr-2'
 						>
 							Previous
 						</button>
 						<button
-							onClick={() => paginate(currentPage + 1)}
+							onClick={() => setCurrentPage(currentPage + 1)}
 							disabled={indexOfLastPatient >= filteredPatients.length}
 							className='bg-zinc-700 hover:bg-gray-300 hover:text-black hover:cursor-pointer font-bold text-white px-2 py-1 rounded-md'
 						>

@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Line, Bar } from "react-chartjs-2";
-import API_BASE_URL from "./config";
 import axios from "axios";
-import "./ScrollbarContainer.css";
 import { useNavigate } from "react-router-dom";
-
+import API_BASE_URL from "./config";
+import "./ScrollbarContainer.css";
 
 const MultiGraphComponent = () => {
 	const [data1, setData1] = useState([]);
@@ -13,15 +12,17 @@ const MultiGraphComponent = () => {
 	const [data4, setData4] = useState([]);
 	const [data5, setData5] = useState([]);
 	const navigate = useNavigate();
+
 	useEffect(() => {
 		const fetchCombinedData = async () => {
 			try {
 				const response = await axios.get(`${API_BASE_URL}/api/dashboard`);
-				setData1(response.data.data1);
-				setData2(response.data.data2);
-				setData3(response.data.data3);
-				setData4(response.data.data4);
-				setData5(response.data.data5);
+				const { data1, data2, data3, data4, data5 } = response.data;
+				setData1(data1);
+				setData2(data2);
+				setData3(data3);
+				setData4(data4);
+				setData5(data5);
 			} catch (error) {
 				console.error("Error fetching data:", error);
 			}
@@ -30,7 +31,8 @@ const MultiGraphComponent = () => {
 		fetchCombinedData();
 	}, []);
 
-	// Total Delivery and Cesarean Delivery
+	// Chart Data and Options
+
 	const chartData = {
 		labels: data1.map((item) => item.month_name),
 		datasets: [
@@ -74,7 +76,6 @@ const MultiGraphComponent = () => {
 		},
 	};
 
-	// Three month and more than three month Delivery with groups
 	const barChart = {
 		labels: data3.map((item) => item.group_name),
 		datasets: [
@@ -95,7 +96,7 @@ const MultiGraphComponent = () => {
 			{
 				label: "Sep-Dec",
 				data: data5.map((item) => item.count),
-				backgroundColor: "rgba(0,255,0, 0.6)",
+				backgroundColor: "rgba(0, 255, 0, 0.6)",
 				borderColor: "rgba(54, 162, 235, 1)",
 				borderWidth: 1,
 			},
@@ -127,6 +128,8 @@ const MultiGraphComponent = () => {
 		},
 	};
 
+	// Other chart data
+
 	const lineChartData3 = {
 		labels: ["Red", "Blue", "Yellow", "Green"],
 		datasets: [
@@ -150,23 +153,19 @@ const MultiGraphComponent = () => {
 			},
 		],
 	};
+
 	const goToHome = () => {
 		navigate("/home-view");
 	};
-	const leftMarginStyle = {
-		marginLeft: '80px', 
-	  };
+
 	return (
-		
 		<div className='scroll-container container mx-auto px-4 p-4 overflow-y-auto'>
 			<div className='grid grid-cols-1 md:grid-cols-2 gap-4 text-center'>
 				{/* First row */}
 				<div className='w-full  md:w-auto'>
 					<h2 className='text-sm font-bold mb-4'>
-						Total Deliveries and Caesarean Deliveries 
-						
+						Total Deliveries and Caesarean Deliveries
 					</h2>
-					
 					<div className='bg-white p-4 rounded-lg shadow-md'>
 						<Line data={chartData} options={chartOptions1} />
 					</div>
@@ -181,7 +180,7 @@ const MultiGraphComponent = () => {
 				</div>
 
 				{/* Second row */}
-				<div className='w-full md:w-auto'>
+				{/* <div className='w-full md:w-auto'>
 					<h2 className='text-sm font-bold mb-4'>To be updated</h2>
 					<div className='bg-white p-4 rounded-lg shadow-md'>
 						<Line data={lineChartData3} />
@@ -192,22 +191,17 @@ const MultiGraphComponent = () => {
 					<div className='bg-white p-4 rounded-lg shadow-md'>
 						<Line data={lineChartData4} />
 					</div>
-				</div>
-				
-				
-				
+				</div> */}
 			</div>
-			<div className="mt-4 flex justify-center items-center">
-			<button
-							onClick={goToHome}
-							className='bg-zinc-600 hover:bg-gray-300 hover:text-black text-white font-semibold te px-4 py-1 rounded-lg mr-2 ml-4'
-						>
-							Home
-						</button>
+			<div className='mt-4 flex justify-center items-center'>
+				<button
+					onClick={goToHome}
+					className='bg-zinc-600 hover:bg-gray-300 hover:text-black text-white font-semibold px-4 py-1 rounded-lg mr-2 ml-4'
+				>
+					Home
+				</button>
 			</div>
 		</div>
-		
-		
 	);
 };
 

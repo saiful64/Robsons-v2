@@ -4,25 +4,21 @@ import API_BASE_URL from "./config";
 import axios from "axios";
 
 const LineChartComponent = () => {
-	//const [combinedData, setCombinedData] = useState({ data1: [], data2: [] });
 	const [data1, setData1] = useState([]);
 	const [data2, setData2] = useState([]);
+
 	useEffect(() => {
-		// Fetch data from the combined API endpoint
-		const fetchCombinedData = async () => {
+		const fetchData = async () => {
 			try {
 				const response = await axios.get(`${API_BASE_URL}/api/line-chart`);
 				setData1(response.data.data1);
 				setData2(response.data.data2);
-
-				console.log(response.data.data1);
-				console.log(response.data.data2);
 			} catch (error) {
 				console.error("Error fetching data:", error);
 			}
 		};
 
-		fetchCombinedData();
+		fetchData();
 	}, []);
 
 	const chartData = {
