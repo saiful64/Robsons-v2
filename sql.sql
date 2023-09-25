@@ -107,6 +107,16 @@ ADD COLUMN department VARCHAR(20);
 ALTER TABLE robsonsdata
 ADD COLUMN department VARCHAR(20);
 
+ALTER TABLE loginauth
+ADD COLUMN department VARCHAR(20);
+
+ALTER TABLE robsonsdata
+MODIFY created_by ENUM('doctor', 'student', 'department') NOT NULL;
+
+ALTER TABLE loginauth
+MODIFY role ENUM('doctor', 'student', 'department') NOT NULL;
+
+
 
 
 
