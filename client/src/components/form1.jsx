@@ -249,6 +249,13 @@ function ObsIndexForm() {
 	};
 
 	const submitForms = () => {
+		if (
+			formData[formIndex]?.title === "labour" &&
+			selectedOptions["labour"] === undefined
+		) {
+			toast.warning("Select any one");
+			return;
+		}
 		let created_by = auth.user;
 		selectedOptions["created_by"] = created_by;
 		axios
@@ -636,7 +643,9 @@ function ObsIndexForm() {
 							Previous
 						</button>
 					)}
-					{formData[formIndex]?.showNext && (
+					{(formData[formIndex]?.showNext && 
+						!(formData[formIndex]?.title === "labour" &&
+							auth.user === "department")) && (
 						<button
 							onClick={goToNextForm}
 							onKeyDown={handleKeyDown}
@@ -645,7 +654,9 @@ function ObsIndexForm() {
 							Next
 						</button>
 					)}
-					{formData[formIndex]?.isSubmit && (
+					{(formData[formIndex]?.isSubmit ||
+						(formData[formIndex]?.title === "labour" &&
+							auth.user === "department")) && (
 						<button
 							onClick={submitForms}
 							// onKeyDown={handleKeyDownForSubmit}

@@ -18,7 +18,6 @@ import "react-date-range/dist/styles.css"; // main css file for date-range
 import "react-date-range/dist/theme/default.css"; // theme css file date-range
 import PatientLog from "./components/PatientLog";
 import PatientDetails from "./components/PatientDetails";
-import Robson from "./components/Robson";
 function App() {
 	const [count, setCount] = useState("");
 
@@ -122,14 +121,6 @@ function App() {
 									</ProtectedRoute>
 								}
 							/>{" "}
-							<Route
-								path='/robson'
-								element={
-									<ProtectedRoute>
-										<Robson />
-									</ProtectedRoute>
-								}
-							/>
 						</Routes>
 					</Router>
 				</div>

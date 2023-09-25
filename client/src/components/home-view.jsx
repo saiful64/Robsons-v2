@@ -7,12 +7,7 @@ function HomeView() {
 	const auth = useAuth();
 
 	const buttons = [
-		...(auth.user !== "department"
-			? [{ text: "CLASSIFY", action: () => navigate("/forms") }]
-			: []),
-		...(auth.user === "department"
-			? [{ text: "ROBSON", action: () => navigate("/robson") }]
-			: []),
+		{ text: "CLASSIFY", action: () => navigate("/forms") },
 		...(auth.user === "doctor"
 			? [
 					{ text: "DASHBOARD", action: () => navigate("/dashboard") },
