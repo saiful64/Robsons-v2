@@ -178,6 +178,24 @@ function ObsIndexForm() {
 			setPrevFormIndex(formIndex);
 		}
 
+		if (
+			(formData[formIndex]?.title === "obs_index" &&
+				selectedOptions["obs_index"] === undefined) ||
+			(formData[formIndex]?.title === "fetus_type" &&
+				selectedOptions["fetus_type"] === undefined) ||
+			(formData[formIndex]?.title === "presentation_single" &&
+				selectedOptions["presentation_single"] === undefined) ||
+			(formData[formIndex]?.title === "presentation_twin" &&
+				selectedOptions["presentation_twin"] === undefined) ||
+			(formData[formIndex]?.title === "labour" &&
+				selectedOptions["labour"] === undefined) ||
+			(formData[formIndex]?.title === "delivery" &&
+				selectedOptions["delivery"] === undefined)
+		) {
+			toast.warning("Select any one");
+			return;
+		}
+add
 		if (selectedOptions.labour == "Pre Labour" && formIndex == 19) {
 			setFormIndex((prevForm) => prevForm + 1);
 			setPrevFormIndex(formIndex);

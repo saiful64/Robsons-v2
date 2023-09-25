@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import API_BASE_URL from "./config";
+import moment from "moment";
+import { ToastContainer, toast } from "react-toastify";
 
 function UploadXlsx() {
   const [file, setFile] = useState(null);
@@ -14,25 +16,33 @@ function UploadXlsx() {
       const formData = new FormData();
       formData.append('file', file);
 
-      try {
+     // try {
         await axios.post(`${API_BASE_URL}/api/upload`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+           responseType: 'blob' ,
+        }).then(response => {
+          // Create a blob URL to allow the user to download the file.
+          const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'sample.xlsx';
+          a.click();
+        })
+        .catch(error => {
+          // Handle errors.
+          console.error(error);
         });
-        alert('File uploaded successfully');
-
-        // Reset the file input after successful upload
-        // document.getElementById('fileInput').value = '';
-        // setFile(null);
-      } catch (error) {
-        console.error('Error uploading file:', error);
-        alert('Error uploading file');
-      }
+        
+      // } catch (error) {
+      //   console.error('Error uploading file:', error);
+      //   alert('Error uploading file');
+      // }
     }
   };
 
   return (
+    <>
+    <ToastContainer/>
     <div className='flex flex-col items-center justify-center h-screen'>
   <div className='bg-white  w-96 p-6 text-center h-2/5 rounded-lg drop-shadow-2xl flex flex-col justify-center'>
     <h1 className='text-2xl font-bold mb-4 font-space'>Upload XLSX File</h1>
@@ -57,7 +67,7 @@ function UploadXlsx() {
     </div>
   </div>
 </div>
-
+</>
   );
 }
 
