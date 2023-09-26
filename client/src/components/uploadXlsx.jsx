@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState ,useRef} from 'react';
 import axios from 'axios';
 import API_BASE_URL from "./config";
 import moment from "moment";
@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 
 function UploadXlsx() {
   const [file, setFile] = useState(null);
+  const fileInputRef = useRef(null);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -19,24 +20,37 @@ function UploadXlsx() {
      // try {
         await axios.post(`${API_BASE_URL}/api/upload`, formData, {
            responseType: 'blob' ,
-        }).then(response => {
-          // Create a blob URL to allow the user to download the file.
-          const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = 'sample.xlsx';
-          a.click();
+        }).then((response) => {
+          if (response.data) {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement("a");
+            const randomNumber = Math.floor(Math.random() * 10000);
+            const currentDate = new Date();
+            const year = currentDate.getFullYear();
+            const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+            const day = String(currentDate.getDate()).padStart(2, '0');
+            const hour = String(currentDate.getHours()).padStart(2, '0');
+            const minute = String(currentDate.getMinutes()).padStart(2, '0');
+            const second = String(currentDate.getSeconds()).padStart(2, '0');
+
+            const fileName = `Excel_Report_${day}-${month}-${year}_${hour}:${minute}:${second}_${randomNumber}.xlsx`;
+            link.href = url;
+            link.setAttribute("download", fileName);
+            document.body.appendChild(link);
+            link.click();
+          } else {
+            toast.warning("No data found");
+          }
         })
-        .catch(error => {
-          // Handle errors.
+        .catch((error) => {
           console.error(error);
+          toast.error("No data available.");
         });
-        
-      // } catch (error) {
-      //   console.error('Error uploading file:', error);
-      //   alert('Error uploading file');
-      // }
+       
+    }
+    setFile('');
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''; // Reset the input value to an empty string
     }
   };
 
@@ -56,6 +70,7 @@ function UploadXlsx() {
         hover:file:bg-violet-100"
         type="file"
         accept=".xlsx"
+        ref={fileInputRef}
         onChange={handleFileChange}
       />
       <button

@@ -1422,18 +1422,19 @@ app.get("/api/barchart", async (req, res) => {
 	}
 });
 
-// Configure multer for Xsx file uploads
+
+//Calculate robson data belongs to which group
 
 app.post('/api/upload', upload.single('file'), (req, res) => {
 	// Access the uploaded file in req.file.buffer
 	const fileBuffer = req.file.buffer;
-  
+
 	// Process the XLSX file using the 'xlsx' library
 	const workbook = xlsx.read(fileBuffer, { type: 'buffer' });
-  
+
 	// Assuming the XLSX file has a single worksheet
 	const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-  
+
 	// Convert worksheet data to JSON
 	//const range = xlsx.utils.sheet_to_json(worksheet);
 	const sheetName = workbook.SheetNames[0];
@@ -1441,229 +1442,242 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
 
 	//Get the range of cells in the sheet
 	const range = xlsx.utils.decode_range(sheet['!ref']);
-	
+
 	// Initialize an array to store column names
 	const columnNames = [];
-	
+
 	// Iterate through the first row to get column names
 	for (let colIndex = range.s.c; colIndex <= range.e.c; colIndex++) {
-	  const cellAddress = xlsx.utils.encode_cell({ r: range.s.r, c: colIndex });
-	  const cellValue = sheet[cellAddress] ? sheet[cellAddress].v : undefined;
-	  
-	  // Add the cell value to the columnNames array
-	  columnNames.push(cellValue);
+		const cellAddress = xlsx.utils.encode_cell({ r: range.s.r, c: colIndex });
+		const cellValue = sheet[cellAddress] ? sheet[cellAddress].v : undefined;
+
+		// Add the cell value to the columnNames array
+		columnNames.push(cellValue);
 	}
-	
+
 	// Iterate through rows and start from the second row to skip the header row
-	
+
 	const data = {};
-	
-	let santizedRobsonsDataList =[];
-	
+
+	let santizedRobsonsDataList = [];
+
 	for (let rowIndex = range.s.r + 1; rowIndex <= range.e.r; rowIndex++) {
-	 
-		
-	  // Iterate through columns and populate the rowData object
-	  for (let colIndex = range.s.c; colIndex <= range.e.c; colIndex++) {
-		const cellAddress = xlsx.utils.encode_cell({ r: rowIndex, c: colIndex });
-		const cellValue = sheet[cellAddress] ? String(sheet[cellAddress].v).toLowerCase() : undefined;
-		//console.log(cellValue);
-		// Use column name from the header row as the object key
-		const columnName = columnNames[colIndex - range.s.c];
-		//console.log(columnName);
-		data[columnName] = cellValue;
-		//console.log(data[columnName] = cellValue);
-		
-		
-		
-	  }
-	//console.log("break");
-	 //console.log(data);
-	  // Do something with the rowData object, e.g., print it
-	  data.previous_cesarean =
-	  Number(data.previous_cesarean) > 0 ? "true" : "false";
-	  
-  let pog;
-  if (data.weeks < 36) {
-	  pog = "<36";
-  } else {
-	  pog = ">36";
-  }
-  let group;
-  let patient_id;
-  
-  if (
-	  data.obs_index === "primi" &&
-	  data.previous_cesarean === "false" &&
-	  data.fetus_type === "single" &&
-	  data.presentation_single === "cephalic" &&
-	  data.labour === "spontaneous" &&
-	  pog === ">36"
-  ) {
-	  group = "Group 1";
-	  patient_id = data.patient_id.toUpperCase();
-	  console.log(group);
-	let  datafield ={
-		"Patient ID":patient_id,
-		"Group Name":group
-	  };
-	  santizedRobsonsDataList.push(datafield);
-  } 
-  else if (
-	data.obs_index === "primi" &&
-	data.previous_cesarean === "false" &&
-	data.fetus_type === "single" &&
-	data.presentation_single === "cephalic" &&
-	(data.labour === "pre labour" || data.labour === "induction of labor") &&
-	pog === ">36"
-) {
-	group = "Group 2";
-	patient_id = data.patient_id.toUpperCase();
-	  console.log(group);
-	let  datafield ={
-		patient_id:patient_id,
-		groupName:group
-	  };
-	  santizedRobsonsDataList.push(datafield);
-} else if (
-	data.obs_index === "multi" &&
-	data.previous_cesarean === "false" &&
-	data.fetus_type === "single" &&
-	data.presentation_single === "cephalic" &&
-	data.labour === "spontaneous" &&
-	pog === ">36"
-) {
-	group = "Group 3";
-	patient_id = data.patient_id.toUpperCase();
-	  console.log(group);
-	let  datafield ={
-		patient_id:patient_id,
-		groupName:group
-	  };
-	  santizedRobsonsDataList.push(datafield);
-} else if (
-	data.obs_index === "multi" &&
-	data.previous_cesarean === "false" &&
-	data.fetus_type === "single" &&
-	data.presentation_single === "cephalic" &&
-	(data.labour === "induction of labor" || data.labour === "pre labour") &&
-	pog === ">36"
-) {
-	group = "Group 4";
-	patient_id = data.patient_id.toUpperCase();
-	  console.log(group);
-	let  datafield ={
-		patient_id:patient_id,
-		groupName:group
-	  };
-	  santizedRobsonsDataList.push(datafield);
-} else if (
-	data.previous_cesarean === "true" &&
-	data.fetus_type === "single" &&
-	data.presentation_single === "cephalic" &&
-	pog === ">36"
-) {
-	group = "Group 5";
-	patient_id = data.patient_id.toUpperCase();
-	  console.log(group);
-	let  datafield ={
-		patient_id:patient_id,
-		groupName:group
-	  };
-	  santizedRobsonsDataList.push(datafield);
-} else if (
-	data.obs_index === "primi" &&
-	data.fetus_type === "single" &&
-	data.presentation_single === "breech"
-) {
-	group = "Group 6";
-	patient_id = data.patient_id.toUpperCase();
-	  console.log(group);
-	let  datafield ={
-		patient_id:patient_id,
-		groupName:group
-	  };
-	  santizedRobsonsDataList.push(datafield);
-} else if (
-	data.obs_index === "multi" &&
-	data.fetus_type === "single" &&
-	data.presentation_single === "breech"
-) {
-	group = "Group 7";
-	patient_id = data.patient_id.toUpperCase();
-	  console.log(group);
-	let  datafield ={
-		patient_id:patient_id,
-		groupName:group
-	  };
-	  santizedRobsonsDataList.push(datafield);
-} else if (data.fetus_type === "twins") {
-	group = "Group 8";
-	patient_id = data.patient_id.toUpperCase();
-	  console.log(group);
-	let  datafield ={
-		patient_id:patient_id,
-		groupName:group
-	  };
-	  santizedRobsonsDataList.push(datafield);
-} else if (
-	data.fetus_type === "single" &&
-	data.presentation_single === "transverse"
-) {
-	group = "Group 9";
-	patient_id = data.patient_id.toUpperCase();
-	  console.log(group);
-	let  datafield ={
-		"Patient ID":patient_id,
-		"Group Name":group
-	  };
-	  santizedRobsonsDataList.push(datafield);
-} else if (
-	data.fetus_type === "single" &&
-	data.presentation_single === "cephalic" &&
-	pog === "<36"
-) {
-	group = "Group 10";
-	patient_id = data.patient_id.toUpperCase();
-	  console.log(group);
-	let  datafield ={
-		patient_id:patient_id,
-		groupName:group
-	  };
-	  santizedRobsonsDataList.push(datafield);
-}
-  else {
-	  let err = true;
-	  console.error("Error in group logics");
-	 // res.status(400).send({ message: "Group Logic Error" });
-	  //return;
-  }
-	 
+
+
+		// Iterate through columns and populate the rowData object
+		for (let colIndex = range.s.c; colIndex <= range.e.c; colIndex++) {
+			const cellAddress = xlsx.utils.encode_cell({ r: rowIndex, c: colIndex });
+			const cellValue = sheet[cellAddress] ? String(sheet[cellAddress].v).toLowerCase() : undefined;
+			//console.log(cellValue);
+			// Use column name from the header row as the object key
+			const columnName = columnNames[colIndex - range.s.c];
+			//console.log(columnName);
+			data[columnName] = cellValue;
+			//console.log(data[columnName] = cellValue);
+
+
+
+		}
+
+		data.previous_cesarean =
+			Number(data.previous_cesarean) > 0 ? "true" : "false";
+
+		let pog;
+		if (data.weeks < 36) {
+			pog = "<36";
+		} else {
+			pog = ">36";
+		}
+		let group;
+		let patient_id;
+
+		if (
+			data.obs_index === "primi" &&
+			data.previous_cesarean === "false" &&
+			data.fetus_type === "single" &&
+			data.presentation_single === "cephalic" &&
+			data.labour === "spontaneous" &&
+			pog === ">36"
+		) {
+			group = "Group 1";
+			patient_id = data.patient_id.toUpperCase();
+			console.log(group);
+			let datafield = {
+				patient_id: patient_id,
+				groupName: group
+			};
+			santizedRobsonsDataList.push(datafield);
+		}
+		else if (
+			data.obs_index === "primi" &&
+			data.previous_cesarean === "false" &&
+			data.fetus_type === "single" &&
+			data.presentation_single === "cephalic" &&
+			(data.labour === "pre labour" || data.labour === "induction of labor") &&
+			pog === ">36"
+		) {
+			group = "Group 2";
+			patient_id = data.patient_id.toUpperCase();
+			console.log(group);
+			let datafield = {
+				patient_id: patient_id,
+				groupName: group
+			};
+			santizedRobsonsDataList.push(datafield);
+		} else if (
+			data.obs_index === "multi" &&
+			data.previous_cesarean === "false" &&
+			data.fetus_type === "single" &&
+			data.presentation_single === "cephalic" &&
+			data.labour === "spontaneous" &&
+			pog === ">36"
+		) {
+			group = "Group 3";
+			patient_id = data.patient_id.toUpperCase();
+			console.log(group);
+			let datafield = {
+				patient_id: patient_id,
+				groupName: group
+			};
+			santizedRobsonsDataList.push(datafield);
+		} else if (
+			data.obs_index === "multi" &&
+			data.previous_cesarean === "false" &&
+			data.fetus_type === "single" &&
+			data.presentation_single === "cephalic" &&
+			(data.labour === "induction of labor" || data.labour === "pre labour") &&
+			pog === ">36"
+		) {
+			group = "Group 4";
+			patient_id = data.patient_id.toUpperCase();
+			console.log(group);
+			let datafield = {
+				patient_id: patient_id,
+				groupName: group
+			};
+			santizedRobsonsDataList.push(datafield);
+		} else if (
+			data.previous_cesarean === "true" &&
+			data.fetus_type === "single" &&
+			data.presentation_single === "cephalic" &&
+			pog === ">36"
+		) {
+			group = "Group 5";
+			patient_id = data.patient_id.toUpperCase();
+			console.log(group);
+			let datafield = {
+				patient_id: patient_id,
+				groupName: group
+			};
+			santizedRobsonsDataList.push(datafield);
+		} else if (
+			data.obs_index === "primi" &&
+			data.fetus_type === "single" &&
+			data.presentation_single === "breech"
+		) {
+			group = "Group 6";
+			patient_id = data.patient_id.toUpperCase();
+			console.log(group);
+			let datafield = {
+				patient_id: patient_id,
+				groupName: group
+			};
+			santizedRobsonsDataList.push(datafield);
+		} else if (
+			data.obs_index === "multi" &&
+			data.fetus_type === "single" &&
+			data.presentation_single === "breech"
+		) {
+			group = "Group 7";
+			patient_id = data.patient_id.toUpperCase();
+			console.log(group);
+			let datafield = {
+				patient_id: patient_id,
+				groupName: group
+			};
+			santizedRobsonsDataList.push(datafield);
+		} else if (data.fetus_type === "twins") {
+			group = "Group 8";
+			patient_id = data.patient_id.toUpperCase();
+			console.log(group);
+			let datafield = {
+				patient_id: patient_id,
+				groupName: group
+			};
+			santizedRobsonsDataList.push(datafield);
+		} else if (
+			data.fetus_type === "single" &&
+			data.presentation_single === "transverse"
+		) {
+			group = "Group 9";
+			patient_id = data.patient_id.toUpperCase();
+			console.log(group);
+			let datafield = {
+				patient_id: patient_id,
+				groupName: group
+			};
+			santizedRobsonsDataList.push(datafield);
+		} else if (
+			data.fetus_type === "single" &&
+			data.presentation_single === "cephalic" &&
+			pog === "<36"
+		) {
+			group = "Group 10";
+			patient_id = data.patient_id.toUpperCase();
+			console.log(group);
+			let datafield = {
+				patient_id: patient_id,
+				groupName: group
+			};
+			santizedRobsonsDataList.push(datafield);
+		}
+		else {
+			let err = true;
+			console.error("Error in group logics");
+
+		}
+
 	}
-	//console.log(data);
-	//console.log(Object.keys(data).length);
-	const rowCount = range.e.r;
-	// if (range.s.r < range.e.r) {
-	// 	rowCount -= 1;
-	//   }
-	console.log(santizedRobsonsDataList);
-	console.log(rowCount);
-	
-	
 
-	const workbook1 = xlsx.utils.book_new();
-  const worksheet1 = xlsx.utils.json_to_sheet(santizedRobsonsDataList);
 
- 
+	let fieldNames = [
+		"Patient ID",
+		"Group Name",
+	];
 
-  xlsx.utils.book_append_sheet(workbook1, worksheet1, 'Sheet 1');
-  const excelBuffer = xlsx.write(workbook1, { bookType: 'xlsx', type: 'buffer' });
-  
-  res.setHeader('Content-Disposition', 'attachment; filename=sample.xlsx');
-  res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-  res.send(excelBuffer);
-  });
-  
+	let fields = [
+		"patient_id",
+		"groupName",
+	];
+
+	let groupSpecification = {};
+	_.forEach(fields, function (item, index) {
+		groupSpecification[item] = {
+			// <- the key should match the actual data key
+			displayName: fieldNames[index], // <- Here you specify the column header
+			headerStyle: styles.headerDark, // <- Header style
+			cellStyle: styles.cellStyle, // <- Cell style
+			width: 120, // <- width in pixels
+
+		};
+	});
+
+	let projectDetailsHeading = [
+		[{ value: "Excel Data Report", style: styles.cellGray }],
+	];
+	let sheets = [];
+	sheets.push({
+		name: "Excel Data Report", // <- Specify sheet name (optional)
+		heading: projectDetailsHeading, // <- Raw heading array (optional)
+		specification: groupSpecification, // <- group specification
+		data: santizedRobsonsDataList, // <-- Report data
+	});
+	let finalReport = excel.buildExport(sheets);
+	res.setHeader("Content-Type", "application/vnd.openxmlformats");
+	return res.end(finalReport, "binary");
+
+});
+
 
 /**
  * TODO:  Create a different database idea
