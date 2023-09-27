@@ -195,7 +195,7 @@ function ObsIndexForm() {
 			toast.warning("Select any one");
 			return;
 		}
-add
+
 		if (selectedOptions.labour == "Pre Labour" && formIndex == 19) {
 			setFormIndex((prevForm) => prevForm + 1);
 			setPrevFormIndex(formIndex);
