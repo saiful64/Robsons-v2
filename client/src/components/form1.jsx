@@ -50,7 +50,7 @@ function ObsIndexForm() {
 
 	const footerData = [
 		{ key: "mainText", displayText: "@ 2023 JIPMER, O & G  Dept." },
-		{ key: "subText", displayText: "Made with 🧡 by MCA students" },
+		{ key: "subText", displayText: "Made with 🧡 by PU MCA students" },
 	];
 
 	const goToPreviousForm = () => {
