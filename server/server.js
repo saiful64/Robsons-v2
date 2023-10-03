@@ -422,7 +422,8 @@ app.get("/api/generate-report", (req, res) => {
 	let { startDate, endDate } = req.query;
 	startDate = moment(startDate).startOf("day").format("YYYY-MM-DD HH:mm:ss");
 	endDate = moment(endDate).endOf("day").format("YYYY-MM-DD HH:mm:ss");
-
+	console.log(startDate);
+	console.log(endDate);
 	con.query(
 		`SELECT * FROM robsonsdata WHERE created_on BETWEEN '${startDate}' AND '${endDate}'`,
 		(error, robsonsDataList) => {
@@ -1471,14 +1472,13 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
 			//console.log(cellValue);
 			// Use column name from the header row as the object key
 			const columnName = columnNames[colIndex - range.s.c];
-			//console.log(columnName);
-			data[columnName] = cellValue;
+			const newColumnName = columnName.toLowerCase().replace(/ /g, '_');
+			data[newColumnName] = cellValue;
 			//console.log(data[columnName] = cellValue);
 
 
 
 		}
-
 		data.previous_cesarean =
 			Number(data.previous_cesarean) > 0 ? "true" : "false";
 
@@ -1496,7 +1496,7 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
 			data.previous_cesarean === "false" &&
 			data.fetus_type === "single" &&
 			data.presentation_single === "cephalic" &&
-			data.labour === "spontaneous" &&
+			data.labour_type === "spontaneous" &&
 			pog === ">36"
 		) {
 			group = "Group 1";
@@ -1513,7 +1513,7 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
 			data.previous_cesarean === "false" &&
 			data.fetus_type === "single" &&
 			data.presentation_single === "cephalic" &&
-			(data.labour === "pre labour" || data.labour === "induction of labor") &&
+			(data.labour_type === "pre labour" || data.labour === "induction of labor") &&
 			pog === ">36"
 		) {
 			group = "Group 2";
@@ -1529,7 +1529,7 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
 			data.previous_cesarean === "false" &&
 			data.fetus_type === "single" &&
 			data.presentation_single === "cephalic" &&
-			data.labour === "spontaneous" &&
+			data.labour_type === "spontaneous" &&
 			pog === ">36"
 		) {
 			group = "Group 3";
@@ -1545,7 +1545,7 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
 			data.previous_cesarean === "false" &&
 			data.fetus_type === "single" &&
 			data.presentation_single === "cephalic" &&
-			(data.labour === "induction of labor" || data.labour === "pre labour") &&
+			(data.labour_type === "induction of labor" || data.labour_type === "pre labour") &&
 			pog === ">36"
 		) {
 			group = "Group 4";
