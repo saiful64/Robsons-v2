@@ -195,7 +195,7 @@ function ObsIndexForm() {
 			toast.warning("Select any one");
 			return;
 		}
-add
+
 		if (selectedOptions.labour == "Pre Labour" && formIndex == 19) {
 			setFormIndex((prevForm) => prevForm + 1);
 			setPrevFormIndex(formIndex);
@@ -332,14 +332,16 @@ add
 						{formData[formIndex]?.displayText}
 					</h3>
 				</div>
+				{formData[formIndex]?.options.length > 1 && (
 				<div className='flex justify-end pr-4 pt-2'>
 					<button
-						onClick={clearSelection}
-						className='bg-gradient-to-r from-red-200 to-red-400 hover:bg-gradient-to-r hover:from-red-200  hover:text-red-900 hover:to-red-400 text-red-800  rounded-md font-bold py-2 px-4'
+					onClick={clearSelection}
+					className='bg-gradient-to-r from-red-200 to-red-400 hover:bg-gradient-to-r hover:from-red-200  hover:text-red-900 hover:to-red-400 text-red-800  rounded-md font-bold py-2 px-4'
 					>
-						Clear
+					Clear
 					</button>
 				</div>
+				)}
 
 				<div className='flex form-content mb-0 flex-col justify-center items-center  max-h-80 '>
 					<div style={{ maxHeight: "calc(100% - 40px)", overflowY: "auto" }}>
