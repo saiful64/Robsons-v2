@@ -10,14 +10,14 @@ function HomeView() {
 		{ text: "CLASSIFY", action: () => navigate("/forms") },
 		...(auth.user === "doctor"
 			? [
-					{ text: "DASHBOARD", action: () => navigate("/dashboard") },
-					{
-						text: "RECORDED DATA",
-						action: () => navigate("/generate-excel-sheet"),
-					},
+					{ text: "CHARTS", action: () => navigate("/dashboard") },
 					{ text: "ANALYSIS", action: () => navigate("/generate-status") },
-					{ text: "UPLOAD EXCEL FILE", action: () => navigate("/upload-xlsx") },
 					{ text: "PATIENT LOG", action: () => navigate("/patientlog") },
+					{ text: "UPLOAD EXCEL FILE", action: () => navigate("/upload-xlsx") },
+					{
+						text: "DOWNLOAD EXCEL DATA",
+						action: () => navigate("/generate-excel-sheet"),
+					}
 			  ]
 			: []),
 		{ text: "LOG OUT", action: () => logout() },

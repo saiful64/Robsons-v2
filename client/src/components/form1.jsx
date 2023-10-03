@@ -420,7 +420,12 @@ function ObsIndexForm() {
 				{formData[formIndex]?.type == "id" && (
 					<div className='mt-6 justify-center items-center flex'>
 						<div className='flex flex-col mb-4'>
-							{/* <label className="mb-1">{option.displayText}</label> */}
+						<label className="mb-1 italic text-sm">
+  Please enter in the format JD0000
+</label>
+
+
+
 							<input
 								type='text'
 								className='border shadow-md focus:shadow-xl border-gray-400 p-2 w-full rounded-md'
