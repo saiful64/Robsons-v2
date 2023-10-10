@@ -430,7 +430,7 @@ function ObsIndexForm() {
                 value={patientId}
                 placeholder={"Enter Patient Id"}
                 onChange={(e) => {
-                  setPatientId(e.target.value);
+                  setPatientId(e.target.value.toUpperCase());
                   updateThisOption(formData[formIndex]?.title, e.target.value);
                 }}
               />
