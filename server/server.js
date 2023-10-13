@@ -394,7 +394,7 @@ app.post("/auth-login", (req, res) => {
 
       // if a matching user is found, extract the role from the database and send it back as a response
       const role = results[0].role;
-    const  department = results[0].department;
+      department = results[0].department;
       console.log(department);
       res.send(role);
     }
