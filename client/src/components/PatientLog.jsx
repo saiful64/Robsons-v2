@@ -37,6 +37,7 @@ const PatientLog = () => {
 
   useEffect(() => {
     fetchPatients();
+    console.log(patients);
   }, []);
 
   const indexOfLastPatient = currentPage * patientsPerPage;

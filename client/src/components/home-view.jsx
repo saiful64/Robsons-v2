@@ -25,7 +25,7 @@ function HomeView() {
 
 	const logout = () => {
 		auth.logout();
-		navigate("/");
+		navigate("/login");
 	};
 
 	const footerData = [
@@ -40,7 +40,10 @@ function HomeView() {
 					<h1 className='text-3xl font-bold mb-8 text-center'>
 						{auth.user === "student" || auth.user === "department" ? (
 							<div className='bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 bg-clip-text bg-transparent'>
-								<h1>Welcome</h1>
+								<h1><span className='bg-gradient-to-br from-indigo-400 via-indigo-400 to-pink-500 bg-clip-text text-transparent'>
+										Welcome!
+									</span>
+									👨‍⚕️</h1>
 							</div>
 						) : (
 							<div className='font-kalam'>
@@ -48,8 +51,8 @@ function HomeView() {
 									Welcome,{" "}
 									<span className='bg-gradient-to-br from-indigo-400 via-indigo-400 to-pink-500 bg-clip-text text-transparent'>
 										Doctor!
-									</span>{" "}
-									👋
+									</span>
+									👩‍⚕️
 								</h1>
 							</div>
 						)}
@@ -61,8 +64,8 @@ function HomeView() {
 								onClick={button.action}
 								className='relative mb-4 inline-block text-lg group'
 								style={{
-									backgroundColor:
-										auth.user === "doctor" ? "#82ca9d" : "#8884d8",
+									// backgroundColor:
+									// 	auth.user === "doctor" ? "#82ca9d" : "#8884d8",
 								}}
 							>
 								<span className='relative z-10 block px-5 py-3 overflow-hidden font-medium leading-tight text-gray-800 transition-colors duration-300 ease-out border-2 border-gray-900 rounded-lg group-hover:text-white'>
@@ -75,7 +78,7 @@ function HomeView() {
 						))}
 					</div>
 				</div>
-				<div className='flex flex-col bottom-[4%] font-light absolute inset-x-0 mt-10 animate-bounce items-center justify-center'>
+				<div className='flex flex-col bottom-[4%] font-light absolute inset-x-0 mt-10  items-center justify-center'>
 					{footerData.map((item) => (
 						<p key={item.key} className='text-md'>
 							{item.displayText}

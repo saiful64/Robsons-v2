@@ -18,6 +18,7 @@ import "react-date-range/dist/styles.css"; // main css file for date-range
 import "react-date-range/dist/theme/default.css"; // theme css file date-range
 import PatientLog from "./components/PatientLog";
 import PatientDetails from "./components/PatientDetails";
+import Landing from "./components/Landing";
 function App() {
   const [count, setCount] = useState("");
 
@@ -35,7 +36,8 @@ function App() {
           <Router>
             <Routes>
               <Route exact path="/register" element={<Register />} />
-              <Route exact path="/" element={<LoginAuthView />} />
+              <Route exact path="/" element={<Landing />} />
+              <Route exact path="/login" element={<LoginAuthView />} />
               <Route
                 exact
                 path="/home-view"
@@ -110,6 +112,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <PatientLog />
+                  </ProtectedRoute>
+                }
+              />
+               <Route
+                path="/landing"
+                element={
+                  <ProtectedRoute>
+                    <Landing />
                   </ProtectedRoute>
                 }
               />

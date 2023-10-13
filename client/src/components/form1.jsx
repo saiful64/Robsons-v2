@@ -332,70 +332,61 @@ function ObsIndexForm() {
             {formData[formIndex]?.displayText}
           </h3>
         </div>
-        {formData[formIndex]?.options.length > 1 && (
-          <div className="flex justify-end pr-4 pt-2">
-            <button
-              onClick={clearSelection}
-              className="bg-gradient-to-r from-red-200 to-red-400 hover:bg-gradient-to-r hover:from-red-200  hover:text-red-900 hover:to-red-400 text-red-800  rounded-md font-bold py-2 px-4"
-            >
-              Clear
-            </button>
-          </div>
-        )}
+        
 
-        <div className="flex form-content mb-0 flex-col justify-center items-center  max-h-80 ">
-          <div style={{ maxHeight: "calc(100% - 40px)", overflowY: "auto" }}>
-            {formData[formIndex]?.options.map((option, index) => (
-              <div key={index} className="mb-2 ">
+				<div className='flex form-content mb-0 flex-col justify-center items-center max-h-80'>
+    <div style={{ maxHeight: "calc(100% - 40px)", overflowY: "auto" }}>
+        {formData[formIndex]?.options.map((option, index) => (
+            <div key={index} className='mb-2'>
                 <label
-                  key={index}
-                  className={`inline-flex text-center border-dashed border-2 border-black px-4 py-2 font-semibold rounded-md w-full  hover:shadow-2xl hover:border-2 hover:bg-gradient-to-br hover:from-gray-900 hover:to-gray-600  hover:text-white bg-slate-100 hover:cursor-pointer text-gray-900 ${
-                    option.displayText ===
-                    selectedOptions[formData[formIndex]?.title]
-                      ? "bg-gradient-to-r from-blue-700 via-blue-800 to-gray-900 text-white"
-                      : ""
-                  }`}
-                  style={{
-                    minWidth: "100px",
-                    width: "200px",
-                    minHeight: "40px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <input
-                    type="radio"
-                    className="form-radio sr-only"
-                    name="radio"
-                    value={option.value}
-                    checked={
-                      option.displayText ===
-                      selectedOptions[formData[formIndex]?.title]
-                    }
-                    onChange={(event) => {
-                      setSelectedRadioButton(event.target.value);
-                      if (
-                        formData[formIndex]?.title === "indication_cesarean"
-                      ) {
-                        if (event.target.value === "others") {
-                          setShowTextInput(true);
-                        } else {
-                          setShowTextInput(false);
-                        }
-                      }
-                      updateThisOption(
-                        formData[formIndex]?.title,
-                        option.displayText
-                      );
+                    key={index}
+                    className={`inline-flex text-center border-dashed border-2 border-black px-4 py-2 font-semibold rounded-md w-full  hover:shadow-2xl hover:border-2 hover:bg-gradient-to-br hover:from-gray-900 hover:to-gray-600  hover:text-white bg-slate-100 hover:cursor-pointer text-gray-900 ${
+                        option.displayText ===
+                        selectedOptions[formData[formIndex]?.title]
+                            ? "bg-gradient-to-r from-blue-700 via-blue-800 to-gray-900 text-white"
+                            : ""
+                    }`}
+                    style={{
+                        minWidth: "100px",
+                        width: "200px",
+                        minHeight: "40px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                     }}
-                  />
-                  <span>{option.displayText}</span>
+                >
+                    <input
+                        type='radio'
+                        className='opacity-0 absolute h-0 w-0'
+                        name='radio'
+                        value={option.value}
+                        checked={
+                            option.displayText ===
+                            selectedOptions[formData[formIndex]?.title]
+                        }
+                        onChange={(event) => {
+                            setSelectedRadioButton(event.target.value);
+                            if (
+                                formData[formIndex]?.title === "indication_cesarean"
+                            ) {
+                                if (event.target.value === "others") {
+                                    setShowTextInput(true);
+                                } else {
+                                    setShowTextInput(false);
+                                }
+                            }
+                            updateThisOption(
+                                formData[formIndex]?.title,
+                                option.displayText
+                            );
+                        }}
+                    />
+                    <span>{option.displayText}</span>
                 </label>
-              </div>
-            ))}
-          </div>
-        </div>
+            </div>
+        ))}
+    </div>
+</div>
         <div className="flex justify-center items-center">
           {showTextInput &&
             formData[formIndex]?.title === "indication_cesarean" && (
@@ -676,6 +667,16 @@ function ObsIndexForm() {
               Previous
             </button>
           )}
+          {formData[formIndex]?.type !== "id" && ( // Add this condition
+        <div className=''>
+            <button
+                onClick={clearSelection}
+                className='bg-gradient-to-r from-red-200 to-red-400 hover:bg-gradient-to-r hover:from-red-200  hover:text-red-900 hover:to-red-400 text-red-800  rounded-md font-bold py-2 px-4'
+            >
+                Clear
+            </button>
+        </div>
+    )}
           {formData[formIndex]?.showNext &&
             !(
               formData[formIndex]?.title === "labour" &&

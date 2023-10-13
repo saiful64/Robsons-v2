@@ -116,6 +116,7 @@ app.get("/api/patients", (req, res) => {
         return;
       }
       // Send the patient IDs as JSON
+      console.log(results);
       res.json(results);
     }
   );
