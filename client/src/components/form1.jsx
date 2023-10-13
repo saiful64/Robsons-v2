@@ -164,7 +164,7 @@ function ObsIndexForm() {
     }
     if (
       formData[formIndex]?.title == "outcome" &&
-      selectedOptions.outcome == "SB"
+      (selectedOptions.outcome == "SB" || selectedOptions.outcome == "M/S")
     ) {
       setFormIndex((prevForm) => prevForm + 1);
       setPrevFormIndex(formIndex);

@@ -106,6 +106,7 @@ app.get("/api/check_id/:patientId", (req, res) => {
 
 app.get("/api/patients", (req, res) => {
   // Query the database to fetch patient IDs from the robsonsdata table
+  console.log(department);
   con.query(
     "SELECT patient_id,created_on FROM robsonsdata WHERE department = ?",
     [department],
