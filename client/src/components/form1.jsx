@@ -305,6 +305,14 @@ function ObsIndexForm() {
 
   const clearSelection = () => {
     const currentFormTitle = formData[formIndex]?.title;
+    if (
+      currentFormTitle == "indication_cesarean" &&
+      selectedRadioButton == "others"
+    ) {
+      setShowTextInput(false);
+      setTextInputValue("");
+    }
+
     setSelectedOptions((prevOptions) => {
       const updatedOptions = { ...prevOptions };
       delete updatedOptions[currentFormTitle];
