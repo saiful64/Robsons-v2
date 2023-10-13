@@ -655,7 +655,7 @@ app.get("/api/generate-report-one", (req, res) => {
 		b2_date_of_birth,
 		b2_time_of_birth,
 		B2Weight
-	  FROM robsonsdata WHERE created_on BETWEEN '${startDate}' AND '${endDate}'`,
+	  FROM robsonsdata WHERE created_on BETWEEN '${startDate}' AND '${endDate}' AND department = '${department}' `,
     (error, robsonsDataList) => {
       if (error) {
         console.error(error);
