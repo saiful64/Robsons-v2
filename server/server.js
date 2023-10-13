@@ -75,7 +75,7 @@ app.get("/get-client-ip", (req, res) => {
   res.send(`Client IPv4 Address: ${ipv4Address}`);
 });
 
-let department = null;
+const department = null;
 
 app.get("/api/form-data", (req, res) => {
   res.status(200).send(formData);
@@ -106,6 +106,7 @@ app.get("/api/check_id/:patientId", (req, res) => {
 
 app.get("/api/patients", (req, res) => {
   // Query the database to fetch patient IDs from the robsonsdata table
+  console.log(department);
   con.query(
     "SELECT patient_id,created_on FROM robsonsdata WHERE department = ?",
     [department],
@@ -403,13 +404,13 @@ app.post("/auth-login", (req, res) => {
 
 // function for generating report
 app.get("/api/generate-report", (req, res) => {
+
   let { startDate, endDate } = req.query;
   startDate = moment(startDate).startOf("day").format("YYYY-MM-DD HH:mm:ss");
   endDate = moment(endDate).endOf("day").format("YYYY-MM-DD HH:mm:ss");
-  console.log(startDate);
-  console.log(endDate);
+ console.log(department);
   con.query(
-    `SELECT * FROM robsonsdata WHERE created_on BETWEEN '${startDate}' AND '${endDate}'`,
+    `SELECT * FROM robsonsdata WHERE created_on BETWEEN '${startDate}' AND '${endDate}' AND department = '${department}'`,
     (error, robsonsDataList) => {
       if (error) {
         console.error(error);
@@ -606,7 +607,7 @@ app.get("/api/generate-report", (req, res) => {
           width: 120, // <- width in pixels
           cellFormat: function (value, row) {
             // <- Renderer function, you can access also any row.property
-            console.log(value);
+           
             return value === null ? "NA" : value;
           },
         };
@@ -655,7 +656,7 @@ app.get("/api/generate-report-one", (req, res) => {
 		b2_date_of_birth,
 		b2_time_of_birth,
 		B2Weight
-	  FROM robsonsdata WHERE created_on BETWEEN '${startDate}' AND '${endDate}'`,
+	  FROM robsonsdata WHERE created_on BETWEEN '${startDate}' AND '${endDate}' AND department = '${department}' `,
     (error, robsonsDataList) => {
       if (error) {
         console.error(error);
