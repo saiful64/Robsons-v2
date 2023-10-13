@@ -164,7 +164,7 @@ function ObsIndexForm() {
     }
     if (
       formData[formIndex]?.title == "outcome" &&
-      selectedOptions.outcome == "SB"
+      (selectedOptions.outcome == "SB" || selectedOptions.outcome == "M/S")
     ) {
       setFormIndex((prevForm) => prevForm + 1);
       setPrevFormIndex(formIndex);
@@ -305,6 +305,14 @@ function ObsIndexForm() {
 
   const clearSelection = () => {
     const currentFormTitle = formData[formIndex]?.title;
+    if (
+      currentFormTitle == "indication_cesarean" &&
+      selectedRadioButton == "others"
+    ) {
+      setShowTextInput(false);
+      setTextInputValue("");
+    }
+
     setSelectedOptions((prevOptions) => {
       const updatedOptions = { ...prevOptions };
       delete updatedOptions[currentFormTitle];
