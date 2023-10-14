@@ -359,6 +359,7 @@ function ObsIndexForm() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
+                    position: "relative"
                   }}
                 >
                   <input
@@ -386,6 +387,12 @@ function ObsIndexForm() {
                         option.displayText
                       );
                     }}
+                    style={{
+                      position: "absolute", // Add absolute positioning to the input
+                      opacity: 0,
+                      width: "100%",
+                      height: "100%",
+                  }}
                   />
                   <span>{option.displayText}</span>
                 </label>
