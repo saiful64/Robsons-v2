@@ -78,7 +78,7 @@ function HomeView() {
 						))}
 					</div>
 				</div>
-				<div className='flex flex-col bottom-[4%] font-light absolute inset-x-0 mt-10  items-center justify-center'>
+				<div className='flex flex-col bottom-2 font-light absolute inset-x-0 mt-10  items-center justify-center'>
 					{footerData.map((item) => (
 						<p key={item.key} className='text-md'>
 							{item.displayText}
