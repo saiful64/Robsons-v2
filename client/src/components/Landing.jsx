@@ -31,21 +31,21 @@ const Landing = () => {
   return (
     <>
     <div className="min-h-screen">
-      <div class="h-screen md:flex">
-        <div class="relative overflow-hidden md:flex w-1/2 bg-gradient-to-tr from-[#00828E] to-[#003152] i justify-around items-center hidden">
+      <div className="h-screen md:flex">
+        <div className="relative overflow-hidden md:flex w-1/2 bg-gradient-to-tr from-[#00828E] to-[#003152] i justify-around items-center hidden">
         <div className="rounded-full overflow-hidden border-slate-100 border-4 w-48 h-48 absolute top-6 left-4">
               <img src="assets/logo.png" alt="Robson Logo" />
             </div>
           <div>
-            <h1 class="text-white text-4xl font-sans p-4">{typedText}<span className={`cursor ${cursorVisible ? "visible" : "hidden"}`}>|</span></h1>
-            <div className="wrapper"><div className="typing-demo"><p className="text-white p-4 mt-1">Welcome to JANANAM, the game-changing app co-developed by Pondicherry University and JIPMER, revolutionizing maternal healthcare. Our innovative tool empowers healthcare professionals to categorize laboring women for precise care, ensuring a new beginning in maternal well-being. Join our mission for better healthcare for mothers and newborns.</p>
+            <h1 className="text-white text-4xl font-sans p-4">{typedText}<span className={`cursor ${cursorVisible ? "visible" : "hidden"}`}>|</span></h1>
+            <div className="wrapper"><div className="typing-demo"><p className="text-white p-4 mt-1">Streamline obstetric care with our <b>Robson Classification app</b>. JANANAM classifies women into 10 exclusive categories, derived from 5 essential obstetric factors, enhancing maternity care. </p>
             </div>
             </div>
           </div>
-          <div class="absolute -bottom-32 -left-40 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
-          <div class="absolute -bottom-40 -left-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
-          <div class="absolute -top-40 -right-0 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
-          <div class="absolute -top-20 -right-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
+          <div className="absolute -bottom-32 -left-40 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
+          <div className="absolute -bottom-40 -left-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
+          <div className="absolute -top-40 -right-0 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
+          <div className="absolute -top-20 -right-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
         </div>
         <div className="flex h-screen sm:w-full md:w-1/2 bg-white justify-center py-10 items-center">
             <div className="bg-white w-3/4">
@@ -62,11 +62,15 @@ const Landing = () => {
                 >
                   Login as Student 🧑‍🎓
                 </button>
+
+                <footer className="absolute bottom-0  p-4 ">Developed with 💚 by Pondicherry University in collaboration with JIPMER.</footer>
               </div>
             </div>
           </div>
         </div>
+        
       </div>
+      
     </>
   );
 };
