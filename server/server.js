@@ -75,7 +75,7 @@ app.get("/get-client-ip", (req, res) => {
   res.send(`Client IPv4 Address: ${ipv4Address}`);
 });
 
-const department = null;
+let department = null;
 
 app.get("/api/form-data", (req, res) => {
   res.status(200).send(formData);
