@@ -23,8 +23,10 @@ function ObsIndexForm() {
   const [b2DateOfBirth, setB2DateOfBirth] = useState(null);
   const [b2TimeOfBirth, setB2TimeOfBirth] = useState(null);
   const [prevFormIndex, setPrevFormIndex] = useState(-1);
-  const [apgar1, setApgar1] = useState(null);
-  const [apgar5, setApgar5] = useState(null);
+  const [b1apgar1, setB1Apgar1] = useState(null);
+  const [b1apgar5, setB1Apgar5] = useState(null);
+  const [b2apgar1, setB2Apgar1] = useState(null);
+  const [b2apgar5, setB2Apgar5] = useState(null);
   const auth = useAuth();
   const [patientExists, setPatientExists] = useState(false);
   const [selectedRadioButton, setSelectedRadioButton] = useState(null);
@@ -139,7 +141,7 @@ function ObsIndexForm() {
         selectedOptions.indication_ovd = undefined;
         selectedOptions.indication_cesarean = undefined;
         selectedOptions.stage = undefined;
-        setFormIndex((prevForm) => prevForm + 4);
+        setFormIndex((prevForm) => prevForm + 3);
         setPrevFormIndex(formIndex);
       } else if (selectedOptions.delivery == "Cesarean") {
         selectedOptions.indication_ovd = undefined;
@@ -162,17 +164,43 @@ function ObsIndexForm() {
       setFormIndex((prevForm) => prevForm + 1);
       setPrevFormIndex(formIndex);
     }
+
     if (
-      formData[formIndex]?.title == "outcome" &&
-      selectedOptions.outcome == "SB"
+      selectedOptions.fetus_type == "Single" &&
+      formData[formIndex]?.title == "b1outcome"
+    ) {
+      if (
+        selectedOptions.b1outcome == "SB" ||
+        selectedOptions.b1outcome == "M/S"
+      ) {
+        setFormIndex((prevForm) => prevForm + 2);
+        setPrevFormIndex(formIndex);
+      } else setFormIndex((prevForm) => prevForm + 1);
+      setPrevFormIndex(formIndex);
+    }
+    if (
+      selectedOptions.fetus_type == "Twins" &&
+      formData[formIndex]?.title == "b2outcome"
     ) {
       setFormIndex((prevForm) => prevForm + 1);
       setPrevFormIndex(formIndex);
     }
 
     if (
-      formData[formIndex]?.title == "final_outcome" &&
-      selectedOptions.labour == "Spontaneous"
+      selectedOptions.fetus_type == "Single" &&
+      formData[formIndex]?.title == "b1final_outcome"
+    ) {
+      if (selectedOptions.labour == "Spontaneous") {
+        setFormIndex((prevForm) => prevForm + 2);
+        setPrevFormIndex(formIndex);
+      } else {
+        setFormIndex((prevForm) => prevForm + 1);
+        setPrevFormIndex(formIndex);
+      }
+    }
+    if (
+      selectedOptions.fetus_type == "Twins" &&
+      formData[formIndex]?.title == "b2final_outcome"
     ) {
       setFormIndex((prevForm) => prevForm + 1);
       setPrevFormIndex(formIndex);
@@ -197,33 +225,14 @@ function ObsIndexForm() {
     }
 
     if (selectedOptions.labour == "Pre Labour" && formIndex == 19) {
+      //for indication induction
       setFormIndex((prevForm) => prevForm + 1);
       setPrevFormIndex(formIndex);
     }
     if (!isClicked) {
-      const conditions = formData[formIndex]?.conditions;
-      if (conditions) {
-        let foundMatch = false;
-        conditions.forEach((condition) => {
-          const optionValue = condition.option;
-          const targetValue = condition.target;
-          if (selectedRadioButton === optionValue || "null" === optionValue) {
-            const targetFormIndex = formData.findIndex(
-              (item) => item.title === targetValue
-            );
-            setFormIndex(targetFormIndex);
-            setPrevFormIndex(formIndex);
-            foundMatch = true;
-          }
-        });
-        if (!foundMatch) {
-          setFormIndex((prevForm) => prevForm + 1);
-          setPrevFormIndex(formIndex);
-        }
-      } else {
-        setFormIndex((prevForm) => prevForm + 1);
-        setPrevFormIndex(formIndex);
-      }
+      setFormIndex((prevForm) => prevForm + 1);
+      setPrevFormIndex(formIndex);
+
       setFormIndexStack((prevStack) => [...prevStack, formIndex]);
     }
   };
@@ -359,7 +368,7 @@ function ObsIndexForm() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    position: "relative"
+                    position: "relative",
                   }}
                 >
                   <input
@@ -392,7 +401,7 @@ function ObsIndexForm() {
                       opacity: 0,
                       width: "100%",
                       height: "100%",
-                  }}
+                    }}
                   />
                   <span>{option.displayText}</span>
                 </label>
@@ -470,35 +479,68 @@ function ObsIndexForm() {
           )}
         </div>
         <div className="mt-6 flex">
-          {formData[formIndex]?.type == "twoInputs" && (
+          {formData[formIndex]?.type === "twoInputs" && (
             <div className="flex flex-col mb-4 p-4">
-              <p className="m-4">At 1 min: {apgar1}</p>
+              <p>Baby 1 details</p>
+              <p className="m-4">At 1 min: {b1apgar1}</p>
               <input
                 type="range"
                 min={0}
                 max={10}
                 className="border hover:cursor-pointer ml-7 border-gray-400 p-2 w-full rounded-md"
-                value={apgar1}
+                value={b1apgar1}
                 onChange={(e) => {
-                  setApgar1(e.target.value);
-                  updateThisOption("apgar1", e.target.value);
+                  setB1Apgar1(e.target.value);
+                  updateThisOption("b1apgar1", e.target.value);
                 }}
               />
-              <p className="m-4 ">At 5 min: {apgar5}</p>
+              <p className="m-4 ">At 5 min: {b1apgar5}</p>
               <input
                 type="range"
                 min={0}
                 max={10}
                 className="border ml-7 hover:cursor-pointer border-gray-400 p-2 w-full rounded-md"
-                value={apgar5}
+                value={b1apgar5}
                 onChange={(e) => {
-                  setApgar5(e.target.value);
-                  updateThisOption("apgar5", e.target.value);
+                  setB1Apgar5(e.target.value);
+                  updateThisOption("b1apgar5", e.target.value);
                 }}
               />
+
+              <hr></hr>
+              {selectedOptions.fetus_type == "Twins" && (
+                <div className="flex flex-col mb-4 p-4">
+                  Baby 2 Details
+                  <p className="m-4">At 1 min: {b2apgar1}</p>
+                  <input
+                    type="range"
+                    min={0}
+                    max={10}
+                    className="border hover:cursor-pointer ml-7 border-gray-400 p-2 w-full rounded-md"
+                    value={b2apgar1}
+                    onChange={(e) => {
+                      setB2Apgar1(e.target.value);
+                      updateThisOption("b2apgar1", e.target.value);
+                    }}
+                  />
+                  <p className="m-4 ">At 5 min: {b2apgar5}</p>
+                  <input
+                    type="range"
+                    min={0}
+                    max={10}
+                    className="border ml-7 hover:cursor-pointer border-gray-400 p-2 w-full rounded-md"
+                    value={b2apgar5}
+                    onChange={(e) => {
+                      setB2Apgar5(e.target.value);
+                      updateThisOption("b2apgar5", e.target.value);
+                    }}
+                  />
+                </div>
+              )}
             </div>
           )}
         </div>
+
         <div className=" py-3 px-4 w-80 items-center relative justify-center">
           {formData[formIndex]?.type === "textarea" && (
             <div className="flex flex-col mb-4">
@@ -604,83 +646,84 @@ function ObsIndexForm() {
         </div>
 
         <div className="flex justify-center items-center flex-wrap">
-          {formData[formIndex]?.b2 && (
-            <div className="flex flex-col mb-4">
-              <div className="flex items-center mb-2">
-                <label htmlFor="dateOfBirth" className="mr-2">
-                  Date:
-                </label>
-                <DatePicker
-                  id="dateOfBirth"
-                  className="border ml-4 border-gray-500 px-2 py-1 rounded-md"
-                  dateFormat="YYYY-MM-DD"
-                  timeFormat={false}
-                  value={b2DateOfBirth}
-                  inputProps={{ placeholder: "YYYY-MM-DD" }}
-                  placeholderText="Enter Date of Birth"
-                  maxDate={new Date()}
-                  onChange={(value) => {
-                    const formattedDate = moment(value).format("YYYY-MM-DD");
-                    if (moment(formattedDate, "YYYY-MM-DD", true).isValid()) {
-                      setB2DateOfBirth(formattedDate);
-                      updateThisOption(
-                        formData[formIndex]?.b2_dateOfBirth,
-                        formattedDate
-                      );
-                    } else {
-                      setB2DateOfBirth("");
-                    }
-                  }}
-                />
-              </div>
-              <div className="flex items-center mb-2">
-                <label htmlFor="timeOfBirth" className="mr-2">
-                  Time:
-                </label>
-                <Datetime
-                  id="timeOfBirth"
-                  className="border ml-4 border-gray-500 px-2 py-1 rounded-md"
-                  dateFormat={false}
-                  timeFormat="HH:mm"
-                  value={b2TimeOfBirth}
-                  placeholderText="HH:mm"
-                  inputProps={{ placeholder: "Enter Time in hrs" }}
-                  onChange={(value) => {
-                    const formattedTime = moment(value, "HH:mm", true).format(
-                      "HH:mm"
-                    );
-                    if (moment(formattedTime, "HH:mm", true).isValid()) {
-                      setB2TimeOfBirth(formattedTime);
-                      updateThisOption(
-                        formData[formIndex]?.b2_timeOfBirth,
-                        formattedTime
-                      );
-                    } else {
-                      setB2TimeOfBirth("");
-                    }
-                  }}
-                />
-              </div>
-              <div className="flex items-center mb-2">
-                <label htmlFor="weight" className="mr-2">
-                  Weight:
-                </label>
-                <div className="flex">
-                  <input
-                    id="weight"
-                    type="number"
-                    className="border border-gray-500 px-2 py-1 rounded-md"
-                    value={b2Weight}
-                    placeholder="Enter Weight in kg"
-                    onChange={(e) => {
-                      setB2Weight(e.target.value);
-                      updateThisOption("b1_weight", e.target.value);
+          {selectedOptions.fetus_type == "Twins" &&
+            formData[formIndex].title == "b2_gender" && (
+              <div className="flex flex-col mb-4">
+                <div className="flex items-center mb-2">
+                  <label htmlFor="dateOfBirth" className="mr-2">
+                    Date:
+                  </label>
+                  <DatePicker
+                    id="dateOfBirth"
+                    className="border ml-4 border-gray-500 px-2 py-1 rounded-md"
+                    dateFormat="YYYY-MM-DD"
+                    timeFormat={false}
+                    value={b2DateOfBirth}
+                    inputProps={{ placeholder: "YYYY-MM-DD" }}
+                    placeholderText="Enter Date of Birth"
+                    maxDate={new Date()}
+                    onChange={(value) => {
+                      const formattedDate = moment(value).format("YYYY-MM-DD");
+                      if (moment(formattedDate, "YYYY-MM-DD", true).isValid()) {
+                        setB2DateOfBirth(formattedDate);
+                        updateThisOption(
+                          formData[formIndex]?.b2_dateOfBirth,
+                          formattedDate
+                        );
+                      } else {
+                        setB2DateOfBirth("");
+                      }
                     }}
                   />
                 </div>
+                <div className="flex items-center mb-2">
+                  <label htmlFor="timeOfBirth" className="mr-2">
+                    Time:
+                  </label>
+                  <Datetime
+                    id="timeOfBirth"
+                    className="border ml-4 border-gray-500 px-2 py-1 rounded-md"
+                    dateFormat={false}
+                    timeFormat="HH:mm"
+                    value={b2TimeOfBirth}
+                    placeholderText="HH:mm"
+                    inputProps={{ placeholder: "Enter Time in hrs" }}
+                    onChange={(value) => {
+                      const formattedTime = moment(value, "HH:mm", true).format(
+                        "HH:mm"
+                      );
+                      if (moment(formattedTime, "HH:mm", true).isValid()) {
+                        setB2TimeOfBirth(formattedTime);
+                        updateThisOption(
+                          formData[formIndex]?.b2_timeOfBirth,
+                          formattedTime
+                        );
+                      } else {
+                        setB2TimeOfBirth("");
+                      }
+                    }}
+                  />
+                </div>
+                <div className="flex items-center mb-2">
+                  <label htmlFor="weight" className="mr-2">
+                    Weight:
+                  </label>
+                  <div className="flex">
+                    <input
+                      id="weight"
+                      type="number"
+                      className="border border-gray-500 px-2 py-1 rounded-md"
+                      value={b2Weight}
+                      placeholder="Enter Weight in kg"
+                      onChange={(e) => {
+                        setB2Weight(e.target.value);
+                        updateThisOption("b1_weight", e.target.value);
+                      }}
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
-          )}
+            )}
         </div>
         <div className="flex justify-center items-center">
           <hr className="h-px my-0 border-100 w-80 rounded-md" />
