@@ -105,7 +105,7 @@
       "options": [
         { "value": "f", "displayText": "F" },
         { "value": "easi", "displayText": "EASI" },
-        { "value": "tablet", "displayText": "Tablet" },
+        { "value": "pge1", "displayText": "PGE1" },
         { "value": "propess", "displayText": "Propess" },
         { "value": "combina", "displayText": "Combina" },
         { "value": "oxytoxin", "displayText": "Oxytoxin" },
@@ -194,7 +194,7 @@
 
     {
       "title": "b1_gender",
-      "displayText": "Baby Details of first child",
+      "displayText": "Details of Baby 1",
       "options": [
         { "value": "female", "displayText": "Female" },
         { "value": "male", "displayText": "Male" },
@@ -208,7 +208,7 @@
     },
     {
       "title": "b2_gender",
-      "displayText": "Baby Details of second child",
+      "displayText": "Details of Baby 2",
       "options": [
         { "value": "female", "displayText": "Female" },
         { "value": "male", "displayText": "Male" },
@@ -319,7 +319,7 @@
     },
     {
       "title": "review",
-      "displayText": "Review",
+      "displayText": "Maternal Outcome",
       "options": [],
       "type": "textarea",
       "showPrevious": true,
