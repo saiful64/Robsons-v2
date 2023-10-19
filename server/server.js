@@ -127,7 +127,7 @@ app.get("/api/patient-details/:patient_id", (req, res) => {
   const { patient_id } = req.params;
 
   const sql =
-    "SELECT patient_id,obs_index,weeks,pog,previous_cesarean,fetus_type,presentation_single,presentation_twin,Labour,ripening,induced_augmented,delivery,indication_ovd,indication_caesarean,Stage,B1Gender,B1Weight,B2Gender,B2Weight,apgar1,apgar5,outcome,indication,final_outcome,indication_for_induction,b1_date_of_birth,b1_time_of_birth,b2_date_of_birth,b2_time_of_birth,group_name,created_by,created_on,review FROM robsonsdata WHERE patient_id = ?";
+    "SELECT patient_id,obs_index,weeks,pog,previous_cesarean,fetus_type,presentation_single,presentation_twin,Labour,ripening,induced_augmented,delivery,indication_ovd,indication_caesarean,Stage,B1Gender,B1Weight,B2Gender,B2Weight,b1apgar1,b1apgar5,b2apgar1,b2apgar5,b1outcome,b2outcome,indication,b1final_outcome,b2final_outcome,indication_for_induction,b1_date_of_birth,b1_time_of_birth,b2_date_of_birth,b2_time_of_birth,group_name,created_by,created_on,review FROM robsonsdata WHERE patient_id = ?";
 
   con.query(sql, [patient_id], (err, results) => {
     if (err) {
@@ -280,11 +280,15 @@ app.post("/submit-form", (req, res) => {
 		B1Weight,
 		B2Gender,
 		B2Weight,
-		apgar1,
-		apgar5,
-		outcome,
+		b1apgar1,
+		b1apgar5,
+    b2apgar1,
+		b2apgar5,
+    b1outcome,
+    b2outcome,
 		indication,
-		final_outcome,
+		b1final_outcome,
+    b2final_outcome,
 		indication_for_induction,
 		b1_date_of_birth,
 		b1_time_of_birth,
@@ -315,11 +319,15 @@ app.post("/submit-form", (req, res) => {
 		${data.b1_weight ? `"${data.b1_weight} kg"` : null},
 		${data.b2_gender ? `"${data.b2_gender}"` : null},
 		${data.b2_weight ? `"${data.b2_weight} kg"` : null},
-		${data.apgar1 ? `"${data.apgar1}"` : null},
-		${data.apgar5 ? `"${data.apgar5}"` : null},
-		${data.outcome ? `"${data.outcome}"` : null},
+		${data.b1apgar1 ? `"${data.b1apgar1}"` : null},
+		${data.b1apgar5 ? `"${data.b1apgar5}"` : null},
+		${data.b1outcome ? `"${data.b1outcome}"` : null},
+    ${data.b2apgar1 ? `"${data.b2apgar1}"` : null},
+		${data.b2apgar5 ? `"${data.b2apgar5}"` : null},
+		${data.b2outcome ? `"${data.b2outcome}"` : null},
 		${data.indication ? `"${data.indication}"` : null},
-		${data.final_outcome ? `"${data.final_outcome}"` : null},
+		${data.b1final_outcome ? `"${data.b1final_outcome}"` : null},
+    ${data.b2final_outcome ? `"${data.b2final_outcome}"` : null},
 		${data.indication_for_induction ? `"${data.indication_for_induction}"` : null},
 		${data.b1_date_of_birth ? `"${data.b1_date_of_birth}"` : null},
 		${data.b1_time_of_birth ? `"${data.b1_time_of_birth}"` : null},
@@ -404,11 +412,10 @@ app.post("/auth-login", (req, res) => {
 
 // function for generating report
 app.get("/api/generate-report", (req, res) => {
-
   let { startDate, endDate } = req.query;
   startDate = moment(startDate).startOf("day").format("YYYY-MM-DD HH:mm:ss");
   endDate = moment(endDate).endOf("day").format("YYYY-MM-DD HH:mm:ss");
- console.log(department);
+  console.log(department);
   con.query(
     `SELECT * FROM robsonsdata WHERE created_on BETWEEN '${startDate}' AND '${endDate}' AND department = '${department}'`,
     (error, robsonsDataList) => {
@@ -479,14 +486,23 @@ app.get("/api/generate-report", (req, res) => {
           B2Weight: !_.isEmpty(thisRobsonData.B2Weight)
             ? thisRobsonData.B2Weight
             : "",
-          apgar1: !_.isEmpty(thisRobsonData.apgar1)
-            ? thisRobsonData.apgar1
+          b1apgar1: !_.isEmpty(thisRobsonData.b1apgar1)
+            ? thisRobsonData.b1apgar1
             : "",
-          apgar5: !_.isEmpty(thisRobsonData.apgar5)
-            ? thisRobsonData.apgar5
+          b1apgar5: !_.isEmpty(thisRobsonData.b1apgar5)
+            ? thisRobsonData.b1apgar5
             : "",
-          outcome: !_.isEmpty(thisRobsonData.outcome)
-            ? thisRobsonData.outcome
+          b1outcome: !_.isEmpty(thisRobsonData.b1outcome)
+            ? thisRobsonData.b1outcome
+            : "",
+          b2apgar1: !_.isEmpty(thisRobsonData.b2apgar1)
+            ? thisRobsonData.b2apgar1
+            : "",
+          b2apgar5: !_.isEmpty(thisRobsonData.b2apgar5)
+            ? thisRobsonData.b2apgar5
+            : "",
+          b2outcome: !_.isEmpty(thisRobsonData.b2outcome)
+            ? thisRobsonData.b2outcome
             : "",
           indication_ovd: !_.isEmpty(thisRobsonData.indication_ovd)
             ? thisRobsonData.indication_ovd
@@ -497,8 +513,11 @@ app.get("/api/generate-report", (req, res) => {
           indication: !_.isEmpty(thisRobsonData.indication)
             ? thisRobsonData.indication
             : "",
-          final_outcome: !_.isEmpty(thisRobsonData.final_outcome)
-            ? thisRobsonData.final_outcome
+          b1final_outcome: !_.isEmpty(thisRobsonData.b1final_outcome)
+            ? thisRobsonData.b1final_outcome
+            : "",
+          b2final_outcome: !_.isEmpty(thisRobsonData.b2final_outcome)
+            ? thisRobsonData.b2final_outcome
             : "",
           indication_for_induction: !_.isEmpty(
             thisRobsonData.indication_for_induction
@@ -547,13 +566,17 @@ app.get("/api/generate-report", (req, res) => {
         "Baby 2 Date of Birth",
         "Baby 2 Time of Birth",
         "Baby 2 Weight",
-        "APGAR1",
-        "APGAR5",
-        "Outcome",
+        "Baby 1 APGAR1",
+        "Baby 1 APGAR5",
+        "Baby 1 Outcome",
+        "Baby 2 APGAR1",
+        "Baby 2 APGAR5",
+        "Baby 2 Outcome",
         "Indication OVD",
         "Indication Caesarean",
         "Indication",
-        "Final Outcome",
+        "Baby 1 Final Outcome",
+        "Baby 2 Final Outcome",
         "Indication for Indication",
         "Ripening",
         "Induced Augmented",
@@ -582,13 +605,17 @@ app.get("/api/generate-report", (req, res) => {
         "b2_date_of_birth",
         "b2_time_of_birth",
         "B2Weight",
-        "apgar1",
-        "apgar5",
-        "outcome",
+        "b1apgar1",
+        "b1apgar5",
+        "b1outcome",
+        "b2apgar1",
+        "b2apgar5",
+        "b2outcome",
         "indication_ovd",
         "indication_caesarean",
         "indication",
-        "final_outcome",
+        "b1final_outcome",
+        "b2final_outcome",
         "indication_for_induction",
         "ripening",
         "induced_augmented",
@@ -607,7 +634,7 @@ app.get("/api/generate-report", (req, res) => {
           width: 120, // <- width in pixels
           cellFormat: function (value, row) {
             // <- Renderer function, you can access also any row.property
-           
+
             return value === null ? "NA" : value;
           },
         };
