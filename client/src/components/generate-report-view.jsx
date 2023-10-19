@@ -105,7 +105,7 @@ function GenerateReportView() {
             {delayedStart && (
               <div className="mt-4">
                 <div className="animate-pulse bg-violet-200 text-black text-center py-2 rounded">
-                  Downloading the file...
+                 processing file...
                 </div>
               </div>
             )}

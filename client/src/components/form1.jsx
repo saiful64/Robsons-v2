@@ -169,18 +169,24 @@ function ObsIndexForm() {
       selectedOptions.fetus_type == "Single" &&
       formData[formIndex]?.title == "b1outcome"
     ) {
+      console.log("enters");
       if (
         selectedOptions.b1outcome == "SB" ||
         selectedOptions.b1outcome == "M/S"
       ) {
+        console.log("This");
         setFormIndex((prevForm) => prevForm + 2);
         setPrevFormIndex(formIndex);
-      } else setFormIndex((prevForm) => prevForm + 1);
-      setPrevFormIndex(formIndex);
+      } else {
+        console.log("Else");
+        setFormIndex((prevForm) => prevForm + 1);
+        setPrevFormIndex(formIndex);
+      }
     }
     if (
       selectedOptions.fetus_type == "Twins" &&
-      formData[formIndex]?.title == "b2outcome"
+      formData[formIndex]?.title == "b2outcome" &&
+      (selectedOptions.b2outcome == "SB" || selectedOptions.b2outcome == "M/S")
     ) {
       setFormIndex((prevForm) => prevForm + 1);
       setPrevFormIndex(formIndex);
@@ -224,11 +230,6 @@ function ObsIndexForm() {
       return;
     }
 
-    if (selectedOptions.labour == "Pre Labour" && formIndex == 19) {
-      //for indication induction
-      setFormIndex((prevForm) => prevForm + 1);
-      setPrevFormIndex(formIndex);
-    }
     if (!isClicked) {
       setFormIndex((prevForm) => prevForm + 1);
       setPrevFormIndex(formIndex);

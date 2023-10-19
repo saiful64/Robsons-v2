@@ -38,7 +38,7 @@ const Landing = () => {
             </div>
           <div>
             <h1 className="text-white text-4xl font-sans p-4">{typedText}<span className={`cursor ${cursorVisible ? "visible" : "hidden"}`}>|</span></h1>
-            <div className="wrapper"><div className="typing-demo"><p className="text-white p-4 mt-1">Streamline obstetric care with our <b>Robson Classification app</b>. JANANAM classifies women into 10 exclusive categories, derived from 5 essential obstetric factors, enhancing maternity care. </p>
+            <div className="wrapper"><div className="typing-demo"><p className="text-white p-4 mt-1">Streamline obstetric care with our <b>Robson Classification app</b>. JANANAM classifies women into 10 exclusive categories, based on <b>ROBSON</b> 10 group classification. </p>
             </div>
             </div>
           </div>
