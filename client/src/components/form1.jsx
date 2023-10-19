@@ -334,7 +334,7 @@ function ObsIndexForm() {
       <ToastContainer />
       {isClicked && <Modal group={group} />}
       <div
-        className={` bg-white shadow-2xl rounded-lg sm:w-96 ${
+        className={` bg-white shadow-2xl rounded-lg lg:w-[450px] ${
           isClicked ? "hidden" : ""
         }`}
       >
@@ -478,68 +478,77 @@ function ObsIndexForm() {
             </div>
           )}
         </div>
-        <div className="mt-6 flex">
-          {formData[formIndex]?.type === "twoInputs" && (
-            <div className="flex flex-col mb-4 p-4">
-              <p>Baby 1 details</p>
-              <p className="m-4">At 1 min: {b1apgar1}</p>
-              <input
-                type="range"
-                min={0}
-                max={10}
-                className="border hover:cursor-pointer ml-7 border-gray-400 p-2 w-full rounded-md"
-                value={b1apgar1}
-                onChange={(e) => {
-                  setB1Apgar1(e.target.value);
-                  updateThisOption("b1apgar1", e.target.value);
-                }}
-              />
-              <p className="m-4 ">At 5 min: {b1apgar5}</p>
-              <input
-                type="range"
-                min={0}
-                max={10}
-                className="border ml-7 hover:cursor-pointer border-gray-400 p-2 w-full rounded-md"
-                value={b1apgar5}
-                onChange={(e) => {
-                  setB1Apgar5(e.target.value);
-                  updateThisOption("b1apgar5", e.target.value);
-                }}
-              />
-
-              <hr></hr>
-              {selectedOptions.fetus_type == "Twins" && (
-                <div className="flex flex-col mb-4 p-4">
-                  Baby 2 Details
-                  <p className="m-4">At 1 min: {b2apgar1}</p>
-                  <input
-                    type="range"
-                    min={0}
-                    max={10}
-                    className="border hover:cursor-pointer ml-7 border-gray-400 p-2 w-full rounded-md"
-                    value={b2apgar1}
-                    onChange={(e) => {
-                      setB2Apgar1(e.target.value);
-                      updateThisOption("b2apgar1", e.target.value);
-                    }}
-                  />
-                  <p className="m-4 ">At 5 min: {b2apgar5}</p>
-                  <input
-                    type="range"
-                    min={0}
-                    max={10}
-                    className="border ml-7 hover:cursor-pointer border-gray-400 p-2 w-full rounded-md"
-                    value={b2apgar5}
-                    onChange={(e) => {
-                      setB2Apgar5(e.target.value);
-                      updateThisOption("b2apgar5", e.target.value);
-                    }}
-                  />
-                </div>
-              )}
-            </div>
-          )}
+        <div className="mt-3 flex">
+  {formData[formIndex]?.type === "twoInputs" && (
+    <div className="flex flex-col mb-2 p-2">
+      <div className="flex flex-row"> {/* Add a parent div for flex layout */}
+        <div className="flex flex-col mb-2 p-2 mr-6">
+          <p className="font-semibold">Baby 1 details</p>
+          <p className="m-4">At 1 min: {b1apgar1}</p>
+          <input
+            type="range"
+            min={0}
+            max={10}
+            className="border hover:cursor-pointer ml-7 border-gray-400 p-2 w-full rounded-md"
+            value={b1apgar1}
+            onChange={(e) => {
+              setB1Apgar1(e.target.value);
+              updateThisOption("b1apgar1", e.target.value);
+            }}
+          />
+          <p className="m-4 ">At 5 min: {b1apgar5}</p>
+          <input
+            type="range"
+            min={0}
+            max={10}
+            className="border ml-7 hover:cursor-pointer border-gray-400 p-2 w-full rounded-md"
+            value={b1apgar5}
+            onChange={(e) => {
+              setB1Apgar5(e.target.value);
+              updateThisOption("b1apgar5", e.target.value);
+            }}
+          />
         </div>
+
+        {selectedOptions.fetus_type == "Twins" && (
+          <><div className="border-l border-gray-300 h-64 mx-6"></div>
+          <div className="flex flex-col mb-2 p-2 mx-6">
+            <p className="font-semibold">Baby 2 Details</p> {/* Add a title for Baby 2 Details */}
+            <p className="m-4">At 1 min: {b2apgar1}</p>
+            <input
+              type="range"
+              min={0}
+              max={10}
+              className="border hover:cursor-pointer ml-7 border-gray-400 p-2 w-full rounded-md"
+              value={b2apgar1}
+              onChange={(e) => {
+                setB2Apgar1(e.target.value);
+                updateThisOption("b2apgar1", e.target.value);
+              }}
+            />
+            <p className="m-4 ">At 5 min: {b2apgar5}</p>
+            <input
+              type="range"
+              min={0}
+              max={10}
+              className="border ml-7 hover:cursor-pointer border-gray-400 p-2 w-full rounded-md"
+              value={b2apgar5}
+              onChange={(e) => {
+                setB2Apgar5(e.target.value);
+                updateThisOption("b2apgar5", e.target.value);
+              }}
+            />
+          </div>
+          </>
+        )}
+        
+        
+      </div>
+    </div>
+  )}
+</div>
+
+
 
         <div className=" py-3 px-4 w-80 items-center relative justify-center">
           {formData[formIndex]?.type === "textarea" && (

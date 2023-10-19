@@ -55,7 +55,7 @@ function LoginAuthView(props) {
   };
 
   const footerData = [
-    { key: "mainText", displayText: "@ 2023 JIPMER, O & G  Dept." },
+    { key: "mainText", displayText: "@ JANANAM, O & G  Dept." },
     { key: "subText", displayText: "Made with 🧡 by MCA students" },
   ];
 
