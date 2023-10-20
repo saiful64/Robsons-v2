@@ -17,6 +17,9 @@ module.exports = {
         proza: ['Proza Libre', 'sans-serif'],
         kalam: ['Kalam', 'cursive'],
       },
+      backgroundGradientColors: {
+        'custom': ['#00828E', '#003152'],
+      },
     },
     screens: {
       xs: "480px",

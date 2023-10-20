@@ -47,13 +47,16 @@ const Landing = () => {
           <div className="absolute -top-40 -right-0 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
           <div className="absolute -top-20 -right-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
         </div>
-        <div className="flex h-screen sm:w-full md:w-1/2 bg-slate-50 justify-center py-10 items-center">
-          <div className="lg:hidden md:hidden bg-gradient-to-r from- rounded-full overflow-hidden  border-2 w-32 h-32 absolute top-6 left-8">
-          <img src="assets/logo.png" alt="Robson Logo" />
+        <div className="flex bg-slate-50 h-screen   md:w-1/2 justify-center py-10 items-center">
+          <div className="lg:hidden md:hidden absolute top-52">
+          {/* <img src="assets/logo.png" alt="Robson Logo" /> */}
+          <h1 className="lg:hidden md:hidden bg-gradient-to-tr from-[#00828E] to-[#003152] bg-clip-text text-transparent text-4xl font-sans p-4">{typedText}</h1>
           </div>
-            <div className="bg-slate-50 w-3/4">
-              <h1 className="text-gray-800 font-bold text-2xl mb-1 bg-gradient-to-tr from-[#00828E] to-[#003152] bg-clip-text text-transparent ">Get Started!</h1>
-              <p className="text-sm font-normal text-gray-600 mb-7">Welcome Back</p>
+          
+            <div className="lg:text-start text-center lg:bg-slate-50 w-3/4">
+            
+              <h1 className="text-gray-800 font-bold text-2xl bg-gradient-to-tr mb-5 from-[#00828E] to-[#003152] bg-clip-text text-transparent ">Get Started!</h1>
+              <p className="hidden lg:block text-sm font-normal text-gray-600 mb-7">Welcome Back</p>
               <div className="">
                 <button
                   className="w-full h-12 px-6 text-white transition-colors duration-150 bg-gradient-to-r from-[#00828E] to-[#003152] hover:from-teal-600 hover:to-blue-900 rounded-lg hover:shadow-xl shadow-md focus:shadow-outline text-2xl hover:bg-indigo-800" onClick={() => navigate("/login")}
@@ -65,7 +68,10 @@ const Landing = () => {
                 >
                   Login as Student 🧑‍🎓
                 </button>
-
+                  <div className="lg:hidden absolute  -bottom-32 -left-40 w-80 h-80 border-4 rounded-full border-opacity-90 border-gray-400 border-t-8"></div>
+          <div className="lg:hidden absolute  -bottom-40 -left-20 w-80 h-80 border-4 rounded-full border-opacity-90 border-gray-400 border-t-8"></div>
+          <div className="lg:hidden absolute  -top-40 -right-20 w-80 h-80 border-4 rounded-full border-opacity-90 border-gray-400 border-t-8"></div>
+          <div className="lg:hidden absolute  -top-20 -right-40 w-80 h-80 border-4 rounded-full border-opacity-90 border-gray-400 border-t-8"></div>
                 <footer className="absolute bottom-0  p-4 ">Developed with 💚 by Pondicherry University in collaboration with JIPMER.</footer>
               </div>
             </div>

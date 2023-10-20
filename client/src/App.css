@@ -19,3 +19,15 @@
 .table-auto tbody td {
   border-bottom: 1px solid #d2d6dc;
 }
+
+.srujan {
+  display: flex;
+  height: 100vh; /* h-screen in Tailwind CSS */
+  justify-content: center;
+  align-items: center; /* items-center in Tailwind CSS */
+}
+
+.srujan {
+  background: linear-gradient(to top right, #00828E, #003152);
+  /* Other CSS properties for your "srujan" class */
+}
