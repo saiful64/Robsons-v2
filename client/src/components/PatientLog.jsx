@@ -38,6 +38,8 @@ const PatientLog = () => {
   };
 
   useEffect(() => {
+    console.log(auth.user);
+    console.log(auth.department);
     const department = auth.department;
     fetchPatients(department);
   }, []);

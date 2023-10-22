@@ -3,7 +3,10 @@ import { useState, createContext, useContext, useEffect } from "react";
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [department, setDepartment] = useState("");
+  const [department, setDepartment] = useState(() => {
+    const storedDepartment = localStorage.getItem("department");
+    return storedDepartment || ""; // Set a default value if not found
+  });
 
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem("user");
@@ -13,12 +16,15 @@ export const AuthProvider = ({ children }) => {
   const login = (user, department) => {
     localStorage.setItem("user", JSON.stringify(user));
     setUser(user);
+    localStorage.setItem("department", department);
     setDepartment(department);
   };
 
   const logout = () => {
     localStorage.removeItem("user");
     setUser(null);
+    localStorage.removeItem("department");
+    setDepartment("");
   };
 
   // Track user activity
