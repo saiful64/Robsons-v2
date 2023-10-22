@@ -106,10 +106,9 @@ app.get("/api/check_id/:patientId", (req, res) => {
 
 app.get("/api/patients", (req, res) => {
   // Query the database to fetch patient IDs from the robsonsdata table
-  console.log(department);
+  const department = req.query.department;
   con.query(
-    "SELECT patient_id,created_on FROM robsonsdata WHERE department = ?",
-    [department],
+    `SELECT patient_id,created_on FROM robsonsdata WHERE department = '${department}'`,
     (err, results) => {
       if (err) {
         console.error(err);
@@ -337,7 +336,7 @@ app.post("/submit-form", (req, res) => {
 		${data.created_by ? `"${data.created_by}"` : null},
 		NOW(),
 		${data.review ? `"${data.review}"` : null},
-		${department ? `"${department}"` : null}
+		${data.department ? `"${data.department}"` : null}
 		);`;
 
   con.query(sql, (err, result) => {
@@ -403,19 +402,17 @@ app.post("/auth-login", (req, res) => {
 
       // if a matching user is found, extract the role from the database and send it back as a response
       const role = results[0].role;
-      department = results[0].department;
-      console.log(department);
-      res.send(role);
+      const department = results[0].department;
+      res.json({ role, department });
     }
   );
 });
 
 // function for generating report
 app.get("/api/generate-report", (req, res) => {
-  let { startDate, endDate } = req.query;
+  let { startDate, endDate, department } = req.query;
   startDate = moment(startDate).startOf("day").format("YYYY-MM-DD HH:mm:ss");
   endDate = moment(endDate).endOf("day").format("YYYY-MM-DD HH:mm:ss");
-  console.log(department);
   con.query(
     `SELECT * FROM robsonsdata WHERE created_on BETWEEN '${startDate}' AND '${endDate}' AND department = '${department}'`,
     (error, robsonsDataList) => {
@@ -660,7 +657,7 @@ app.get("/api/generate-report", (req, res) => {
 //Generate Report for Specific data
 
 app.get("/api/generate-report-one", (req, res) => {
-  let { startDate, endDate } = req.query;
+  let { startDate, endDate, department } = req.query;
   startDate = moment(startDate).startOf("day").format("YYYY-MM-DD HH:mm:ss");
   endDate = moment(endDate).endOf("day").format("YYYY-MM-DD HH:mm:ss");
 
@@ -1682,7 +1679,6 @@ app.post("/api/upload", upload.single("file"), (req, res) => {
 // Assuming you are using Express.js
 
 app.post("/register", (req, res) => {
-  console.log("register");
   const { username, role, password, department } = req.body;
 
   // Validate the input here if needed
