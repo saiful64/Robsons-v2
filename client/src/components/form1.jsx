@@ -530,7 +530,7 @@ function ObsIndexForm() {
                 {selectedOptions.fetus_type == "Twins" && (
                   <>
                     <div className="border-l border-gray-300 h-64 mx-6"></div>
-                    <div className="flex flex-col mb-2 p-2 mx-6">
+                    <div className="flex flex-col mb-2 p-2 mr-6">
                       <p className="font-semibold">Baby 2 Details</p>{" "}
                       {/* Add a title for Baby 2 Details */}
                       <p className="m-4">At 1 min: {b2apgar1}</p>
