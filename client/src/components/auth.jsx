@@ -3,19 +3,28 @@ import { useState, createContext, useContext, useEffect } from "react";
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
+  const [department, setDepartment] = useState(() => {
+    const storedDepartment = localStorage.getItem("department");
+    return storedDepartment || ""; // Set a default value if not found
+  });
+
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
   });
 
-  const login = (user) => {
+  const login = (user, department) => {
     localStorage.setItem("user", JSON.stringify(user));
     setUser(user);
+    localStorage.setItem("department", department);
+    setDepartment(department);
   };
 
   const logout = () => {
     localStorage.removeItem("user");
     setUser(null);
+    localStorage.removeItem("department");
+    setDepartment("");
   };
 
   // Track user activity
@@ -47,7 +56,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, department, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -287,12 +287,11 @@ function ObsIndexForm() {
       toast.warning("Select any one");
       return;
     }
-    let created_by = auth.user;
-    selectedOptions["created_by"] = created_by;
+    selectedOptions["created_by"] = auth.user;
+    selectedOptions["department"] = auth.department;
     axios
       .post(`${API_BASE_URL}/submit-form`, selectedOptions)
       .then((response) => {
-        console.log(response.data);
         let groupDetails = response.data;
         if (groupDetails && groupDetails.group) {
           setgroup(groupDetails.group);

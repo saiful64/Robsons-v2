@@ -32,18 +32,10 @@ function LoginAuthView(props) {
     axios
       .post(`${API_BASE_URL}/auth-login`, body)
       .then((response) => {
-        if (response.data === "student") {
-          auth.login("student");
-          navigate("/home-view");
-        } else if (response.data === "doctor") {
-          auth.login("doctor");
-          navigate("/home-view");
-        } else if (response.data === "department") {
-          auth.login("department");
-          navigate("/home-view");
-        } else {
-          alert("Invalid Credentials");
-        }
+        const { role, department } = response.data;
+
+        auth.login(role, department);
+        navigate("/home-view");
       })
       .catch((error) => {
         if (error) {
@@ -62,7 +54,7 @@ function LoginAuthView(props) {
   return (
     <div className="flex flex-col justify-center items-center h-screen overflow-hidden">
       <ToastContainer />
-      
+
       <div className="bg-white lg:w-1/4 sm:w-96 p-6 rounded-lg drop-shadow-2xl">
         <h1 className="text-gray-900  opacity-100 font-space text-center hover:cursor-pointer  font-bold text-3xl mb-4">
           Welcome{" "}

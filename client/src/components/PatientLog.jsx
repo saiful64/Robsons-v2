@@ -6,6 +6,7 @@ import API_BASE_URL from "./config";
 import { useNavigate } from "react-router-dom";
 import PatientDetails from "./PatientDetails";
 import DeleteConfirmationDialog from "./DeleteConfirmationDialog";
+import { useAuth } from "./auth";
 
 const PatientLog = () => {
   const [patients, setPatients] = useState([]);
@@ -18,10 +19,11 @@ const PatientLog = () => {
     useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+  const auth = useAuth();
 
-  const fetchPatients = () => {
+  const fetchPatients = (department) => {
     axios
-      .get(`${API_BASE_URL}/api/patients`)
+      .get(`${API_BASE_URL}/api/patients?department=${department}`)
       .then((response) => {
         const sortedPatients = response.data.sort((a, b) => {
           const dateA = new Date(a.created_on);
@@ -36,8 +38,10 @@ const PatientLog = () => {
   };
 
   useEffect(() => {
-    fetchPatients();
-    console.log(patients);
+    console.log(auth.user);
+    console.log(auth.department);
+    const department = auth.department;
+    fetchPatients(department);
   }, []);
 
   const indexOfLastPatient = currentPage * patientsPerPage;

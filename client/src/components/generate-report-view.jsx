@@ -18,30 +18,31 @@ function GenerateReportView() {
       key: "selection",
     },
   ]);
- 
+
   const [isUploading, setIsUploading] = useState(false);
   const [delayedStart, setDelayedStart] = useState(false);
 
   const generateReport = (specificData) => {
     setIsUploading(true);
     setDelayedStart(true);
+    const department = auth.department;
     setTimeout(async () => {
       setDelayedStart(false);
-    
+
       axios({
         url: specificData
-          ? `${API_BASE_URL}/api/generate-report-one`
-          : `${API_BASE_URL}/api/generate-report`,
+          ? `${API_BASE_URL}/api/generate-report-one?department=${department}`
+          : `${API_BASE_URL}/api/generate-report?department=${department}`,
         method: "GET",
         responseType: "blob",
-		
+
         params: {
           startDate: moment(dateRange[0].startDate).format("YYYY-MM-DD"),
           endDate: moment(dateRange[0].endDate).format("YYYY-MM-DD"),
         },
       })
         .then((response) => {
-			setIsUploading(false); 
+          setIsUploading(false);
           if (response.data) {
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement("a");
@@ -60,7 +61,7 @@ function GenerateReportView() {
           }
         })
         .catch((error) => {
-			setIsUploading(false);
+          setIsUploading(false);
           console.error(error);
           toast.error("No data available.");
         });
@@ -76,7 +77,10 @@ function GenerateReportView() {
       <ToastContainer />
       <div className="flex flex-col items-center justify-center h-screen">
         <div className="bg-white p-6 rounded-lg shadow-md sm:w-96">
-          <h1 className="text-3xl font-bold mb-4">Welcome {auth.user}{auth.department}</h1>
+          <h1 className="text-3xl font-bold mb-4">
+            Welcome {auth.user}
+            {auth.department}
+          </h1>
           <div className="flex flex-col justify-center">
             <div className="flex flex-col justify-center">
               <label className="text-sm text-left mb-4">Date Range</label>
@@ -105,11 +109,11 @@ function GenerateReportView() {
             {delayedStart && (
               <div className="mt-4">
                 <div className="animate-pulse bg-violet-200 text-black text-center py-2 rounded">
-                 processing file...
+                  processing file...
                 </div>
               </div>
             )}
-           
+
             <button
               className="bg-zinc-600 hover:bg-gray-300 hover-text-black text-white font-bold py-2 px-4 rounded m-2"
               onClick={goHome}

@@ -5,95 +5,99 @@ import "react-toastify/dist/ReactToastify.css";
 import { useTable, useResizeColumns } from "react-table";
 import API_BASE_URL from "./config";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "./auth";
 
 function GenerateStatus() {
-	const [columns, setColumns] = useState([]);
-	const [data, setData] = useState([]);
-	const navigate = useNavigate();
+  const [columns, setColumns] = useState([]);
+  const [data, setData] = useState([]);
+  const navigate = useNavigate();
+  const auth = useAuth();
 
-	useEffect(() => {
-		axios
-			.get(`${API_BASE_URL}/api/generate-status-init`)
-			.then((response) => {
-				setData(response.data.data);
-				setColumns(response.data.columns);
-			})
-			.catch((error) => {
-				console.error(error);
-				if (error.response && error.response.status === 400) {
-					toast.warning(error.response.data.message);
-				}
-			});
-	}, []);
+  const department = auth.department;
 
-	const goHome = () => {
-		navigate("/home-view");
-	};
+  useEffect(() => {
+    axios
+      .get(`${API_BASE_URL}/api/generate-status-init?department=${department}`)
+      .then((response) => {
+        setData(response.data.data);
+        setColumns(response.data.columns);
+      })
+      .catch((error) => {
+        console.error(error);
+        if (error.response && error.response.status === 400) {
+          toast.warning(error.response.data.message);
+        }
+      });
+  }, []);
 
-	const tableInstance = useTable({ data, columns }, useResizeColumns);
+  const goHome = () => {
+    navigate("/home-view");
+  };
 
-	const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-		tableInstance;
+  const tableInstance = useTable({ data, columns }, useResizeColumns);
 
-	return (
-		<>
-			<ToastContainer />
-			<div className='flex flex-col items-center justify-center h-screen'>
-				<div className='bg-white p-6 rounded-lg shadow-md w-full text-center'>
-					<h1 className='text-3xl font-bold mb-4 text-center'>
-						Data Tabularization
-					</h1>
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    tableInstance;
 
-					<div className='flex flex-col justify-center'>
-						<div className='overflow-x-auto'>
-							<table {...getTableProps()} className='table-auto w-full'>
-								<thead className='bg-gray-200 text-gray-600 uppercase text-xs leading-normal'>
-									{headerGroups.map((headerGroup) => (
-										<tr {...headerGroup.getHeaderGroupProps()}>
-											{headerGroup.headers.map((column) => (
-												<th
-													{...column.getHeaderProps()}
-													className='py-3 px-6 text-center'
-												>
-													{column.render("Header")}
-												</th>
-											))}
-										</tr>
-									))}
-								</thead>
-								<tbody
-									{...getTableBodyProps()}
-									className='text-gray-600 text-sm font-light'
-								>
-									{rows.map((row) => {
-										prepareRow(row);
-										return (
-											<tr {...row.getRowProps()}>
-												{row.cells.map((cell) => (
-													<td
-														{...cell.getCellProps()}
-														className='py-3 px-6 text-center whitespace-nowrap'
-													>
-														{cell.render("Cell")}
-													</td>
-												))}
-											</tr>
-										);
-									})}
-								</tbody>
-							</table>
-						</div>
-					</div>
-					<button
-						className='mt-4 text-center mb-4 px-4 py-2 bg-zinc-700 hover:bg-gray-300 hover:text-black text-white font-semibold hover:cursor-pointer rounded-md'
-						onClick={goHome}
-					>
-						Home
-					</button>
-				</div>
-			</div>
-		</>
-	);
+  return (
+    <>
+      <ToastContainer />
+      <div className="flex flex-col items-center justify-center h-screen">
+        <div className="bg-white p-6 rounded-lg shadow-md w-full text-center">
+          <h1 className="text-3xl font-bold mb-4 text-center">
+            Data Tabularization
+          </h1>
+
+          <div className="flex flex-col justify-center">
+            <div className="overflow-x-auto">
+              <table {...getTableProps()} className="table-auto w-full">
+                <thead className="bg-gray-200 text-gray-600 uppercase text-xs leading-normal">
+                  {headerGroups.map((headerGroup) => (
+                    <tr {...headerGroup.getHeaderGroupProps()}>
+                      {headerGroup.headers.map((column) => (
+                        <th
+                          {...column.getHeaderProps()}
+                          className="py-3 px-6 text-center"
+                        >
+                          {column.render("Header")}
+                        </th>
+                      ))}
+                    </tr>
+                  ))}
+                </thead>
+                <tbody
+                  {...getTableBodyProps()}
+                  className="text-gray-600 text-sm font-light"
+                >
+                  {rows.map((row) => {
+                    prepareRow(row);
+                    return (
+                      <tr {...row.getRowProps()}>
+                        {row.cells.map((cell) => (
+                          <td
+                            {...cell.getCellProps()}
+                            className="py-3 px-6 text-center whitespace-nowrap"
+                          >
+                            {cell.render("Cell")}
+                          </td>
+                        ))}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <button
+            className="mt-4 text-center mb-4 px-4 py-2 bg-zinc-700 hover:bg-gray-300 hover:text-black text-white font-semibold hover:cursor-pointer rounded-md"
+            onClick={goHome}
+          >
+            Home
+          </button>
+        </div>
+      </div>
+    </>
+  );
 }
 
 export default GenerateStatus;
