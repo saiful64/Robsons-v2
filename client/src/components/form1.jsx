@@ -43,7 +43,7 @@ function ObsIndexForm() {
 
   const edit = (pdata) => {
     console.log(pdata);
-    console.log(pdata.B1Weight);
+    console.log(pdata.obs_index);
     updateThisOption("patient_id", pdata.patient_id);
     updateThisOption("obs_index", pdata.obs_index);
     updateThisOption("pog", pdata.pog);
@@ -96,6 +96,28 @@ function ObsIndexForm() {
     setB2Apgar5(pdata.b2apgar5);
     setB1Weight(parseInt(pdata.B1Weight, 10));
     setB2Weight(parseInt(pdata.B2Weight, 10));
+
+    const indicationValues = [
+      "Failed induction",
+      "Failed ECV",
+      "Doubtful scar",
+      "Scar dehiscence",
+      "Rupture uterus",
+      "Maternal indication",
+      "Abruptio placentae",
+      "Placenta previa",
+      "Multiple pregnancy",
+      "Cephalopelvic disproportion",
+      "Cord prolapse",
+      "Failed to ripen cervix",
+      "Fetal distress",
+      "Breech presentation",
+    ];
+
+    if (!indicationValues.includes(pdata.indication_cesarean)) {
+      setShowTextInput(true);
+      setTextInputValue(pdata.indication_cesarean);
+    }
   };
 
   if (pid) {
@@ -472,6 +494,7 @@ function ObsIndexForm() {
                           setShowTextInput(true);
                         } else {
                           setShowTextInput(false);
+                          setTextInputValue(null);
                         }
                       }
                       updateThisOption(

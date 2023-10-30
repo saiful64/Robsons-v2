@@ -15,7 +15,7 @@ CREATE TABLE robsonsdata (
   induced_augmented VARCHAR(255),
   delivery VARCHAR(255),
   indication_ovd VARCHAR(255),
-  indication_caesarean VARCHAR(255),
+  indication_cesarean VARCHAR(255),
   Stage VARCHAR(255),
   B1Gender VARCHAR(255),
   B1Weight VARCHAR(255),
@@ -60,6 +60,9 @@ ALTER TABLE robsonsdata
 RENAME COLUMN outcome to b1outcome;
 ALTER TABLE robsonsdata
 RENAME COLUMN final_outcome to b1final_outcome;
+
+ALTER TABLE robsonsdata
+RENAME COLUMN indication_caesarean to indication_cesarean;
 
 
 CREATE TABLE `groups` (

@@ -124,7 +124,7 @@ app.get("/api/patient-details/:patient_id", (req, res) => {
   const { patient_id } = req.params;
 
   const sql =
-    "SELECT patient_id,obs_index,weeks,pog,previous_cesarean,fetus_type,presentation_single,presentation_twin,Labour,ripening,induced_augmented,delivery,indication_ovd,indication_caesarean,Stage,B1Gender,B1Weight,B2Gender,B2Weight,b1apgar1,b1apgar5,b2apgar1,b2apgar5,b1outcome,b2outcome,indication,b1final_outcome,b2final_outcome,indication_for_induction,b1_date_of_birth,b1_time_of_birth,b2_date_of_birth,b2_time_of_birth,group_name,created_by,created_on,review FROM robsonsdata WHERE patient_id = ?";
+    "SELECT patient_id,obs_index,weeks,pog,previous_cesarean,fetus_type,presentation_single,presentation_twin,Labour,ripening,induced_augmented,delivery,indication_ovd,indication_cesarean,Stage,B1Gender,B1Weight,B2Gender,B2Weight,b1apgar1,b1apgar5,b2apgar1,b2apgar5,b1outcome,b2outcome,indication,b1final_outcome,b2final_outcome,indication_for_induction,b1_date_of_birth,b1_time_of_birth,b2_date_of_birth,b2_time_of_birth,group_name,created_by,created_on,review FROM robsonsdata WHERE patient_id = ?";
 
   con.query(sql, [patient_id], (err, results) => {
     if (err) {
@@ -271,7 +271,7 @@ app.post("/submit-form", (req, res) => {
 		induced_augmented,
 		delivery,
 		indication_ovd,
-		indication_caesarean,
+		indication_cesarean,
 		Stage,
 		B1Gender,
 		B1Weight,
@@ -502,8 +502,8 @@ app.get("/api/generate-report", (req, res) => {
           indication_ovd: !_.isEmpty(thisRobsonData.indication_ovd)
             ? thisRobsonData.indication_ovd
             : "",
-          indication_caesarean: !_.isEmpty(thisRobsonData.indication_caesarean)
-            ? thisRobsonData.indication_caesarean
+          indication_cesarean: !_.isEmpty(thisRobsonData.indication_cesarean)
+            ? thisRobsonData.indication_cesarean
             : "",
           indication: !_.isEmpty(thisRobsonData.indication)
             ? thisRobsonData.indication
@@ -607,7 +607,7 @@ app.get("/api/generate-report", (req, res) => {
         "b2apgar5",
         "b2outcome",
         "indication_ovd",
-        "indication_caesarean",
+        "indication_cesarean",
         "indication",
         "b1final_outcome",
         "b2final_outcome",
