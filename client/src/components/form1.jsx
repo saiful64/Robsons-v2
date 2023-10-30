@@ -566,6 +566,13 @@ function ObsIndexForm() {
                 className="border shadow-lg bg-transparent border-gray-400 p-2 w-full rounded-md"
                 value={weeks}
                 placeholder={"Enter Weeks"}
+                onKeyDown={(e) => {
+                  if (e.key === "Backspace" && weeks !== "") {
+                    // If the Backspace key is pressed and the input is not empty, clear it
+                    setWeeks("");
+                    updateThisOption(formData[formIndex]?.title, "");
+                  }
+                }}
                 onChange={(e) => {
                   const newValue = e.target.value;
                   if (/^\d+$/.test(newValue) || newValue === "") {
@@ -761,6 +768,13 @@ function ObsIndexForm() {
                     className="border border-gray-500 px-2 py-1 rounded-md"
                     value={b1Weight}
                     placeholder="Enter Weight in kg"
+                    onKeyDown={(e) => {
+                      if (e.key === "Backspace" && b1Weight !== "") {
+                        // If the Backspace key is pressed and the input is not empty, clear it
+                        setB1Weight("");
+                        updateThisOption(formData[formIndex]?.title, "");
+                      }
+                    }}
                     onChange={(e) => {
                       const newValue = e.target.value;
                       if (/^\d+(\.\d+)?$/.test(newValue) || newValue === "") {
@@ -862,6 +876,13 @@ function ObsIndexForm() {
                       className="border border-gray-500 px-2 py-1 rounded-md"
                       value={b2Weight}
                       placeholder="Enter Weight in kg"
+                      onKeyDown={(e) => {
+                        if (e.key === "Backspace" && b2Weight !== "") {
+                          // If the Backspace key is pressed and the input is not empty, clear it
+                          setB2Weight("");
+                          updateThisOption(formData[formIndex]?.title, "");
+                        }
+                      }}
                       onChange={(e) => {
                         const newValue = e.target.value;
                         if (/^\d+(\.\d+)?$/.test(newValue) || newValue === "") {
