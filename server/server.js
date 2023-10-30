@@ -75,8 +75,6 @@ app.get("/get-client-ip", (req, res) => {
   res.send(`Client IPv4 Address: ${ipv4Address}`);
 });
 
-let department = null;
-
 app.get("/api/form-data", (req, res) => {
   res.status(200).send(formData);
 });
@@ -1049,11 +1047,12 @@ const calculateBarChart = async (groupsList1, count_total) => {
 //Generate Status of Cesarean Delivery
 app.get("/api/generate-status-init", async (req, res) => {
   try {
+    const department = req.query.department;
     let statusData = {};
 
     const query = `
-		SELECT * FROM \`groups\`;
-		SELECT * FROM robsonsdata WHERE delivery="Cesarean";
+		SELECT * FROM \`groups\` WHERE department = '${department}';
+		SELECT * FROM robsonsdata WHERE delivery="Cesarean" AND department = '${department}';
 	  `;
     con.query(query, async (error, result) => {
       if (error) {

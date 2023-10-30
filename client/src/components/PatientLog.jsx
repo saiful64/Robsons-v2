@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import PatientDetails from "./PatientDetails";
 import DeleteConfirmationDialog from "./DeleteConfirmationDialog";
 import { useAuth } from "./auth";
+import ObsIndexForm from "./form1";
 
 const PatientLog = () => {
   const [patients, setPatients] = useState([]);
@@ -57,9 +58,8 @@ const PatientLog = () => {
   );
 
   const handleEditClick = (patient) => {
-    toast.success(`Editing patient with ID : ${patient.patient_id}`, {
-      className: "",
-    });
+    // Navigate to ObsIndexForm with the patient_id as a route parameter
+    navigate(`/forms/${patient.patient_id}`);
   };
 
   const handleViewClick = (patient) => {
