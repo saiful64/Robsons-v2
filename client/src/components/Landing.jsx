@@ -56,7 +56,7 @@ const Landing = () => {
             <div className="lg:text-start text-center lg:bg-slate-50 w-3/4">
             
               <h1 className="text-gray-800 font-bold text-2xl bg-gradient-to-tr mb-5 from-[#00828E] to-[#003152] bg-clip-text text-transparent ">Get Started!</h1>
-              <p className="hidden lg:block text-sm font-normal text-gray-600 mb-7">Welcome Back</p>
+              <p className="hidden lg:block text-sm font-normal text-gray-600 mb-7 ">Welcome Back</p>
               <div className="">
                 <button
                   className="w-full h-12 px-6 text-white transition-colors duration-150 bg-gradient-to-r from-[#00828E] to-[#003152] hover:from-teal-600 hover:to-blue-900 rounded-lg hover:shadow-xl shadow-md focus:shadow-outline text-2xl hover:bg-indigo-800" onClick={() => navigate("/login")}
