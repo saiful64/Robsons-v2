@@ -6,7 +6,7 @@ import moment from "moment";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Modal from "./Modal";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import API_BASE_URL from "./config";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -38,6 +38,84 @@ function ObsIndexForm() {
   const [textInputValue, setTextInputValue] = useState(null);
   const [b1Weight, setB1Weight] = useState(null);
   const [b2Weight, setB2Weight] = useState(null);
+
+  const { pid } = useParams();
+
+  const edit = (pdata) => {
+    console.log(pdata);
+    console.log(pdata.B1Weight);
+    updateThisOption("patient_id", pdata.patient_id);
+    updateThisOption("obs_index", pdata.obs_index);
+    updateThisOption("pog", pdata.pog);
+    updateThisOption("previous_cesarean", pdata.previous_cesarean);
+    updateThisOption("weeks", pdata.weeks);
+    updateThisOption("fetus_type", pdata.fetus_type);
+    updateThisOption("presentation_single", pdata.presentation_single);
+    updateThisOption("presentation_twin", pdata.presentation_twin);
+    updateThisOption("labour", pdata.Labour);
+    updateThisOption("ripening", pdata.ripening);
+    updateThisOption("induced_augmented", pdata.induced_augmented);
+    updateThisOption("delivery", pdata.delivery);
+    updateThisOption("indication_ovd", pdata.indication_ovd);
+    updateThisOption("indication_cesarean", pdata.indication_cesarean);
+    updateThisOption("stage", pdata.Stage);
+    updateThisOption("b1_gender", pdata.B1Gender);
+    updateThisOption("b2_gender", pdata.B2Gender);
+    updateThisOption("b1_weight", pdata.B1Weight);
+    updateThisOption("b2_weight", pdata.B2Weight);
+    updateThisOption("b1_date_of_birth", pdata.b1_date_of_birth);
+    updateThisOption("b1_time_of_birth", pdata.b1_time_of_birth);
+    updateThisOption("b2_date_of_birth", pdata.b2_date_of_birth);
+    updateThisOption("b2_time_of_birth", pdata.b2_time_of_birth);
+    updateThisOption("b1apgar1", pdata.b1apgar1);
+    updateThisOption("b1apgar5", pdata.b1apgar5);
+    updateThisOption("b2apgar1", pdata.b2apgar1);
+    updateThisOption("b2apgar5", pdata.b2apgar5);
+    updateThisOption("b1outcome", pdata.b1outcome);
+    updateThisOption("b2outcome", pdata.b2outcome);
+    updateThisOption("indication", pdata.indication);
+    updateThisOption("b1final_outcome", pdata.b1final_outcome);
+    updateThisOption("b2final_outcome", pdata.b2final_outcome);
+    updateThisOption(
+      "indication_for_induction",
+      pdata.indication_for_induction
+    );
+    updateThisOption("review", pdata.review);
+    updateThisOption("group", pdata.group_name);
+    updateThisOption("created_by", pdata.created_by);
+
+    setPatientId(pdata.patient_id);
+    setWeeks(pdata.weeks);
+    setB1DateOfBirth(pdata.b1_date_of_birth);
+    setB1TimeOfBirth(pdata.b1_time_of_birth);
+    setB2DateOfBirth(pdata.b2_date_of_birth);
+    setB2TimeOfBirth(pdata.b2_time_of_birth);
+    setB1Apgar1(pdata.b1apgar1);
+    setB1Apgar5(pdata.b1apgar5);
+    setB2Apgar1(pdata.b2apgar1);
+    setB2Apgar5(pdata.b2apgar5);
+    setB1Weight(parseInt(pdata.B1Weight, 10));
+    setB2Weight(parseInt(pdata.B2Weight, 10));
+  };
+
+  if (pid) {
+    useEffect(() => {
+      const apiUrl = `${API_BASE_URL}/api/patient-details/${pid}`;
+
+      axios
+        .get(apiUrl)
+        .then((response) => {
+          const pdata = response.data;
+
+          setFormIndex(1);
+          setPrevFormIndex(-1);
+          edit(pdata);
+        })
+        .catch((error) => {
+          console.error("Error fetching patient details:", error);
+        });
+    }, [pid]);
+  }
 
   useEffect(() => {
     axios
@@ -331,6 +409,8 @@ function ObsIndexForm() {
     });
     setSelectedRadioButton(null);
   };
+
+  const updateForms = () => {};
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
@@ -836,11 +916,11 @@ function ObsIndexForm() {
             (formData[formIndex]?.title === "labour" &&
               auth.user === "department")) && (
             <button
-              onClick={submitForms}
+              onClick={pid ? updateForms : submitForms}
               // onKeyDown={handleKeyDownForSubmit}
               className="bg-gradient-to-r from-gray-900 to-gray-600 hover:bg-gradient-to-r hover:from-gray-600 hover:to-gray-900 hover:text-white text-gray-200 rounded-md font-bold py-2 px-4 mr-4 ml-auto"
             >
-              Submit
+              {pid ? "Update" : "Submit"}
             </button>
           )}
         </div>

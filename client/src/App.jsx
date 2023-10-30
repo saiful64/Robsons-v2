@@ -58,6 +58,15 @@ function App() {
               />
               <Route
                 exact
+                path="/forms/:pid"
+                element={
+                  <ProtectedRoute>
+                    <ObsIndexForm />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                exact
                 path="/generate-excel-sheet"
                 element={
                   <ProtectedRoute>
@@ -115,7 +124,7 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-               <Route
+              <Route
                 path="/landing"
                 element={
                   <ProtectedRoute>
