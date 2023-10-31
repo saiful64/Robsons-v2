@@ -487,13 +487,13 @@ function ObsIndexForm() {
     <div className="flex flex-col items-center justify-center h-screen">
       <ToastContainer />
       {pid && (
-        <div className="bg-white shadow-2xl rounded-lg lg:w-[450px]">
-          <div className="bg-gradient-to-r from-indigo-100 to-black rounded-t-lg pl-2 py-3">
-            <h2 className="font-space text-2xl relative text-gray-50 opacity-80 hover:opacity-100 font-bold text-center">
-              Patient ID: {pid}
+        
+          <div className="mb-8 flex rounded-md border border-blue-300 bg-blue-100 p-2">
+            <h2 className="text-blue-700 text-lg text-center">
+              Editing Patient <b>ID: {pid}</b>
             </h2>
           </div>
-        </div>
+        
       )}
       {isClicked && <Modal group={group} />}
       <div
