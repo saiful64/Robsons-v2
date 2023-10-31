@@ -44,20 +44,20 @@ function ObsIndexForm() {
   const edit = (pdata) => {
     console.log(pdata);
     console.log(pdata.obs_index);
-    
+
     // Date format for baby 1
     var originalDate_b1 = new Date(pdata.b1_date_of_birth);
     var year = originalDate_b1.getUTCFullYear();
-    var month = String(originalDate_b1.getUTCMonth() + 1).padStart(2, '0');
-    var day = String(originalDate_b1.getUTCDate()).padStart(2, '0');
-    var FormattedDate_b1 = day + '-' + month + '-' + year;
+    var month = String(originalDate_b1.getUTCMonth() + 1).padStart(2, "0");
+    var day = String(originalDate_b1.getUTCDate()).padStart(2, "0");
+    var FormattedDate_b1 = day + "-" + month + "-" + year;
 
     // Date format for baby 2
     var originalDate_b2 = new Date(pdata.b1_date_of_birth);
     var year = originalDate_b2.getUTCFullYear();
-    var month = String(originalDate_b2.getUTCMonth() + 1).padStart(2, '0');
-    var day = String(originalDate_b2.getUTCDate()).padStart(2, '0');
-    var FormattedDate_b2 = day + '-' + month + '-' + year;
+    var month = String(originalDate_b2.getUTCMonth() + 1).padStart(2, "0");
+    var day = String(originalDate_b2.getUTCDate()).padStart(2, "0");
+    var FormattedDate_b2 = day + "-" + month + "-" + year;
 
     updateThisOption("patient_id", pdata.patient_id);
     updateThisOption("obs_index", pdata.obs_index);
@@ -448,7 +448,6 @@ function ObsIndexForm() {
   };
 
   const updateForms = () => {
-
     if (
       formData[formIndex]?.title === "labour" &&
       selectedOptions["labour"] === undefined
@@ -459,7 +458,7 @@ function ObsIndexForm() {
     selectedOptions["created_by"] = auth.user;
     selectedOptions["department"] = auth.department;
     axios
-      .post(`${API_BASE_URL}/update-form/${pid}`,selectedOptions)
+      .post(`${API_BASE_URL}/update-form/${pid}`, selectedOptions)
       .then((response) => {
         let groupDetails = response.data;
         if (groupDetails && groupDetails.group) {
@@ -487,10 +486,20 @@ function ObsIndexForm() {
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <ToastContainer />
+      {pid && (
+        <div className="bg-white shadow-2xl rounded-lg lg:w-[450px]">
+          <div className="bg-gradient-to-r from-indigo-100 to-black rounded-t-lg pl-2 py-3">
+            <h2 className="font-space text-2xl relative text-gray-50 opacity-80 hover:opacity-100 font-bold text-center">
+              Patient ID: {pid}
+            </h2>
+          </div>
+        </div>
+      )}
       {isClicked && <Modal group={group} />}
       <div
-        className={` bg-white shadow-2xl rounded-lg lg:w-[450px] ${isClicked ? "hidden" : ""
-          }`}
+        className={` bg-white shadow-2xl rounded-lg lg:w-[450px] ${
+          isClicked ? "hidden" : ""
+        }`}
       >
         <div className=" bg-gradient-to-r from-indigo-100 to-black rounded-t-lg  pl-2 py-3">
           <h2 className="font-space text-2xl relative  text-gray-50 opacity-80 hover:opacity-100 font-bold text-center">
@@ -509,11 +518,12 @@ function ObsIndexForm() {
               <div key={index} className="mb-2">
                 <label
                   key={index}
-                  className={`inline-flex text-center border-dashed border-2 border-black px-4 py-2 font-semibold rounded-md w-full  hover:shadow-2xl hover:border-2 hover:bg-gradient-to-br hover:from-gray-900 hover:to-gray-600  hover:text-white bg-slate-100 hover:cursor-pointer text-gray-900 ${option.displayText ===
-                      selectedOptions[formData[formIndex]?.title]
+                  className={`inline-flex text-center border-dashed border-2 border-black px-4 py-2 font-semibold rounded-md w-full  hover:shadow-2xl hover:border-2 hover:bg-gradient-to-br hover:from-gray-900 hover:to-gray-600  hover:text-white bg-slate-100 hover:cursor-pointer text-gray-900 ${
+                    option.displayText ===
+                    selectedOptions[formData[formIndex]?.title]
                       ? "bg-gradient-to-r from-blue-700 via-blue-800 to-gray-900 text-white"
                       : ""
-                    }`}
+                  }`}
                   style={{
                     minWidth: "100px",
                     width: "200px",
@@ -1007,14 +1017,14 @@ function ObsIndexForm() {
           {(formData[formIndex]?.isSubmit ||
             (formData[formIndex]?.title === "labour" &&
               auth.user === "department")) && (
-              <button
-                onClick={pid ? updateForms : submitForms}
-                // onKeyDown={handleKeyDownForSubmit}
-                className="bg-gradient-to-r from-gray-900 to-gray-600 hover:bg-gradient-to-r hover:from-gray-600 hover:to-gray-900 hover:text-white text-gray-200 rounded-md font-bold py-2 px-4 mr-4 ml-auto"
-              >
-                {pid ? "Update" : "Submit"}
-              </button>
-            )}
+            <button
+              onClick={pid ? updateForms : submitForms}
+              // onKeyDown={handleKeyDownForSubmit}
+              className="bg-gradient-to-r from-gray-900 to-gray-600 hover:bg-gradient-to-r hover:from-gray-600 hover:to-gray-900 hover:text-white text-gray-200 rounded-md font-bold py-2 px-4 mr-4 ml-auto"
+            >
+              {pid ? "Update" : "Submit"}
+            </button>
+          )}
         </div>
       </div>
     </div>
