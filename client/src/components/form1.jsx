@@ -43,7 +43,22 @@ function ObsIndexForm() {
 
   const edit = (pdata) => {
     console.log(pdata);
-    console.log(pdata.B1Weight);
+    console.log(pdata.obs_index);
+    
+    // Date format for baby 1
+    var originalDate_b1 = new Date(pdata.b1_date_of_birth);
+    var year = originalDate_b1.getUTCFullYear();
+    var month = String(originalDate_b1.getUTCMonth() + 1).padStart(2, '0');
+    var day = String(originalDate_b1.getUTCDate()).padStart(2, '0');
+    var FormattedDate_b1 = day + '-' + month + '-' + year;
+
+    // Date format for baby 2
+    var originalDate_b2 = new Date(pdata.b1_date_of_birth);
+    var year = originalDate_b2.getUTCFullYear();
+    var month = String(originalDate_b2.getUTCMonth() + 1).padStart(2, '0');
+    var day = String(originalDate_b2.getUTCDate()).padStart(2, '0');
+    var FormattedDate_b2 = day + '-' + month + '-' + year;
+
     updateThisOption("patient_id", pdata.patient_id);
     updateThisOption("obs_index", pdata.obs_index);
     updateThisOption("pog", pdata.pog);
@@ -63,9 +78,9 @@ function ObsIndexForm() {
     updateThisOption("b2_gender", pdata.B2Gender);
     updateThisOption("b1_weight", pdata.B1Weight);
     updateThisOption("b2_weight", pdata.B2Weight);
-    updateThisOption("b1_date_of_birth", pdata.b1_date_of_birth);
+    updateThisOption("b1_date_of_birth", FormattedDate_b1);
     updateThisOption("b1_time_of_birth", pdata.b1_time_of_birth);
-    updateThisOption("b2_date_of_birth", pdata.b2_date_of_birth);
+    updateThisOption("b2_date_of_birth", FormattedDate_b2);
     updateThisOption("b2_time_of_birth", pdata.b2_time_of_birth);
     updateThisOption("b1apgar1", pdata.b1apgar1);
     updateThisOption("b1apgar5", pdata.b1apgar5);
@@ -86,9 +101,9 @@ function ObsIndexForm() {
 
     setPatientId(pdata.patient_id);
     setWeeks(pdata.weeks);
-    setB1DateOfBirth(pdata.b1_date_of_birth);
+    setB1DateOfBirth(FormattedDate_b1);
     setB1TimeOfBirth(pdata.b1_time_of_birth);
-    setB2DateOfBirth(pdata.b2_date_of_birth);
+    setB2DateOfBirth(FormattedDate_b2);
     setB2TimeOfBirth(pdata.b2_time_of_birth);
     setB1Apgar1(pdata.b1apgar1);
     setB1Apgar5(pdata.b1apgar5);
@@ -96,6 +111,28 @@ function ObsIndexForm() {
     setB2Apgar5(pdata.b2apgar5);
     setB1Weight(parseInt(pdata.B1Weight, 10));
     setB2Weight(parseInt(pdata.B2Weight, 10));
+
+    const indicationValues = [
+      "Failed induction",
+      "Failed ECV",
+      "Doubtful scar",
+      "Scar dehiscence",
+      "Rupture uterus",
+      "Maternal indication",
+      "Abruptio placentae",
+      "Placenta previa",
+      "Multiple pregnancy",
+      "Cephalopelvic disproportion",
+      "Cord prolapse",
+      "Failed to ripen cervix",
+      "Fetal distress",
+      "Breech presentation",
+    ];
+
+    if (!indicationValues.includes(pdata.indication_cesarean)) {
+      setShowTextInput(true);
+      setTextInputValue(pdata.indication_cesarean);
+    }
   };
 
   if (pid) {
@@ -410,16 +447,50 @@ function ObsIndexForm() {
     setSelectedRadioButton(null);
   };
 
-  const updateForms = () => {};
+  const updateForms = () => {
+
+    if (
+      formData[formIndex]?.title === "labour" &&
+      selectedOptions["labour"] === undefined
+    ) {
+      toast.warning("Select any one");
+      return;
+    }
+    selectedOptions["created_by"] = auth.user;
+    selectedOptions["department"] = auth.department;
+    axios
+      .post(`${API_BASE_URL}/update-form/${pid}`,selectedOptions)
+      .then((response) => {
+        let groupDetails = response.data;
+        if (groupDetails && groupDetails.group) {
+          setgroup(groupDetails.group);
+          toast.success("Form Updated Successfully");
+          setIsClicked(true);
+        } else {
+          toast.error("Group Logic Error");
+          setIsClicked(false); // Reset the isClicked state to false in case of error
+        }
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 400) {
+          // Show toast message for 400 (Bad Request) error
+          console.error("Error response:", error.response.data); // Log the error response for debugging
+          toast.warning("Group Logic Error kindly verify it again");
+        } else {
+          // Show toast message for other errors
+          console.error("Unexpected error:", error);
+          toast.error("Unexpected error occurred");
+        }
+      });
+  };
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <ToastContainer />
       {isClicked && <Modal group={group} />}
       <div
-        className={` bg-white shadow-2xl rounded-lg lg:w-[450px] ${
-          isClicked ? "hidden" : ""
-        }`}
+        className={` bg-white shadow-2xl rounded-lg lg:w-[450px] ${isClicked ? "hidden" : ""
+          }`}
       >
         <div className=" bg-gradient-to-r from-indigo-100 to-black rounded-t-lg  pl-2 py-3">
           <h2 className="font-space text-2xl relative  text-gray-50 opacity-80 hover:opacity-100 font-bold text-center">
@@ -438,12 +509,11 @@ function ObsIndexForm() {
               <div key={index} className="mb-2">
                 <label
                   key={index}
-                  className={`inline-flex text-center border-dashed border-2 border-black px-4 py-2 font-semibold rounded-md w-full  hover:shadow-2xl hover:border-2 hover:bg-gradient-to-br hover:from-gray-900 hover:to-gray-600  hover:text-white bg-slate-100 hover:cursor-pointer text-gray-900 ${
-                    option.displayText ===
-                    selectedOptions[formData[formIndex]?.title]
+                  className={`inline-flex text-center border-dashed border-2 border-black px-4 py-2 font-semibold rounded-md w-full  hover:shadow-2xl hover:border-2 hover:bg-gradient-to-br hover:from-gray-900 hover:to-gray-600  hover:text-white bg-slate-100 hover:cursor-pointer text-gray-900 ${option.displayText ===
+                      selectedOptions[formData[formIndex]?.title]
                       ? "bg-gradient-to-r from-blue-700 via-blue-800 to-gray-900 text-white"
                       : ""
-                  }`}
+                    }`}
                   style={{
                     minWidth: "100px",
                     width: "200px",
@@ -472,6 +542,7 @@ function ObsIndexForm() {
                           setShowTextInput(true);
                         } else {
                           setShowTextInput(false);
+                          setTextInputValue(null);
                         }
                       }
                       updateThisOption(
@@ -543,6 +614,13 @@ function ObsIndexForm() {
                 className="border shadow-lg bg-transparent border-gray-400 p-2 w-full rounded-md"
                 value={weeks}
                 placeholder={"Enter Weeks"}
+                onKeyDown={(e) => {
+                  if (e.key === "Backspace" && weeks !== "") {
+                    // If the Backspace key is pressed and the input is not empty, clear it
+                    setWeeks("");
+                    updateThisOption(formData[formIndex]?.title, "");
+                  }
+                }}
                 onChange={(e) => {
                   const newValue = e.target.value;
                   if (/^\d+$/.test(newValue) || newValue === "") {
@@ -738,6 +816,13 @@ function ObsIndexForm() {
                     className="border border-gray-500 px-2 py-1 rounded-md"
                     value={b1Weight}
                     placeholder="Enter Weight in kg"
+                    onKeyDown={(e) => {
+                      if (e.key === "Backspace" && b1Weight !== "") {
+                        // If the Backspace key is pressed and the input is not empty, clear it
+                        setB1Weight("");
+                        updateThisOption(formData[formIndex]?.title, "");
+                      }
+                    }}
                     onChange={(e) => {
                       const newValue = e.target.value;
                       if (/^\d+(\.\d+)?$/.test(newValue) || newValue === "") {
@@ -839,6 +924,13 @@ function ObsIndexForm() {
                       className="border border-gray-500 px-2 py-1 rounded-md"
                       value={b2Weight}
                       placeholder="Enter Weight in kg"
+                      onKeyDown={(e) => {
+                        if (e.key === "Backspace" && b2Weight !== "") {
+                          // If the Backspace key is pressed and the input is not empty, clear it
+                          setB2Weight("");
+                          updateThisOption(formData[formIndex]?.title, "");
+                        }
+                      }}
                       onChange={(e) => {
                         const newValue = e.target.value;
                         if (/^\d+(\.\d+)?$/.test(newValue) || newValue === "") {
@@ -915,14 +1007,14 @@ function ObsIndexForm() {
           {(formData[formIndex]?.isSubmit ||
             (formData[formIndex]?.title === "labour" &&
               auth.user === "department")) && (
-            <button
-              onClick={pid ? updateForms : submitForms}
-              // onKeyDown={handleKeyDownForSubmit}
-              className="bg-gradient-to-r from-gray-900 to-gray-600 hover:bg-gradient-to-r hover:from-gray-600 hover:to-gray-900 hover:text-white text-gray-200 rounded-md font-bold py-2 px-4 mr-4 ml-auto"
-            >
-              {pid ? "Update" : "Submit"}
-            </button>
-          )}
+              <button
+                onClick={pid ? updateForms : submitForms}
+                // onKeyDown={handleKeyDownForSubmit}
+                className="bg-gradient-to-r from-gray-900 to-gray-600 hover:bg-gradient-to-r hover:from-gray-600 hover:to-gray-900 hover:text-white text-gray-200 rounded-md font-bold py-2 px-4 mr-4 ml-auto"
+              >
+                {pid ? "Update" : "Submit"}
+              </button>
+            )}
         </div>
       </div>
     </div>

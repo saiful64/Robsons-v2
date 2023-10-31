@@ -124,7 +124,7 @@ app.get("/api/patient-details/:patient_id", (req, res) => {
   const { patient_id } = req.params;
 
   const sql =
-    "SELECT patient_id,obs_index,weeks,pog,previous_cesarean,fetus_type,presentation_single,presentation_twin,Labour,ripening,induced_augmented,delivery,indication_ovd,indication_caesarean,Stage,B1Gender,B1Weight,B2Gender,B2Weight,b1apgar1,b1apgar5,b2apgar1,b2apgar5,b1outcome,b2outcome,indication,b1final_outcome,b2final_outcome,indication_for_induction,b1_date_of_birth,b1_time_of_birth,b2_date_of_birth,b2_time_of_birth,group_name,created_by,created_on,review FROM robsonsdata WHERE patient_id = ?";
+    "SELECT patient_id,obs_index,weeks,pog,previous_cesarean,fetus_type,presentation_single,presentation_twin,Labour,ripening,induced_augmented,delivery,indication_ovd,indication_cesarean,Stage,B1Gender,B1Weight,B2Gender,B2Weight,b1apgar1,b1apgar5,b2apgar1,b2apgar5,b1outcome,b2outcome,indication,b1final_outcome,b2final_outcome,indication_for_induction,b1_date_of_birth,b1_time_of_birth,b2_date_of_birth,b2_time_of_birth,group_name,created_by,created_on,review FROM robsonsdata WHERE patient_id = ?";
 
   con.query(sql, [patient_id], (err, results) => {
     if (err) {
@@ -271,7 +271,7 @@ app.post("/submit-form", (req, res) => {
 		induced_augmented,
 		delivery,
 		indication_ovd,
-		indication_caesarean,
+		indication_cesarean,
 		Stage,
 		B1Gender,
 		B1Weight,
@@ -313,9 +313,9 @@ app.post("/submit-form", (req, res) => {
 		${data.indication_cesarean ? `"${data.indication_cesarean}"` : null},
 		${data.stage ? `"${data.stage}"` : null},
 		${data.b1_gender ? `"${data.b1_gender}"` : null},
-		${data.b1_weight ? `"${data.b1_weight} kg"` : null},
+		${data.b1_weight ? `"${data.b1_weight}"` : null},
 		${data.b2_gender ? `"${data.b2_gender}"` : null},
-		${data.b2_weight ? `"${data.b2_weight} kg"` : null},
+		${data.b2_weight ? `"${data.b2_weight}"` : null},
 		${data.b1apgar1 ? `"${data.b1apgar1}"` : null},
 		${data.b1apgar5 ? `"${data.b1apgar5}"` : null},
 		${data.b1outcome ? `"${data.b1outcome}"` : null},
@@ -362,6 +362,185 @@ app.post("/submit-form", (req, res) => {
     };
     res.status(200).send(responseData);
   });
+});
+
+app.post("/update-form/:pid", (req,res) => {
+   
+    const { pid } = req.params;
+   
+    let data = req.body;
+    console.log(data);
+    console.log(data.weeks);
+    let actualPreviousCesarean;
+   
+     actualPreviousCesarean = req.body.previous_cesarean;
+  
+    data.previous_cesarean =
+      Number(data.previous_cesarean) > 0 ? "true" : "false";
+      
+    let pog;
+    if (data.weeks < 36) {
+      pog = "<36";
+    } else {
+      pog = ">36";
+    }
+
+    let group;
+
+  if (
+    data.obs_index === "Primi" &&
+    data.previous_cesarean === "false" &&
+    data.fetus_type === "Single" &&
+    data.presentation_single === "Cephalic" &&
+    data.labour === "Spontaneous" &&
+    pog === ">36"
+  ) {
+    group = "Group 1";
+  } else if (
+    data.obs_index === "Primi" &&
+    data.previous_cesarean === "false" &&
+    data.fetus_type === "Single" &&
+    data.presentation_single === "Cephalic" &&
+    (data.labour === "Pre Labour" || data.labour === "Induction of Labor") &&
+    pog === ">36"
+  ) {
+    group = "Group 2";
+  } else if (
+    data.obs_index === "Multi" &&
+    data.previous_cesarean === "false" &&
+    data.fetus_type === "Single" &&
+    data.presentation_single === "Cephalic" &&
+    data.labour === "Spontaneous" &&
+    pog === ">36"
+  ) {
+    group = "Group 3";
+  } else if (
+    data.obs_index === "Multi" &&
+    data.previous_cesarean === "false" &&
+    data.fetus_type === "Single" &&
+    data.presentation_single === "Cephalic" &&
+    (data.labour === "Induction of Labor" || data.labour === "Pre Labour") &&
+    pog === ">36"
+  ) {
+    group = "Group 4";
+  } else if (
+    data.previous_cesarean === "true" &&
+    data.fetus_type === "Single" &&
+    data.presentation_single === "Cephalic" &&
+    pog === ">36"
+  ) {
+    group = "Group 5";
+  } else if (
+    data.obs_index === "Primi" &&
+    data.fetus_type === "Single" &&
+    data.presentation_single === "Breech"
+  ) {
+    group = "Group 6";
+  } else if (
+    data.obs_index === "Multi" &&
+    data.fetus_type === "Single" &&
+    data.presentation_single === "Breech"
+  ) {
+    group = "Group 7";
+  } else if (data.fetus_type === "Twins") {
+    group = "Group 8";
+  } else if (
+    data.fetus_type === "Single" &&
+    data.presentation_single === "Transverse"
+  ) {
+    group = "Group 9";
+  } else if (
+    data.fetus_type === "Single" &&
+    data.presentation_single === "Cephalic" &&
+    pog === "<36"
+  ) {
+    group = "Group 10";
+  } else {
+    let err = true;
+    console.error("Error in group logics");
+    res.status(400).send({ message: "Group Logic Error" });
+    return;
+  }
+    let newdata_b1 = new Date(data.b1_date_of_birth);
+
+    let b1_date_of_birth = newdata_b1.toISOString().slice(0,10);
+    let newdata_b2 = new Date(data.b2_date_of_birth);
+
+    let b2_date_of_birth = newdata_b2.toISOString().slice(0,10);
+    const sql = `UPDATE robsonsdata
+    SET
+    obs_index = ${data.obs_index ? `"${data.obs_index}"` : null},
+    weeks = ${data.weeks ? `"${data.weeks}"` : null},
+    pog = ${pog ? `"${pog}"` : null},
+    previous_cesarean = ${actualPreviousCesarean ? `"${actualPreviousCesarean}"` : null},
+    fetus_type = ${data.fetus_type ? `"${data.fetus_type}"` : null},
+    presentation_single = ${data.presentation_single ? `"${data.presentation_single}"` : null},
+    presentation_twin = ${data.presentation_twin ? `"${data.presentation_twin}"` : null},
+    Labour = ${data.labour ? `"${data.labour}"` : null},
+    ripening = ${data.ripening ? `"${data.ripening}"` : null},
+    induced_augmented = ${data.induced_augmented ? `"${data.induced_augmented}"` : null},
+    delivery = ${data.delivery ? `"${data.delivery}"` : null},
+    indication_ovd = ${data.indication_ovd ? `"${data.indication_ovd}"` : null},
+    indication_cesarean = ${data.indication_cesarean ? `"${data.indication_cesarean}"` : null},
+    Stage = ${data.stage ? `"${data.stage}"` : null},
+    B1Gender = ${data.b1_gender ? `"${data.b1_gender}"` : null},
+    B1Weight = ${data.b1_weight ? `"${data.b1_weight}"` : null},
+    B2Gender = ${data.b2_gender ? `"${data.b2_gender}"` : null},
+    B2Weight = ${data.b2_weight ? `"${data.b2_weight}"` : null},
+    b1apgar1 = ${data.b1apgar1 ? `"${data.b1apgar1}"` : null},
+    b1apgar5 = ${data.b1apgar5 ? `"${data.b1apgar5}"` : null},
+    b1outcome = ${data.b1outcome ? `"${data.b1outcome}"` : null},
+    b2apgar1 = ${data.b2apgar1 ? `"${data.b2apgar1}"` : null},
+    b2apgar5 = ${data.b2apgar5 ? `"${data.b2apgar5}"` : null},
+    b2outcome = ${data.b2outcome ? `"${data.b2outcome}"` : null},
+    indication = ${data.indication ? `"${data.indication}"` : null},
+    b1final_outcome = ${data.b1final_outcome ? `"${data.b1final_outcome}"` : null},
+    b2final_outcome = ${data.b2final_outcome ? `"${data.b2final_outcome}"` : null},
+    indication_for_induction = ${data.indication_for_induction ? `"${data.indication_for_induction}"` : null},
+    b1_date_of_birth = ${data.b1_date_of_birth ? `"${b1_date_of_birth}"` : null},
+    b1_time_of_birth = ${data.b1_time_of_birth ? `"${data.b1_time_of_birth}"` : null},
+    b2_date_of_birth = ${data.b2_date_of_birth ? `"${b2_date_of_birth}"` : null},
+    b2_time_of_birth = ${data.b2_time_of_birth ? `"${data.b2_time_of_birth}"` : null},
+    group_name = ${group ? `"${group}"` : group},
+    created_by = ${data.created_by ? `"${data.created_by}"` : null},
+    review = ${data.review ? `"${data.review}"` : null},
+    department = ${data.department ? `"${data.department}"` : null}
+WHERE patient_id = "${pid}";` 
+
+
+con.query(sql, (err, result) => {
+  if (err) {
+    console.error("Error while inserting data: ", err);
+    res.status(400).send({ message: "Error while inserting data" });
+    return;
+  }
+  let robsonsId = pid;
+
+  const groupQuery = `UPDATE groups
+  SET
+      group_name = "${group}",
+      created_by = "${data.created_by}",
+      created_on = NOW(),
+      patient_id = "${robsonsId}"
+  WHERE patient_id = "${robsonsId}";`  
+  
+  con.query(groupQuery, (err, result) => {
+    if (err) {
+      console.log("Error while inserting data INTO GROUPS: ", err);
+      res
+        .status(400)
+        .send({ message: "Error while inserting data in groups" });
+      return;
+    }
+  });
+  let responseData = {
+    message: "Data Updated successfully",
+    group: group,
+    formId: robsonsId,
+  };
+  res.status(200).send(responseData);
+});
+
 });
 
 app.post("/api/update-status", (req, res) => {
@@ -502,8 +681,8 @@ app.get("/api/generate-report", (req, res) => {
           indication_ovd: !_.isEmpty(thisRobsonData.indication_ovd)
             ? thisRobsonData.indication_ovd
             : "",
-          indication_caesarean: !_.isEmpty(thisRobsonData.indication_caesarean)
-            ? thisRobsonData.indication_caesarean
+          indication_cesarean: !_.isEmpty(thisRobsonData.indication_cesarean)
+            ? thisRobsonData.indication_cesarean
             : "",
           indication: !_.isEmpty(thisRobsonData.indication)
             ? thisRobsonData.indication
@@ -607,7 +786,7 @@ app.get("/api/generate-report", (req, res) => {
         "b2apgar5",
         "b2outcome",
         "indication_ovd",
-        "indication_caesarean",
+        "indication_cesarean",
         "indication",
         "b1final_outcome",
         "b2final_outcome",
