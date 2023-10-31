@@ -487,13 +487,13 @@ function ObsIndexForm() {
     <div className="flex flex-col items-center justify-center h-screen">
       <ToastContainer />
       {pid && (
-        <div className="bg-white shadow-2xl rounded-lg lg:w-[450px]">
-          <div className="bg-gradient-to-r from-indigo-100 to-black rounded-t-lg pl-2 py-3">
-            <h2 className="font-space text-2xl relative text-gray-50 opacity-80 hover:opacity-100 font-bold text-center">
-              Patient ID: {pid}
+        
+          <div className="mb-8 flex rounded-md border border-blue-300 bg-blue-100 p-2">
+            <h2 className="text-blue-700 text-lg text-center">
+              Editing Patient <b>ID: {pid}</b>
             </h2>
           </div>
-        </div>
+        
       )}
       {isClicked && <Modal group={group} />}
       <div
@@ -697,7 +697,7 @@ function ObsIndexForm() {
                 {selectedOptions.fetus_type == "Twins" && (
                   <>
                     <div className="border-l border-gray-300 h-64 mx-6"></div>
-                    <div className="flex flex-col mb-2 p-2 mx-6">
+                    <div className="flex flex-col mb-2 p-2 mr-6">
                       <p className="font-semibold">Baby 2 Details</p>{" "}
                       {/* Add a title for Baby 2 Details */}
                       <p className="m-4">At 1 min: {b2apgar1}</p>
@@ -732,7 +732,7 @@ function ObsIndexForm() {
           )}
         </div>
 
-        <div className=" py-3 px-4 w-80 items-center relative justify-center">
+        <div className=" py-3 px-4 w-full items-center relative justify-center">
           {formData[formIndex]?.type === "textarea" && (
             <div className="flex flex-col mb-4">
               <label htmlFor="message" className="mb-2 text-sm font-bold">
@@ -740,7 +740,7 @@ function ObsIndexForm() {
               </label>
               <textarea
                 id="message"
-                className="border h-28 w-full rounded-lg resize-none p-2 block text-sm text-gray-700 mb-2 border-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="border h-28 rounded-lg resize-none p-2 block text-sm text-gray-700 mb-2 border-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter your text here..."
                 value={textareaValue}
                 onChange={(event) => {

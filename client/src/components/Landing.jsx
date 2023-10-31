@@ -18,7 +18,7 @@ const Landing = () => {
         setTypedText((prevText) => prevText + text[currentIndex]);
         setCurrentIndex((prevIndex) => prevIndex + 1);
       }
-    }, 150); // Adjust the delay between characters (typing speed) as needed.
+    }, 200); // Adjust the delay between characters (typing speed) as needed.
     const cursorTimer = setInterval(() => {
         setCursorVisible((prevCursorVisible) => !prevCursorVisible);
       }, 500);
@@ -37,7 +37,7 @@ const Landing = () => {
               <img src="assets/logo.png" alt="Robson Logo" />
             </div>
           <div>
-            <h1 className="text-white text-4xl font-sans p-4">{typedText}<span className={`cursor ${cursorVisible ? "visible" : "hidden"}`}>|</span></h1>
+            <h1 className="text-white text-4xl font-sans p-4">{typedText}<span className={`cursor ${cursorVisible ? "visible" : "hidden"} text-teal-500`}>|</span></h1>
             <div className="wrapper"><div className="typing-demo"><p className="text-white p-4 mt-1">Streamline obstetric care with our <b>Robson Classification app</b>. JANANAM classifies women into 10 exclusive categories, based on <b>ROBSON</b> 10 group classification. </p>
             </div>
             </div>
@@ -54,7 +54,6 @@ const Landing = () => {
           </div>
           
             <div className="lg:text-start text-center lg:bg-slate-50 w-3/4">
-            
               <h1 className="text-gray-800 font-bold text-2xl bg-gradient-to-tr mb-5 from-[#00828E] to-[#003152] bg-clip-text text-transparent ">Get Started!</h1>
               <p className="hidden lg:block text-sm font-normal text-gray-600 mb-7 ">Welcome Back</p>
               <div className="">
