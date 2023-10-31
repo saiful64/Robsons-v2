@@ -118,7 +118,7 @@ const PatientLog = () => {
     <>
       <ToastContainer />
       <div className="flex items-center justify-center h-screen">
-        <div className="bg-white p-6 rounded-lg shadow-md w-96">
+        <div className="bg-white p-6 rounded-lg shadow-xl w-96 lg:w-[450px]">
           <h1 className="text-3xl font-bold mb-4 text-center">Patient Log</h1>
           <div className="mb-4">
             <input
@@ -149,19 +149,19 @@ const PatientLog = () => {
                     </td>
                     <td className="border px-4 py-2 text-right">
                       <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-2 py-1 rounded-md mr-2"
+                        className="border border-blue-300 bg-blue-100 font-bold text-blue-700 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-blue-50 disabled:opacity-30  px-2 py-1 rounded-md"
                         onClick={() => handleEditClick(patient)}
                       >
                         Edit
                       </button>
                       <button
-                        className="bg-green-500 hover:bg-green-700 text-white font-bold px-2 py-1 rounded-md mr-2"
+                        className="border border-green-300 bg-green-100 font-bold text-green-700 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-green-50 disabled:opacity-30  px-2 py-1 rounded-md mx-1 lg:mx-2"
                         onClick={() => handleViewClick(patient)}
                       >
                         View
                       </button>
                       <button
-                        className="bg-rose-500 hover:bg-rose-700 text-white font-bold px-2 py-1 rounded-md"
+                        className="border border-red-300 bg-red-100 font-bold  text-red-700 shadow-sm hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 disabled:hover:bg-red-100 px-2 py-1 rounded-md lg:mr-2"
                         onClick={() => handleDeleteClick(patient)}
                       >
                         Delete

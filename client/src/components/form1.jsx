@@ -722,7 +722,7 @@ function ObsIndexForm() {
           )}
         </div>
 
-        <div className=" py-3 px-4 w-80 items-center relative justify-center">
+        <div className=" py-3 px-4 w-full items-center relative justify-center">
           {formData[formIndex]?.type === "textarea" && (
             <div className="flex flex-col mb-4">
               <label htmlFor="message" className="mb-2 text-sm font-bold">
@@ -730,7 +730,7 @@ function ObsIndexForm() {
               </label>
               <textarea
                 id="message"
-                className="border h-28 w-full rounded-lg resize-none p-2 block text-sm text-gray-700 mb-2 border-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="border h-28 rounded-lg resize-none p-2 block text-sm text-gray-700 mb-2 border-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter your text here..."
                 value={textareaValue}
                 onChange={(event) => {
