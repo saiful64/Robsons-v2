@@ -13,7 +13,7 @@ function HomeView() {
 					{ text: "CHARTS", action: () => navigate("/dashboard") },
 					{ text: "ANALYSIS", action: () => navigate("/generate-status") },
 					{ text: "PATIENT LOG", action: () => navigate("/patientlog") },
-					{ text: "UPLOAD EXCEL FILE", action: () => navigate("/upload-xlsx") },
+					//{ text: "UPLOAD EXCEL FILE", action: () => navigate("/upload-xlsx") },
 					{
 						text: "DOWNLOAD EXCEL DATA",
 						action: () => navigate("/generate-excel-sheet"),

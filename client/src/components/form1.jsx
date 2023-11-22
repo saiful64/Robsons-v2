@@ -143,7 +143,7 @@ function ObsIndexForm() {
         .get(apiUrl)
         .then((response) => {
           const pdata = response.data;
-
+          if (formData[formIndex]?.title === "obs_index") console.log("hi");
           setFormIndex(1);
           setPrevFormIndex(-1);
           edit(pdata);
@@ -487,13 +487,11 @@ function ObsIndexForm() {
     <div className="flex flex-col items-center justify-center h-screen">
       <ToastContainer />
       {pid && (
-        
-          <div className="mb-8 flex rounded-md border border-blue-300 bg-blue-100 p-2">
-            <h2 className="text-blue-700 text-lg text-center">
-              Editing Patient <b>ID: {pid}</b>
-            </h2>
-          </div>
-        
+        <div className="mb-8 flex rounded-md border border-blue-300 bg-blue-100 p-2">
+          <h2 className="text-blue-700 text-lg text-center">
+            Editing Patient <b>ID: {pid}</b>
+          </h2>
+        </div>
       )}
       {isClicked && <Modal group={group} />}
       <div
@@ -975,15 +973,15 @@ function ObsIndexForm() {
         </div>
         {/* navigation buttons */}
         <div className="mt-2 mb-2 py-2 flex rounded-b-lg bg-white ">
-          {!formData[formIndex]?.showPrevious && (
+          {(!formData[formIndex]?.showPrevious ||
+          (pid && formData[formIndex]?.title == "obs_index")) ? (
             <button
               onClick={goHome}
               className="bg-gradient-to-r from-gray-200 via-gray-400 to-gray-600 hover:bg-gradient-to-r hover:from-gray-200  hover:text-gray-900 hover:to-gray-400 text-gray-800  rounded-md font-bold py-2 px-4 ml-4 mr-auto"
             >
               Home
             </button>
-          )}
-          {formData[formIndex]?.showPrevious && (
+          ) : (
             <button
               onClick={goToPreviousForm}
               className="bg-gradient-to-r from-gray-200 via-gray-400 to-gray-600 hover:bg-gradient-to-r hover:from-gray-200  hover:text-gray-900 hover:to-gray-400 text-gray-800  rounded-md font-bold py-2 px-4 ml-4 mr-auto"
