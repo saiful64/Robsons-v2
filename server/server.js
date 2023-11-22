@@ -364,28 +364,27 @@ app.post("/submit-form", (req, res) => {
   });
 });
 
-app.post("/update-form/:pid", (req,res) => {
-   
-    const { pid } = req.params;
-   
-    let data = req.body;
-    console.log(data);
-    console.log(data.weeks);
-    let actualPreviousCesarean;
-   
-     actualPreviousCesarean = req.body.previous_cesarean;
-  
-    data.previous_cesarean =
-      Number(data.previous_cesarean) > 0 ? "true" : "false";
-      
-    let pog;
-    if (data.weeks < 36) {
-      pog = "<36";
-    } else {
-      pog = ">36";
-    }
+app.post("/update-form/:pid", (req, res) => {
+  const { pid } = req.params;
 
-    let group;
+  let data = req.body;
+  console.log(data);
+  console.log(data.weeks);
+  let actualPreviousCesarean;
+
+  actualPreviousCesarean = req.body.previous_cesarean;
+
+  data.previous_cesarean =
+    Number(data.previous_cesarean) > 0 ? "true" : "false";
+
+  let pog;
+  if (data.weeks < 36) {
+    pog = "<36";
+  } else {
+    pog = ">36";
+  }
+
+  let group;
 
   if (
     data.obs_index === "Primi" &&
@@ -461,27 +460,37 @@ app.post("/update-form/:pid", (req,res) => {
     res.status(400).send({ message: "Group Logic Error" });
     return;
   }
-    let newdata_b1 = new Date(data.b1_date_of_birth);
+  let newdata_b1 = new Date(data.b1_date_of_birth);
 
-    let b1_date_of_birth = newdata_b1.toISOString().slice(0,10);
-    let newdata_b2 = new Date(data.b2_date_of_birth);
+  let b1_date_of_birth = newdata_b1.toISOString().slice(0, 10);
+  let newdata_b2 = new Date(data.b2_date_of_birth);
 
-    let b2_date_of_birth = newdata_b2.toISOString().slice(0,10);
-    const sql = `UPDATE robsonsdata
+  let b2_date_of_birth = newdata_b2.toISOString().slice(0, 10);
+  const sql = `UPDATE robsonsdata
     SET
     obs_index = ${data.obs_index ? `"${data.obs_index}"` : null},
     weeks = ${data.weeks ? `"${data.weeks}"` : null},
     pog = ${pog ? `"${pog}"` : null},
-    previous_cesarean = ${actualPreviousCesarean ? `"${actualPreviousCesarean}"` : null},
+    previous_cesarean = ${
+      actualPreviousCesarean ? `"${actualPreviousCesarean}"` : null
+    },
     fetus_type = ${data.fetus_type ? `"${data.fetus_type}"` : null},
-    presentation_single = ${data.presentation_single ? `"${data.presentation_single}"` : null},
-    presentation_twin = ${data.presentation_twin ? `"${data.presentation_twin}"` : null},
+    presentation_single = ${
+      data.presentation_single ? `"${data.presentation_single}"` : null
+    },
+    presentation_twin = ${
+      data.presentation_twin ? `"${data.presentation_twin}"` : null
+    },
     Labour = ${data.labour ? `"${data.labour}"` : null},
     ripening = ${data.ripening ? `"${data.ripening}"` : null},
-    induced_augmented = ${data.induced_augmented ? `"${data.induced_augmented}"` : null},
+    induced_augmented = ${
+      data.induced_augmented ? `"${data.induced_augmented}"` : null
+    },
     delivery = ${data.delivery ? `"${data.delivery}"` : null},
     indication_ovd = ${data.indication_ovd ? `"${data.indication_ovd}"` : null},
-    indication_cesarean = ${data.indication_cesarean ? `"${data.indication_cesarean}"` : null},
+    indication_cesarean = ${
+      data.indication_cesarean ? `"${data.indication_cesarean}"` : null
+    },
     Stage = ${data.stage ? `"${data.stage}"` : null},
     B1Gender = ${data.b1_gender ? `"${data.b1_gender}"` : null},
     B1Weight = ${data.b1_weight ? `"${data.b1_weight}"` : null},
@@ -494,53 +503,67 @@ app.post("/update-form/:pid", (req,res) => {
     b2apgar5 = ${data.b2apgar5 ? `"${data.b2apgar5}"` : null},
     b2outcome = ${data.b2outcome ? `"${data.b2outcome}"` : null},
     indication = ${data.indication ? `"${data.indication}"` : null},
-    b1final_outcome = ${data.b1final_outcome ? `"${data.b1final_outcome}"` : null},
-    b2final_outcome = ${data.b2final_outcome ? `"${data.b2final_outcome}"` : null},
-    indication_for_induction = ${data.indication_for_induction ? `"${data.indication_for_induction}"` : null},
-    b1_date_of_birth = ${data.b1_date_of_birth ? `"${b1_date_of_birth}"` : null},
-    b1_time_of_birth = ${data.b1_time_of_birth ? `"${data.b1_time_of_birth}"` : null},
-    b2_date_of_birth = ${data.b2_date_of_birth ? `"${b2_date_of_birth}"` : null},
-    b2_time_of_birth = ${data.b2_time_of_birth ? `"${data.b2_time_of_birth}"` : null},
+    b1final_outcome = ${
+      data.b1final_outcome ? `"${data.b1final_outcome}"` : null
+    },
+    b2final_outcome = ${
+      data.b2final_outcome ? `"${data.b2final_outcome}"` : null
+    },
+    indication_for_induction = ${
+      data.indication_for_induction
+        ? `"${data.indication_for_induction}"`
+        : null
+    },
+    b1_date_of_birth = ${
+      data.b1_date_of_birth ? `"${b1_date_of_birth}"` : null
+    },
+    b1_time_of_birth = ${
+      data.b1_time_of_birth ? `"${data.b1_time_of_birth}"` : null
+    },
+    b2_date_of_birth = ${
+      data.b2_date_of_birth ? `"${b2_date_of_birth}"` : null
+    },
+    b2_time_of_birth = ${
+      data.b2_time_of_birth ? `"${data.b2_time_of_birth}"` : null
+    },
     group_name = ${group ? `"${group}"` : group},
     created_by = ${data.created_by ? `"${data.created_by}"` : null},
     review = ${data.review ? `"${data.review}"` : null},
     department = ${data.department ? `"${data.department}"` : null}
-WHERE patient_id = "${pid}";` 
+WHERE patient_id = "${pid}";`;
 
+  con.query(sql, (err, result) => {
+    if (err) {
+      console.error("Error while inserting data: ", err);
+      res.status(400).send({ message: "Error while inserting data" });
+      return;
+    }
+    let robsonsId = pid;
 
-con.query(sql, (err, result) => {
-  if (err) {
-    console.error("Error while inserting data: ", err);
-    res.status(400).send({ message: "Error while inserting data" });
-    return;
-  }
-  let robsonsId = pid;
-
-  const groupQuery = `UPDATE groups
+    const groupQuery = `UPDATE groups
   SET
       group_name = "${group}",
       created_by = "${data.created_by}",
       created_on = NOW(),
       patient_id = "${robsonsId}"
-  WHERE patient_id = "${robsonsId}";`  
-  
-  con.query(groupQuery, (err, result) => {
-    if (err) {
-      console.log("Error while inserting data INTO GROUPS: ", err);
-      res
-        .status(400)
-        .send({ message: "Error while inserting data in groups" });
-      return;
-    }
-  });
-  let responseData = {
-    message: "Data Updated successfully",
-    group: group,
-    formId: robsonsId,
-  };
-  res.status(200).send(responseData);
-});
+  WHERE patient_id = "${robsonsId}";`;
 
+    con.query(groupQuery, (err, result) => {
+      if (err) {
+        console.log("Error while inserting data INTO GROUPS: ", err);
+        res
+          .status(400)
+          .send({ message: "Error while inserting data in groups" });
+        return;
+      }
+    });
+    let responseData = {
+      message: "Data Updated successfully",
+      group: group,
+      formId: robsonsId,
+    };
+    res.status(200).send(responseData);
+  });
 });
 
 app.post("/api/update-status", (req, res) => {
@@ -1230,8 +1253,8 @@ app.get("/api/generate-status-init", async (req, res) => {
     let statusData = {};
 
     const query = `
-		SELECT * FROM \`groups\` WHERE department = '${department}';
-		SELECT * FROM robsonsdata WHERE delivery="Cesarean" AND department = '${department}';
+		SELECT * FROM \`groups\`;
+		SELECT * FROM robsonsdata WHERE delivery="Cesarean";
 	  `;
     con.query(query, async (error, result) => {
       if (error) {
