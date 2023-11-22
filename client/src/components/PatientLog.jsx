@@ -85,7 +85,7 @@ const PatientLog = () => {
           toast.success(
             `Patient with ID : ${patient_id} deleted successfully.`
           );
-          fetchPatients();
+          fetchPatients(auth.department);
         } else {
           toast.error(`Error deleting patient with ID ${patient_id}.`);
         }
