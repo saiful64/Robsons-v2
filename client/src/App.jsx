@@ -1,27 +1,24 @@
-import { useState } from "react";
-import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LoginAuthView from "../src/components/loginAuthView";
-import HomeView from "./components/home-view";
-import Register from "./components/Register";
-import ObsIndexForm from "../src/components/form1";
-import GenerateExcelSheet from "../src/components/generate-report-view";
-import GenerateStatus from "../src/components/generate-status-view";
-import LineChartComponent from "../src/components/lineChart";
-import UploadXlsx from "../src/components/uploadXlsx";
-import GraphContainer from "./components/dashboard";
-import MyChartComponent from "./components/barchart";
-import { AuthProvider } from "../src/components/auth";
-import ProtectedRoute from "../src/components/requiredAuth";
-import "react-datetime/css/react-datetime.css";
-import "react-date-range/dist/styles.css"; // main css file for date-range
-import "react-date-range/dist/theme/default.css"; // theme css file date-range
-import PatientLog from "./components/PatientLog";
-import PatientDetails from "./components/PatientDetails";
-import Landing from "./components/Landing";
+import "./App.css"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import LoginAuthView from "../src/components/LoginAuthView"
+import HomeView from "./components/HomeView"
+import Register from "./components/Register"
+import ObsIndexForm from "../src/components/form1"
+import GenerateExcelSheet from "../src/components/GenerateReportView"
+import GenerateStatus from "../src/components/GenerateStatus"
+import LineChartComponent from "../src/components/LineChartComponent"
+import UploadXlsx from "../src/components/uploadXlsx"
+import GraphContainer from "./components/MultiGraphComponent"
+import MyChartComponent from "./components/MyChartComponent"
+import { AuthProvider } from "./auth/auth"
+import ProtectedRoute from "./auth/requiredAuth"
+import "react-datetime/css/react-datetime.css"
+import "react-date-range/dist/styles.css" // main css file for date-range
+import "react-date-range/dist/theme/default.css" // theme css file date-range
+import PatientLog from "./components/PatientLog"
+import PatientDetails from "./components/PatientDetails"
+import Landing from "./components/Landing"
 function App() {
-  const [count, setCount] = useState("");
-
   return (
     <AuthProvider>
       <div className="relative flex max-h-screen flex-col justify-center overflow-hidden bg-gray-50 py-6 sm:py-12">
@@ -145,7 +142,7 @@ function App() {
         </div>
       </div>
     </AuthProvider>
-  );
+  )
 }
 
-export default App;
+export default App

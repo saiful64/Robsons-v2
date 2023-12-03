@@ -1,55 +1,55 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "./auth";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { VscEye, VscEyeClosed } from "react-icons/vsc";
-import API_BASE_URL from "./config";
+import React, { useState } from "react"
+import axios from "axios"
+import { useNavigate } from "react-router-dom"
+import { useAuth } from "../auth/auth"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import { VscEye, VscEyeClosed } from "react-icons/vsc"
+import API_BASE_URL from "../../src/config"
 
 function LoginAuthView(props) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
-  const auth = useAuth();
-  const navigate = useNavigate();
+  const auth = useAuth()
+  const navigate = useNavigate()
 
   const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
+    setUsername(event.target.value)
+  }
 
   const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
+    setPassword(event.target.value)
+  }
 
   const handleSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     let body = {
       username: username,
       password: password,
-    };
+    }
     axios
       .post(`${API_BASE_URL}/auth-login`, body)
       .then((response) => {
-        const { role, department } = response.data;
+        const { role, department } = response.data
 
-        auth.login(role, department);
-        navigate("/home-view");
+        auth.login(role, department)
+        navigate("/home-view")
       })
       .catch((error) => {
         if (error) {
           toast.error("Invalid Credentials", {
             autoClose: 1000,
-          });
+          })
         }
-      });
-  };
+      })
+  }
 
   const footerData = [
     { key: "mainText", displayText: "@ JANANAM, O & G  Dept." },
     { key: "subText", displayText: "Made with 🧡 by MCA students" },
-  ];
+  ]
 
   return (
     <div className="flex flex-col justify-center items-center h-screen overflow-hidden">
@@ -127,7 +127,7 @@ function LoginAuthView(props) {
         ))}
       </div>
     </div>
-  );
+  )
 }
 
-export default LoginAuthView;
+export default LoginAuthView

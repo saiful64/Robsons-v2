@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import API_BASE_URL from "./config";
+import React, { useState } from "react"
+import axios from "axios"
+import { useNavigate } from "react-router-dom"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import API_BASE_URL from "../config"
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -11,28 +11,28 @@ function Register() {
     password: "",
     role: "doctor",
     department: "",
-  });
+  })
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-  };
+    const { name, value } = event.target
+    setFormData({ ...formData, [name]: value })
+  }
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
     try {
-      const response = await axios.post(`${API_BASE_URL}/register`, formData);
-      console.log(response.data);
-      toast.success("Registered Successfully");
-      navigate("/");
+      const response = await axios.post(`${API_BASE_URL}/register`, formData)
+      console.log(response.data)
+      toast.success("Registered Successfully")
+      navigate("/")
     } catch (error) {
-      console.error(error);
-      toast.error("Registration failed. Please try again.");
+      console.error(error)
+      toast.error("Registration failed. Please try again.")
     }
-  };
+  }
 
   return (
     <div className="flex justify-center items-center h-screen">
@@ -122,7 +122,7 @@ function Register() {
         </form>
       </div>
     </div>
-  );
+  )
 }
 
-export default Register;
+export default Register

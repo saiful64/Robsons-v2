@@ -1,118 +1,116 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import API_BASE_URL from "./config";
-import { useNavigate } from "react-router-dom";
-import PatientDetails from "./PatientDetails";
-import DeleteConfirmationDialog from "./DeleteConfirmationDialog";
-import { useAuth } from "./auth";
-import ObsIndexForm from "./form1";
+import React, { useState, useEffect } from "react"
+import axios from "axios"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import API_BASE_URL from "../config"
+import { useNavigate } from "react-router-dom"
+import PatientDetails from "./PatientDetails"
+import DeleteConfirmationDialog from "./DeleteConfirmationDialog"
+import { useAuth } from "../auth/auth"
+import ObsIndexForm from "./form1"
 
 const PatientLog = () => {
-  const [patients, setPatients] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [patientsPerPage] = useState(10);
-  const [patientToDelete, setPatientToDelete] = useState(null);
-  const [patientIdToView, setPatientIdToView] = useState(null);
-  const [isPatientDetailsVisible, setIsPatientDetailsVisible] = useState(false);
+  const [patients, setPatients] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [patientsPerPage] = useState(10)
+  const [patientToDelete, setPatientToDelete] = useState(null)
+  const [patientIdToView, setPatientIdToView] = useState(null)
+  const [isPatientDetailsVisible, setIsPatientDetailsVisible] = useState(false)
   const [isDeleteConfirmationVisible, setIsDeleteConfirmationVisible] =
-    useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const navigate = useNavigate();
-  const auth = useAuth();
+    useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
+  const navigate = useNavigate()
+  const auth = useAuth()
 
   const fetchPatients = (department) => {
     axios
       .get(`${API_BASE_URL}/api/patients?department=${department}`)
       .then((response) => {
         const sortedPatients = response.data.sort((a, b) => {
-          const dateA = new Date(a.created_on);
-          const dateB = new Date(b.created_on);
-          return dateB - dateA;
-        });
-        setPatients(sortedPatients);
+          const dateA = new Date(a.created_on)
+          const dateB = new Date(b.created_on)
+          return dateB - dateA
+        })
+        setPatients(sortedPatients)
       })
       .catch((error) => {
-        console.error("Error fetching patient IDs:", error);
-      });
-  };
+        console.error("Error fetching patient IDs:", error)
+      })
+  }
 
   useEffect(() => {
-    console.log(auth.user);
-    console.log(auth.department);
-    const department = auth.department;
-    fetchPatients(department);
-  }, []);
+    console.log(auth.user)
+    console.log(auth.department)
+    const department = auth.department
+    fetchPatients(department)
+  }, [])
 
-  const indexOfLastPatient = currentPage * patientsPerPage;
-  const indexOfFirstPatient = indexOfLastPatient - patientsPerPage;
+  const indexOfLastPatient = currentPage * patientsPerPage
+  const indexOfFirstPatient = indexOfLastPatient - patientsPerPage
 
   const filteredPatients = patients.filter((patient) =>
     (patient.patient_id || "").toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  )
 
   const currentPatients = filteredPatients.slice(
     indexOfFirstPatient,
     indexOfLastPatient
-  );
+  )
 
   const handleEditClick = (patient) => {
     // Navigate to ObsIndexForm with the patient_id as a route parameter
-    navigate(`/forms/${patient.patient_id}`);
-  };
+    navigate(`/forms/${patient.patient_id}`)
+  }
 
   const handleViewClick = (patient) => {
-    setPatientIdToView(patient.patient_id);
-    setIsPatientDetailsVisible(true);
-  };
+    setPatientIdToView(patient.patient_id)
+    setIsPatientDetailsVisible(true)
+  }
 
   const closePatientDetails = () => {
-    setIsPatientDetailsVisible(false);
-    setPatientIdToView(null);
-  };
+    setIsPatientDetailsVisible(false)
+    setPatientIdToView(null)
+  }
 
   const handleDeleteClick = (patient) => {
-    setPatientToDelete(patient);
-    setIsDeleteConfirmationVisible(true);
-  };
+    setPatientToDelete(patient)
+    setIsDeleteConfirmationVisible(true)
+  }
 
   const confirmDelete = (patient_id) => {
     axios
       .delete(`${API_BASE_URL}/api/patients/${patient_id}`)
       .then((response) => {
         if (response.status === 200) {
-          toast.success(
-            `Patient with ID : ${patient_id} deleted successfully.`
-          );
-          fetchPatients(auth.department);
+          toast.success(`Patient with ID : ${patient_id} deleted successfully.`)
+          fetchPatients(auth.department)
         } else {
-          toast.error(`Error deleting patient with ID ${patient_id}.`);
+          toast.error(`Error deleting patient with ID ${patient_id}.`)
         }
       })
       .catch((error) => {
-        toast.error(`Network error: ${error.message}`);
+        toast.error(`Network error: ${error.message}`)
       })
       .finally(() => {
         setTimeout(() => {
-          setIsDeleteConfirmationVisible(false);
-          setPatientToDelete(null);
-        }, 1000);
-      });
-  };
+          setIsDeleteConfirmationVisible(false)
+          setPatientToDelete(null)
+        }, 1000)
+      })
+  }
 
   const cancelDelete = () => {
-    setIsDeleteConfirmationVisible(false);
-  };
+    setIsDeleteConfirmationVisible(false)
+  }
 
   const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
-    setCurrentPage(1);
-  };
+    setSearchQuery(event.target.value)
+    setCurrentPage(1)
+  }
 
   const navigateHome = () => {
-    navigate("/home-view");
-  };
+    navigate("/home-view")
+  }
 
   return (
     <>
@@ -213,7 +211,7 @@ const PatientLog = () => {
         />
       )}
     </>
-  );
-};
+  )
+}
 
-export default PatientLog;
+export default PatientLog
