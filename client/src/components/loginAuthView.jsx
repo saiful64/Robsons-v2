@@ -47,8 +47,14 @@ function LoginAuthView(props) {
   }
 
   const footerData = [
-    { key: "mainText", displayText: "@ JANANAM, O & G  Dept." },
-    { key: "subText", displayText: "Made with 🧡 by MCA students" },
+    {
+      key: "mainText",
+      displayText: "Developed with 💚 by Pondicherry University MCA students",
+    },
+    {
+      key: "subText",
+      displayText: " in collaboration with JIPMER, O & G Dept.",
+    },
   ]
 
   return (

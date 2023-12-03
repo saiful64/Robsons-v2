@@ -29,8 +29,14 @@ function HomeView() {
   }
 
   const footerData = [
-    { key: "mainText", displayText: "@ JANANAM, O & G Dept." },
-    { key: "subText", displayText: "Made with 🧡 by MCA students" },
+    {
+      key: "mainText",
+      displayText: "Developed with 💚 by Pondicherry University MCA students",
+    },
+    {
+      key: "subText",
+      displayText: " in collaboration with JIPMER, O & G Dept.",
+    },
   ]
 
   return (
@@ -65,12 +71,6 @@ function HomeView() {
                 key={index}
                 onClick={button.action}
                 className="relative mb-4 inline-block text-lg group"
-                style={
-                  {
-                    // backgroundColor:
-                    // 	auth.user === "doctor" ? "#82ca9d" : "#8884d8",
-                  }
-                }
               >
                 <span className="relative z-10 block px-5 py-3 overflow-hidden font-medium leading-tight text-gray-800 transition-colors duration-300 ease-out border-2 border-gray-900 rounded-lg group-hover:text-white">
                   <span className="absolute inset-0 w-full h-full px-5 py-3 rounded-lg bg-gray-50"></span>

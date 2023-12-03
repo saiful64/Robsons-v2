@@ -163,8 +163,14 @@ function ObsIndexForm() {
   }, [])
 
   const footerData = [
-    { key: "mainText", displayText: "@ 2023 JIPMER, O & G  Dept." },
-    { key: "subText", displayText: "Made with 🧡 by PU MCA students" },
+    {
+      key: "mainText",
+      displayText: "Developed with 💚 by Pondicherry University MCA students",
+    },
+    {
+      key: "subText",
+      displayText: " in collaboration with JIPMER, O & G Dept.",
+    },
   ]
 
   const goToPreviousForm = () => {

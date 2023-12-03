@@ -1,23 +1,28 @@
-import "./App.css"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-import LoginAuthView from "../src/components/LoginAuthView"
-import HomeView from "./components/HomeView"
-import Register from "./components/Register"
-import ObsIndexForm from "../src/components/form1"
-import GenerateExcelSheet from "../src/components/GenerateReportView"
-import GenerateStatus from "../src/components/GenerateStatus"
-import LineChartComponent from "../src/components/LineChartComponent"
-import UploadXlsx from "../src/components/uploadXlsx"
-import GraphContainer from "./components/MultiGraphComponent"
-import MyChartComponent from "./components/MyChartComponent"
+import {
+  LoginAuthView,
+  HomeView,
+  Register,
+  ObsIndexForm,
+  GenerateExcelSheet,
+  GenerateStatus,
+  LineChartComponent,
+  UploadXlsx,
+  GraphContainer,
+  MyChartComponent,
+  PatientLog,
+  PatientDetails,
+  Landing,
+} from "./components"
+
 import { AuthProvider } from "./auth/auth"
 import ProtectedRoute from "./auth/requiredAuth"
+
+import "./App.css"
 import "react-datetime/css/react-datetime.css"
 import "react-date-range/dist/styles.css" // main css file for date-range
 import "react-date-range/dist/theme/default.css" // theme css file date-range
-import PatientLog from "./components/PatientLog"
-import PatientDetails from "./components/PatientDetails"
-import Landing from "./components/Landing"
+
 function App() {
   return (
     <AuthProvider>
