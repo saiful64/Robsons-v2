@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom"
 import PatientDetails from "./PatientDetails"
 import DeleteConfirmationDialog from "./DeleteConfirmationDialog"
 import { useAuth } from "../auth/auth"
-import ObsIndexForm from "./form1"
 
 const PatientLog = () => {
   const [patients, setPatients] = useState([])

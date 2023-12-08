@@ -15,13 +15,6 @@ function LoginAuthView(props) {
   const auth = useAuth()
   const navigate = useNavigate()
 
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value)
-  }
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value)
-  }
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -83,7 +76,7 @@ function LoginAuthView(props) {
               type="text"
               id="username"
               value={username}
-              onChange={handleUsernameChange}
+              onChange={(e) => setUsername(e.target.value)}
             />
           </div>
           <div className="mb-4 relative">
@@ -98,7 +91,7 @@ function LoginAuthView(props) {
               type={isPasswordVisible ? "text" : "password"}
               id="password"
               value={password}
-              onChange={handlePasswordChange}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <div
               className="absolute hover:cursor-pointer right-4 top-11"

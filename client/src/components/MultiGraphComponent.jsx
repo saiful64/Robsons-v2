@@ -178,20 +178,6 @@ const MultiGraphComponent = () => {
             <Bar data={barChart} options={chartOptions2} />
           </div>
         </div>
-
-        {/* Second row */}
-        {/* <div className='w-full md:w-auto'>
-					<h2 className='text-sm font-bold mb-4'>To be updated</h2>
-					<div className='bg-white p-4 rounded-lg shadow-md'>
-						<Line data={lineChartData3} />
-					</div>
-				</div>
-				<div className='w-full md:w-auto'>
-					<h2 className='text-sm font-bold mb-4'>To be updated</h2>
-					<div className='bg-white p-4 rounded-lg shadow-md'>
-						<Line data={lineChartData4} />
-					</div>
-				</div> */}
       </div>
       <div className="mt-4 flex justify-center items-center">
         <button

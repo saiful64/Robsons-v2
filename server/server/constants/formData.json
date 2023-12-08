@@ -1,0 +1,329 @@
+{
+  "formData": [
+    {
+      "title": "patient_id",
+      "displayText": "Patient ID",
+      "options": [],
+      "type": "id",
+      "showPrevious": false,
+      "showNext": true
+    },
+
+    {
+      "title": "obs_index",
+      "displayText": "Obs Index",
+      "options": [
+        { "value": "primi", "displayText": "Primi" },
+        { "value": "multi", "displayText": "Multi" }
+      ],
+      "showPrevious": true,
+      "showNext": true,
+      "conditions": []
+    },
+
+    {
+      "title": "previous_cesarean",
+      "displayText": "Previous Cesarean",
+      "options": [
+        { "value": "0", "displayText": "0" },
+        { "value": "1", "displayText": "1" },
+        { "value": "2", "displayText": "2" },
+        { "value": "3", "displayText": "3" }
+      ],
+      "showPrevious": true,
+      "showNext": true
+    },
+
+    {
+      "title": "weeks",
+      "displayText": "Weeks",
+      "options": [],
+      "type": "weeks",
+      "showPrevious": true,
+      "showNext": true
+    },
+
+    {
+      "title": "fetus_type",
+      "displayText": "Fetus Type",
+      "options": [
+        { "value": "single", "displayText": "Single" },
+        { "value": "twins", "displayText": "Twins" }
+      ],
+      "showPrevious": true,
+      "showNext": true,
+      "conditions": []
+    },
+
+    {
+      "title": "presentation_single",
+      "displayText": "Presentation Single Fetus",
+      "options": [
+        { "value": "cephalic", "displayText": "Cephalic" },
+        { "value": "breech", "displayText": "Breech" },
+        { "value": "transverse", "displayText": "Transverse" }
+      ],
+      "showPrevious": true,
+      "showNext": true,
+      "conditions": []
+    },
+
+    {
+      "title": "presentation_twin",
+      "displayText": "Presentation Twin Fetuses",
+      "options": [
+        { "value": "both_cephalic", "displayText": "Both Cephalic" },
+        { "value": "cephalic_breech", "displayText": "Cephalic / Breech" },
+        {
+          "value": "cephalic_transverse",
+          "displayText": "Cephalic / Transverse"
+        },
+        { "value": "both_breech", "displayText": "Both Breech" },
+        { "value": "breech_cephalic", "displayText": "Breech / Cephalic" },
+        { "value": "breech_transverse", "displayText": "Breech / Transverse" }
+      ],
+      "showPrevious": true,
+      "showNext": true
+    },
+
+    {
+      "title": "labour",
+      "displayText": "Labour Type",
+      "options": [
+        { "value": "pre_labour", "displayText": "Pre Labour" },
+        { "value": "spontaneous", "displayText": "Spontaneous" },
+        { "value": "induction_of_labor", "displayText": "Induction of Labor" }
+      ],
+      "showPrevious": true,
+      "showNext": true,
+      "conditions": []
+    },
+
+    {
+      "title": "ripening",
+      "displayText": "Ripening",
+      "options": [
+        { "value": "f", "displayText": "F" },
+        { "value": "easi", "displayText": "EASI" },
+        { "value": "pge1", "displayText": "PGE1" },
+        { "value": "propess", "displayText": "Propess" },
+        { "value": "combina", "displayText": "Combina" },
+        { "value": "oxytoxin", "displayText": "Oxytoxin" },
+        { "value": "arm", "displayText": "ARM" },
+        { "value": "oxyto", "displayText": "Oxyto" },
+        { "value": "others", "displayText": "Others" }
+      ],
+      "showPrevious": true,
+      "showNext": true
+    },
+
+    {
+      "title": "induced_augmented",
+      "displayText": "Induced / Augmented",
+      "options": [
+        { "value": "arm", "displayText": "ARM" },
+        { "value": "oxyto", "displayText": "Oxyto" },
+        { "value": "others", "displayText": "Others" },
+        { "value": "nil", "displayText": "NIL" }
+      ],
+      "showPrevious": true,
+      "showNext": true
+    },
+
+    {
+      "title": "delivery",
+      "displayText": "Delivery",
+      "options": [
+        { "value": "svd", "displayText": "SVD" },
+        { "value": "CS", "displayText": "Cesarean" },
+        { "value": "vacuum", "displayText": "Vacuum" },
+        { "value": "forceps", "displayText": "Forceps" },
+        { "value": "vacuum-lowforceps", "displayText": "Vacuum - Low Forceps" }
+      ],
+      "showPrevious": true,
+      "showNext": true,
+      "conditions": []
+    },
+    {
+      "title": "indication_ovd",
+      "displayText": "Indication for OVD",
+      "options": [
+        { "value": "fetal_distress", "displayText": "Fetal distress" },
+        { "value": "prof_sec", "displayText": "Protracted second stage" },
+        { "value": "mat_exha", "displayText": "Maternal exhaustion" },
+        { "value": "others", "displayText": "Others" }
+      ],
+      "showPrevious": true,
+      "showNext": true
+    },
+    {
+      "title": "indication_cesarean",
+      "displayText": "Indication for Cesarean",
+      "options": [
+        { "value": "fail_ind", "displayText": "Failed induction" },
+        { "value": "fail_ecv", "displayText": "Failed ECV" },
+        { "value": "doubt_scar", "displayText": "Doubtful scar" },
+        { "value": "scardehi", "displayText": "Scar dehiscence" },
+        { "value": "rupture", "displayText": "Rupture uterus" },
+        { "value": "mat_ind", "displayText": "Maternal indication" },
+        { "value": "abruption", "displayText": "Abruptio placentae" },
+        { "value": "place_pre", "displayText": "Placenta previa" },
+        { "value": "map", "displayText": "Multiple pregnancy" },
+        { "value": "cpd", "displayText": "Cephalopelvic disproportion" },
+        { "value": "cp", "displayText": "Cord prolapse" },
+        { "value": "failed_ripe", "displayText": "Failed to ripen cervix" },
+        { "value": "fetal_dist", "displayText": "Fetal distress" },
+        { "value": "breech", "displayText": "Breech presentation" },
+        { "value": "others", "displayText": "Others" }
+      ],
+      "showPrevious": true,
+      "showNext": true
+    },
+
+    {
+      "title": "stage",
+      "displayText": "Stage for Cesarean",
+      "options": [
+        { "value": "i_stage", "displayText": "I Stage" },
+        { "value": "ii_stage", "displayText": "II Stage" },
+        { "value": "pre_labour", "displayText": "Pre Labour" }
+      ],
+      "showPrevious": true,
+      "showNext": true
+    },
+
+    {
+      "title": "b1_gender",
+      "displayText": "Details of Baby 1",
+      "options": [
+        { "value": "female", "displayText": "Female" },
+        { "value": "male", "displayText": "Male" },
+        { "value": "ind_sex", "displayText": "Indeterminate sex" }
+      ],
+      "b1_dateOfBirth": "b1_date_of_birth",
+      "b1_timeOfBirth": "b1_time_of_birth",
+      "b1": true,
+      "showPrevious": true,
+      "showNext": true
+    },
+    {
+      "title": "b2_gender",
+      "displayText": "Details of Baby 2",
+      "options": [
+        { "value": "female", "displayText": "Female" },
+        { "value": "male", "displayText": "Male" },
+        { "value": "ind_sex", "displayText": "Indeterminate sex" }
+      ],
+      "b2_dateOfBirth": "b2_date_of_birth",
+      "b2_timeOfBirth": "b2_time_of_birth",
+      "b2": true,
+      "showPrevious": true,
+      "showNext": true
+    },
+
+    {
+      "title": "apgar",
+      "displayText": "APGAR",
+      "options": [],
+      "type": "twoInputs",
+      "showPrevious": true,
+      "showNext": true
+    },
+    {
+      "title": "b1outcome",
+      "displayText": "Outcome for Baby 1",
+      "options": [
+        { "value": "m_s", "displayText": "M/S" },
+        { "value": "lr", "displayText": "LR" },
+        { "value": "nicu", "displayText": "NICU" },
+        { "value": "sb", "displayText": "SB" }
+      ],
+      "conditions": [],
+      "showPrevious": true,
+      "showNext": true
+    },
+    {
+      "title": "b2outcome",
+      "displayText": "Outcome for Baby 2",
+      "options": [
+        { "value": "m_s", "displayText": "M/S" },
+        { "value": "lr", "displayText": "LR" },
+        { "value": "nicu", "displayText": "NICU" },
+        { "value": "sb", "displayText": "SB" }
+      ],
+      "conditions": [],
+      "showPrevious": true,
+      "showNext": true
+    },
+    {
+      "title": "indication",
+      "displayText": "Indication",
+      "options": [
+        { "value": "res_dis", "displayText": "Respiratory distress" },
+        { "value": "low_apgar", "displayText": "Low APGAR" },
+        { "value": "preterm", "displayText": "Preterm" },
+        { "value": "others", "displayText": "Others" }
+      ],
+      "showPrevious": true,
+      "showNext": true
+    },
+    {
+      "title": "b1final_outcome",
+      "displayText": "Final Outcome of Baby 1",
+      "options": [
+        { "value": "hiei", "displayText": "HIE I" },
+        { "value": "hieiii", "displayText": "HIE III" },
+        { "value": "m_s", "displayText": "M/S" },
+        { "value": "expired", "displayText": "Expired" },
+        { "value": "lama", "displayText": "LAMA" },
+        { "value": "sepsis", "displayText": "Sepsis" }
+      ],
+      "showPrevious": true,
+      "showNext": true
+    },
+    {
+      "title": "b2final_outcome",
+      "displayText": "Final Outcome of Baby 2",
+      "options": [
+        { "value": "hiei", "displayText": "HIE I" },
+        { "value": "hieiii", "displayText": "HIE III" },
+        { "value": "m_s", "displayText": "M/S" },
+        { "value": "expired", "displayText": "Expired" },
+        { "value": "lama", "displayText": "LAMA" },
+        { "value": "sepsis", "displayText": "Sepsis" }
+      ],
+      "showPrevious": true,
+      "showNext": true
+    },
+    {
+      "title": "indication_for_induction",
+      "displayText": "Indication for Induction",
+      "options": [
+        { "value": "past_dates", "displayText": "Past Dates" },
+        { "value": "oligo", "displayText": "Oligo" },
+        { "value": "fgr", "displayText": "FGR" },
+        { "value": "pe", "displayText": "PE" },
+        { "value": "gdm_dm", "displayText": "GDM/DM" },
+        { "value": "prom", "displayText": "PROM" },
+        { "value": "iufd", "displayText": "IUFD" },
+        { "value": "red_fm", "displayText": "RED FM" },
+        { "value": "aph", "displayText": "APH" },
+        { "value": "polyhyd", "displayText": "POLYHYD" },
+        { "value": "ihcp", "displayText": "IHCP" },
+        { "value": "unstable_lie", "displayText": "Unstable Lie" },
+        { "value": "rh_neg", "displayText": "RH Neg" },
+        { "value": "others", "displayText": "Others" }
+      ],
+      "showPrevious": true,
+      "showNext": true
+    },
+    {
+      "title": "review",
+      "displayText": "Maternal Outcome",
+      "options": [],
+      "type": "textarea",
+      "showPrevious": true,
+      "isSubmit": true
+    }
+  ]
+}

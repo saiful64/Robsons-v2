@@ -5,7 +5,7 @@ const AuthContext = createContext(null)
 export const AuthProvider = ({ children }) => {
   const [department, setDepartment] = useState(() => {
     const storedDepartment = localStorage.getItem("department")
-    return storedDepartment || "" // Set a default value if not found
+    return storedDepartment || ""
   })
 
   const [user, setUser] = useState(() => {
@@ -32,22 +32,17 @@ export const AuthProvider = ({ children }) => {
 
   const handleUserActivity = () => {
     clearTimeout(inactivityTimeout)
-    // Reset the timer whenever there is user activity
     inactivityTimeout = setTimeout(() => {
-      logout() // Log the user out after the specified inactivity period
-    }, 600000) // 1 minute inactivity timeout (adjust as needed)
+      logout()
+    }, 600000)
   }
 
-  // Initialize the timer when the component mounts
   useEffect(() => {
-    // Start tracking user activity on various events
     document.addEventListener("mousemove", handleUserActivity)
     document.addEventListener("keydown", handleUserActivity)
 
-    // Initialize the timer for the first time
     handleUserActivity()
 
-    // Clean up event listeners and timer when the component unmounts
     return () => {
       document.removeEventListener("mousemove", handleUserActivity)
       document.removeEventListener("keydown", handleUserActivity)
